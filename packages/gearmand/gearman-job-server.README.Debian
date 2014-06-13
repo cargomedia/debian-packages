@@ -1,0 +1,10 @@
+logging
+-------
+
+The gearman job server is configured to log to a file in
+/var/log/gearman-job-server/. However the default verbosity of the server is so
+low, that the file may not be created until really bad things happen. 
+The verbosity can be changed like other parameters in the default file located at
+/etc/default/gearman-job-server
+
+See also man gearmand
