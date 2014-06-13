@@ -9,7 +9,7 @@ URL="https://launchpad.net/${PACKAGE}/1.0/${VERSION}/+download/${PACKAGE}-${VERS
 cd ${DIR}
 mkdir -p tmp/
 cd tmp/
-test -e ${PACKAGE}-${VERSION}.tar.gz || wget https://launchpad.net/gearmand/1.0/${VERSION}/+download/${PACKAGE}-${VERSION}.tar.gz
+test -e ${PACKAGE}-${VERSION}.tar.gz || wget "${URL}"
 rm -rf ${PACKAGE}-${VERSION}/
 unp ${PACKAGE}-${VERSION}.tar.gz
 cp ${PACKAGE}-${VERSION}.tar.gz ${PACKAGE}_${VERSION}.orig.tar.gz
