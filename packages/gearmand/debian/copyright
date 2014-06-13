@@ -4,10 +4,8 @@ Upstream-Contact: Brian Aker <brian@tangent.org>, https://launchpad.net/~gearman
 Source: https://launchpad.net/gearmand
 
 Files: *
-Copyright: 2011-2013 Data Differential, http://datadifferential.com/
-           2008 Eric Day
-           2008-2013 Brian Aker
-           2013 Keyur Govande
+Copyright: 2011-2012 Data Differential, http://datadifferential.com/
+           2008 Brian Aker, Eric Day
 License: BSD-3-clause
  Gearman server and library
  Copyright (C) 2011 Data Differential, http://datadifferential.com/
@@ -73,13 +71,6 @@ Copyright: 2012 Stig Sandbeck Mathisen
            2009 Ben Morris and Monty Taylor
 License: GPL-3
  See /usr/share/common-licenses/GPL-3
-
-Files: debian/test/sharness.sh
-Copyright: 2011-2012 Mathias Lafeldt
-           2005-2012 Git project
-           2005-2012 Junio C Hamano
-License: GPL-2 or (at your option) any later version
- See /usr/share/common-licenses/GPL-2
 
 Files: m4/ax_compare_version.m4 m4/ax_lib_sqlite3.m4 m4/ax_lib_sqlite3.m4 m4/ax_path_generic.m4 m4/ax_with_prog.m4 m4/ax_cxx_header_stdcxx_98.m4 m4/ax_lib_postgresql.m4
 Copyright: 2008 Tim Toolan <toolan@ele.uri.edu>

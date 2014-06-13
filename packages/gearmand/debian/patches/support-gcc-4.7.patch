@@ -1,0 +1,13 @@
+From: Stig Sandbeck Mathisen <ssm@debian.org>
+Subject: Include unistd.h to support building with gcc/g++ 4.7
+
+--- a/util/logfile.cc
++++ b/util/logfile.cc
+@@ -49,6 +49,7 @@
+ #include <sstream>
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <unistd.h>
+ 
+ namespace datadifferential {
+ namespace util {

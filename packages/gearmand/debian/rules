@@ -1,12 +1,18 @@
 #!/usr/bin/make -f
 
+# Figure out the build architecture
+DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+
+# Only run build tests on some architectures
+BUILD_TEST_ARCH_LIST := amd64
+
 %:
-	dh $@ --parallel --with autoreconf,systemd
+	dh $@ --with autoreconf
 
-override_dh_auto_configure:
-	dh_auto_configure -- --enable-jobserver=no
-
+ifeq ($(filter $(DEB_HOST_ARCH),$(BUILD_TEST_ARCH_LIST)),)
+# Disable automated build tests
 override_dh_auto_test:
+endif
 
 override_dh_auto_install:
 	chrpath -d bin/gearadmin gearmand/gearmand
@@ -19,5 +25,5 @@ override_dh_installchangelogs:
 	dh_installchangelogs ChangeLog
 
 override_dh_strip:
-	dh_strip --dbg-package=libgearman7-dbg
+	dh_strip --dbg-package=libgearman-dbg
 

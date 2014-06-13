@@ -1,0 +1,43 @@
+From: Barry deFreese <bdefreese@debian.org>
+Subject: Fix "Unconditional use of PATH_MAX" on GNU/Hurd
+Bug-Debian: 678063
+--- a/libtest/server.cc
++++ b/libtest/server.cc
+@@ -90,6 +90,22 @@
+   return output;  // for multiple << operators
+ }
+ 
++#ifdef __GLIBC__
++namespace {
++
++class Buffer
++{
++public:
++  Buffer(char *b) : b_(b) {}
++   ~Buffer() { free(b_); }
++  char* buf() { return b_; }
++private:
++  char *b_;
++};
++
++}
++#endif // __GLIBC__
++
+ #define MAGIC_MEMORY 123570
+ 
+ Server::Server(const std::string& host_arg, const in_port_t port_arg,
+@@ -221,8 +237,14 @@
+           continue;
+         }
+ 
++#ifdef __GLIBC__
++        Buffer buf( get_current_dir_name());
++        char *getcwd_buf= buf.buf();
++#else
+         char buf[PATH_MAX];
+         char *getcwd_buf= getcwd(buf, sizeof(buf));
++#endif // __GLIBC__
++
+         throw libtest::fatal(LIBYATL_DEFAULT_PARAM,
+                              "Unable to open pidfile in %s for: %s stderr:%s",
+                              getcwd_buf ? getcwd_buf : "",
