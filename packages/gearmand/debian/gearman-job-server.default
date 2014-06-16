@@ -16,4 +16,4 @@
 # Missing examples for memcache persitent queue store...
 
 # Parameters to pass to gearmand.
-PARAMS="--listen=127.0.0.1"
+PARAMS="--listen=localhost"

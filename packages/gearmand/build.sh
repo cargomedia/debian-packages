@@ -3,7 +3,7 @@ set -e
 DIR="$(dirname "${0}")"
 
 PACKAGE='gearmand'
-VERSION='0.33'
+VERSION='1.0.6'
 URL="https://launchpad.net/${PACKAGE}/1.0/${VERSION}/+download/${PACKAGE}-${VERSION}.tar.gz"
 
 cd ${DIR}

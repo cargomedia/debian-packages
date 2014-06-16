@@ -8,14 +8,18 @@ Build-Depends:
  chrpath,
  debhelper (>= 9),
  dh-autoreconf,
+ dh-systemd (>= 1.4),
  lcov,
  libboost-program-options-dev (>= 1.39.0),
+ libboost-system-dev (>= 1.39.0),
  libboost-thread-dev (>= 1.39.0),
  libcloog-ppl-dev,
  libcurl4-gnutls-dev (>= 7.21.7),
  libevent-dev,
  libltdl-dev,
- libmemcached-dev (>= 0.30),
+ libmemcached-dev (>= 1.0),
+ libmysqlclient-dev (>= 5.0),
+ libpq-dev,
  libsasl2-dev,
  libsqlite3-dev (>= 3.0.0),
  libtool,
@@ -29,17 +33,14 @@ Standards-Version: 3.9.3
 Homepage: http://launchpad.net/gearmand
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/gearmand.git
 Vcs-Git: git://anonscm.debian.org/collab-maint/gearmand.git
+XS-Testsuite: autopkgtest
 
-
-Package: libgearman6
+Package: libgearman7
 Priority: optional
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Provides: libgearman-server0
-Replaces: libgearman-server0
-Conflicts: libgearman-server0
 Description: Library providing Gearman client and worker functions
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -50,10 +51,7 @@ Description: Library providing Gearman client and worker functions
 Package: libgearman-dev
 Section: libdevel
 Architecture: any
-Depends: libgearman6 (= ${binary:Version}), libevent-dev, ${shlibs:Depends}, ${misc:Depends}
-Provides: libgearman-server-dev
-Replaces: libgearman-server-dev
-Conflicts: libgearman-server-dev
+Depends: libgearman7 (= ${binary:Version}), libevent-dev, ${shlibs:Depends}, ${misc:Depends}
 Description: Development files for the Gearman Library
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -62,9 +60,16 @@ Description: Development files for the Gearman Library
  This package contains the development headers for the libgearman library.
 
 Package: libgearman-dbg
+Depends: libgearman7-dbg, ${misc:Depends}
+Architecture: all
+Section: oldlibs
+Description: transitional dummy package
+ This is a transitional dummy package. It can safely be removed.
+
+Package: libgearman7-dbg
 Section: debug
 Architecture: any
-Depends: libgearman6 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: libgearman7 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Description: Debug symbols for the Gearman Client Library
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -97,10 +102,7 @@ Description: Job server for the Gearman distributed job queue
 
 Package: gearman-tools
 Architecture: any
-Provides: gearman-worker
-Conflicts: gearman-worker
-Replaces: gearman-worker
-Depends: libgearman6 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: libgearman7 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Description: Tools for the Gearman distributed job queue
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,

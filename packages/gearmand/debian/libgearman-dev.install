@@ -2,4 +2,3 @@ usr/include/libgearman/*
 usr/include/libgearman-1.0/*
 usr/lib/*/libgearman.so
 usr/lib/*/pkgconfig/*
-usr/share/man/man3/*
