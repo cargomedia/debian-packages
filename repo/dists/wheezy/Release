@@ -1,0 +1,16 @@
+Codename: wheezy
+Date: Mon, 16 Jun 2014 07:43:51 UTC
+Architectures: amd64
+Components: main
+MD5Sum:
+ 67b64ee3dfef60ddd717d06a7ffc5931 7157 main/binary-amd64/Packages
+ 72b2fb3bdaf6d048c75f9d080431d9f2 1949 main/binary-amd64/Packages.gz
+ 063287201b2354699acfe229a752201d 36 main/binary-amd64/Release
+SHA1:
+ 158d2536790fc32fae96c10635d6a5b100be49c5 7157 main/binary-amd64/Packages
+ 8be25ecda218fcfe626d4a443286714642690ef6 1949 main/binary-amd64/Packages.gz
+ f9082edea14092794f38390390e06abf8a922f7d 36 main/binary-amd64/Release
+SHA256:
+ 2d7dec9afd015c15cecbbc968f7b468fbe819eff4f666dc1186e936e00375a2e 7157 main/binary-amd64/Packages
+ a08c4467522e7c9f80d14b9211141683638115b320ade5abea2060f636d34d4f 1949 main/binary-amd64/Packages.gz
+ f4aafa353a338baedf9e98523c13d7ffeda979ec3cf745f9fad977dd770595c8 36 main/binary-amd64/Release

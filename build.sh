@@ -22,3 +22,5 @@ cd "${DIR_PACKAGE}"
 rm -rf pkg/ && mkdir pkg/
 mv tmp/*.deb pkg/
 rm -rf tmp/
+
+reprepro -b "${DIR}/repo" includedeb wheezy "${DIR_PACKAGE}/pkg/"*.deb
