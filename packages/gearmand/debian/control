@@ -8,7 +8,6 @@ Build-Depends:
  chrpath,
  debhelper (>= 9),
  dh-autoreconf,
- dh-systemd (>= 1.4),
  lcov,
  libboost-program-options-dev (>= 1.39.0),
  libboost-system-dev (>= 1.39.0),
