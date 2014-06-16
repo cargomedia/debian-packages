@@ -3,8 +3,8 @@ set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 PACKAGE='gearmand'
-VERSION='1.0.6'
-URL="https://launchpad.net/${PACKAGE}/1.0/${VERSION}/+download/${PACKAGE}-${VERSION}.tar.gz"
+VERSION='1.1.12'
+URL="https://launchpad.net/${PACKAGE}/1.2/${VERSION}/+download/${PACKAGE}-${VERSION}.tar.gz"
 
 cd ${DIR}
 mkdir -p tmp/

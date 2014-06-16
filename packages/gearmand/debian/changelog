@@ -1,3 +1,10 @@
+gearmand (1.1.12) unstable; urgency=low
+
+  * Imported Upstream version 1.1.12
+  * Apply adjustment from https://github.com/ssm/pkg-gearmand/tree/upstream-development
+
+ -- Reto Kaiser <reto@cargomedia.ch>  Mon, 16 Jun 2014 08:32:00 +0200
+
 gearmand (1.0.6-3) unstable; urgency=low
 
   * gearman-job-server: listen on "localhost" instead of IPv4 only loopback address

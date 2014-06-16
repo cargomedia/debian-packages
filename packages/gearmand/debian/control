@@ -21,6 +21,8 @@ Build-Depends:
  libpq-dev,
  libsasl2-dev,
  libsqlite3-dev (>= 3.0.0),
+ libtokyocabinet-dev,
+ libssl-dev,
  libtool,
  memcached,
  pandora-build,
@@ -28,6 +30,7 @@ Build-Depends:
  procps,
  systemtap-sdt-dev [amd64 armel armhf i386 ia64 powerpc s390],
  uuid-dev,
+ gperf,
 Standards-Version: 3.9.3
 Homepage: http://launchpad.net/gearmand
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/gearmand.git

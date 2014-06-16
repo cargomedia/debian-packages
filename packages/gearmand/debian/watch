@@ -1,3 +1,2 @@
 version=3
-# opts="uversionmangle=s/^(1\.1\..*)/~0.$1/" \
-http://download.datadifferential.com/gearmand-(1\.[02]\..*)\.tar\.gz
+https://launchpad.net/gearmand/+download .*/gearmand-(\d.*)\.(?:tgz|tbz2|tar\.(?:gz|bz2|xz))
