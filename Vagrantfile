@@ -5,4 +5,9 @@ Vagrant.configure('2') do |config|
     'sudo apt-get install -y build-essential debhelper devscripts dh-make unp',
     'sudo apt-get install -y reprepro s3cmd',
   ].join(' && ')
+
+  config.vm.provision 'shell', inline: [
+    'gpg --import /vagrant/keys/public.key',
+    'gpg --allow-secret-key-import /vagrant/keys/private.key',
+  ].join(' && ')
 end
