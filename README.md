@@ -5,6 +5,11 @@ Custom debian packages
 Installing the packages
 -----------------------
 
+Install signing key:
+```
+wget -O - http://debian-packages.cargomedia.ch/conf/signing.key | apt-key add -
+```
+
 Add to your `sources.list`:
 ```
 deb http://debian-packages.cargomedia.ch wheezy main
