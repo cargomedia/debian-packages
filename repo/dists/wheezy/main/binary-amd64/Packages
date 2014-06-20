@@ -9,10 +9,10 @@ Homepage: http://launchpad.net/gearmand
 Priority: extra
 Section: misc
 Filename: pool/main/g/gearmand/gearman_1.1.12_all.deb
-Size: 14220
-SHA256: 81079ef2e6f9da31e75aea6241bf35ebc4ddeea4fec75926bb612f0132e710a6
-SHA1: e83af9fb41482871c4a53d34891fd5ed62ae4ec3
-MD5sum: 763186587073abf9b19dc58e0c6b02de
+Size: 14218
+SHA256: dff1a701b2e09e0c4993080cc6048c14c711ce650294f5dee914cfbb5deff515
+SHA1: 73ccecbd0111df5e392e26ceed5df777fa2463c6
+MD5sum: f0e6176a0d2c221fddead1900d642e23
 Description: Distributed job queue
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -34,10 +34,10 @@ Homepage: http://launchpad.net/gearmand
 Priority: extra
 Section: misc
 Filename: pool/main/g/gearmand/gearman-job-server_1.1.12_amd64.deb
-Size: 147032
-SHA256: eeb7e9325e82da731c180d722dacb51b91f6a6d49d60d6bdb88d702747110379
-SHA1: a5e0e70e0b5274e8d21f4857e2c26ccbe369fd50
-MD5sum: f7968d8e32614122c020569a08d25362
+Size: 147036
+SHA256: 1ab71220bff859043d4793870c8961175207b63e5ceb96b6c5f4d12146a0134c
+SHA1: c8160c16d99b8e41e8230e0523d1c753344c1b2f
+MD5sum: 7b1e5cfeee8d6f5d9ca3666f74dde000
 Description: Job server for the Gearman distributed job queue
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -56,10 +56,10 @@ Homepage: http://launchpad.net/gearmand
 Priority: extra
 Section: misc
 Filename: pool/main/g/gearmand/gearman-tools_1.1.12_amd64.deb
-Size: 62294
-SHA256: 1485c25d5faee0e8831b4ca9714cb29a7a37560e9d67612adedccde345c86bda
-SHA1: d5df81fadb0d0a481c1f29fea18ed09fc74acf2c
-MD5sum: a08555ae9fb09c5426f085c4f9644580
+Size: 62298
+SHA256: f1e7bb2458d8c8ec5a8b7fbfe4e85368753e72caa7bfd78f2e20afebb269c39c
+SHA1: 84998cb0c216e412e97f5b920fbe542b6a974ec2
+MD5sum: a3fdde15cd5e43ec9ae1ff04d18d1f75
 Description: Tools for the Gearman distributed job queue
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -78,10 +78,10 @@ Homepage: http://launchpad.net/gearmand
 Priority: extra
 Section: oldlibs
 Filename: pool/main/g/gearmand/libgearman-dbg_1.1.12_all.deb
-Size: 14068
-SHA256: ffa50ec14c2bb764b82ac7da8f223d1e4e5dc3dd50bce6fb3ece1a4a002c9aea
-SHA1: 138e4848fc515e1d47bf196f3a53846fd2e21f6f
-MD5sum: 299fbf9f57462fc46ad7665642498b85
+Size: 14072
+SHA256: 9bd8376adf55ba1c4f34115febc52e693727df6cf1a8b4779579846b0987248a
+SHA1: 82a6f0f6b024dac22a7df05cdddeffcf610bba9e
+MD5sum: fd50c319afbafc971349766ef70385a9
 Description: transitional dummy package
  This is a transitional dummy package. It can safely be removed.
 
@@ -96,10 +96,10 @@ Homepage: http://launchpad.net/gearmand
 Priority: extra
 Section: libdevel
 Filename: pool/main/g/gearmand/libgearman-dev_1.1.12_amd64.deb
-Size: 212146
-SHA256: 6f3df6523750c4ebef0015bf28b2495ae243cfe0a6123139a288df6f0b6f445f
-SHA1: 9f282e52e6d1f388500223dfd593c72904c0c662
-MD5sum: 0942fa92068e3734103ef68271f73fd7
+Size: 212154
+SHA256: d0a738b241145b8536050b552bdc62d908df25ac9af4d5470e87f52f2d0ee127
+SHA1: 9d18ae59177f28854fada33d5f986686a096cbb6
+MD5sum: e55d691d2a007f02c726fb11b5cac940
 Description: Development files for the Gearman Library
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -117,10 +117,10 @@ Homepage: http://launchpad.net/gearmand
 Priority: extra
 Section: doc
 Filename: pool/main/g/gearmand/libgearman-doc_1.1.12_all.deb
-Size: 2217422
-SHA256: a107004c839f65600e2046590a165e02bb0ccac858d4a63697acc8a6f64a7a02
-SHA1: 1ad000b128dcbdbc48ba549e605f0cb7d615d961
-MD5sum: 20e2a8feac0aa789e7cab065a9e2907c
+Size: 2217430
+SHA256: b7a6e35270114de5702afd622219f90c85ebba94848976d25ae999671a529bc0
+SHA1: 8a4854ba568b624079278ae396b6b050e39f436d
+MD5sum: 034b06d525e740d6f744d462fde18b6a
 Description: API Documentation for the Gearman Library
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -141,10 +141,10 @@ Homepage: http://launchpad.net/gearmand
 Priority: optional
 Section: misc
 Filename: pool/main/g/gearmand/libgearman7_1.1.12_amd64.deb
-Size: 93706
-SHA256: 0adb3d239ab0286b394c5af57bbac47cfc764d68dbbdacb0d24ca74c6269afe5
-SHA1: f5c2b7ce69ce6537576b1c8b8433698ddf74bee4
-MD5sum: b959dc05f6a279d64f8bce7a6b2bf574
+Size: 93718
+SHA256: 4bb5564e4180655e4337048b229c4e5d27484170822d6eaaa5dc93867be571e3
+SHA1: 7a7ce76ac2be9e5e7a124034a26253b97303ad25
+MD5sum: 51c0393651bbcb5129ab02efe0fda0bb
 Description: Library providing Gearman client and worker functions
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
@@ -163,10 +163,10 @@ Homepage: http://launchpad.net/gearmand
 Priority: extra
 Section: debug
 Filename: pool/main/g/gearmand/libgearman7-dbg_1.1.12_amd64.deb
-Size: 3181246
-SHA256: ba90977903aed9feff90e215250e413af26c83fbdbedcd663a9fd6d7b109a27a
-SHA1: 6690aed3755ec9132c71e5ca1e8a0ff858186e7d
-MD5sum: 8df37bb7f1046e7e0b423d283ee74ee8
+Size: 3180160
+SHA256: d0c2591cd9c5e6270c4f6001549dd026eb7c0eae1e961abe25a2b64f9f6d6645
+SHA1: e3bc154de260120a1b8893205bc2949f23983bef
+MD5sum: c48aea50bbff10447dc67b7bb0964dd9
 Description: Debug symbols for the Gearman Client Library
  Gearman is a system to farm out work to other machines, dispatching function
  calls to machines that are better suited to do work, to do work in parallel,
