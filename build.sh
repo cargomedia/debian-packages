@@ -37,8 +37,8 @@ PKG_LIST=$(perl -lne '/^Package: (.+)$/ && print $1' "${DIR_PACKAGE}/debian/cont
 for PKG in ${PKG_LIST}; do
   echo
   echo "Adding ${PKG} to repo..."
-  if (GNUPGHOME='~/.gnupg/' reprepro -b "${DIR}/repo" list wheezy "${PKG}" | grep -q "${PKG}"); then
-    GNUPGHOME='~/.gnupg/' reprepro -b "${DIR}/repo" remove wheezy "${PKG}"
+  if (reprepro -b "${DIR}/repo" list wheezy "${PKG}" | grep -q "${PKG}"); then
+    reprepro -b "${DIR}/repo" remove wheezy "${PKG}"
   fi
-  GNUPGHOME='~/.gnupg/' reprepro -b "${DIR}/repo" includedeb wheezy "${DIR_PACKAGE}/pkg/${PKG}_"*.deb
+  reprepro -b "${DIR}/repo" includedeb wheezy "${DIR_PACKAGE}/pkg/${PKG}_"*.deb
 done
