@@ -12,8 +12,8 @@ Vagrant.configure('2') do |config|
   ].join(' && ')
 
   config.vm.provision 'shell', inline: [
-    'gpg --import /vagrant/keys/public.key',
-    'gpg --allow-secret-key-import /vagrant/keys/private.key',
+    'sudo gpg --import /vagrant/keys/public.key',
+    'sudo gpg --allow-secret-key-import /vagrant/keys/private.key',
     'cp /vagrant/keys/public.key /vagrant/repo/conf/signing.key'
   ].join(' && ')
 end
