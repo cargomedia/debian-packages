@@ -7,8 +7,9 @@ Vagrant.configure('2') do |config|
   ].join(' && ')
 
   config.vm.provision 'shell', inline: [
-    'sudo apt-get install -y gnupg-agent',
-    'sudo sed -i -e "s/#\s*\(use-agent\)/\1/" ~/.gnupg/gpg.conf',
+    'sudo apt-get install -y gnupg gnupg-agent',
+    'sudo gpg --list-keys', # initialize config-file
+    'sudo sed -i -e "s/#\s*\(use-agent\)/\1/" ~/.gnupg/gpg.conf', # Enable agent
   ].join(' && ')
 
   config.vm.provision 'shell', inline: [
