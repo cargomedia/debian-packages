@@ -36,6 +36,8 @@ if (test -e "${PATH_TEST}"); then
   "${PATH_TEST}"
 fi
 
+eval $(gpg-agent --daemon)
+
 PKG_LIST=$(perl -lne '/^Package: (.+)$/ && print $1' "${DIR_PACKAGE}/debian/control")
 for PKG in ${PKG_LIST}; do
   echo

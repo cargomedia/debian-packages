@@ -7,6 +7,11 @@ Vagrant.configure('2') do |config|
   ].join(' && ')
 
   config.vm.provision 'shell', inline: [
+    'sudo apt-get install -y gnupg-agent',
+    'sudo sed -i -e "s/#\s*\(use-agent\)/\1/" ~/.gnupg/gpg.conf',
+  ].join(' && ')
+
+  config.vm.provision 'shell', inline: [
     'gpg --import /vagrant/keys/public.key',
     'gpg --allow-secret-key-import /vagrant/keys/private.key',
     'cp /vagrant/keys/public.key /vagrant/repo/conf/signing.key'
