@@ -1,0 +1,124 @@
+Source: gearmand
+Section: misc
+Priority: extra
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Build-Depends:
+ autoconf,
+ automake,
+ chrpath,
+ debhelper (>= 9),
+ dh-autoreconf,
+ lcov,
+ libboost-program-options-dev (>= 1.39.0),
+ libboost-system-dev (>= 1.39.0),
+ libboost-thread-dev (>= 1.39.0),
+ libcloog-ppl-dev,
+ libcurl4-gnutls-dev (>= 7.21.7),
+ libevent-dev,
+ libltdl-dev,
+ libmemcached-dev (>= 1.0),
+ libmysqlclient-dev (>= 5.0),
+ libpq-dev,
+ libsasl2-dev,
+ libsqlite3-dev (>= 3.0.0),
+ libtokyocabinet-dev,
+ libssl-dev,
+ libtool,
+ memcached,
+ pandora-build,
+ pkg-config (>= 0.9.0),
+ procps,
+ systemtap-sdt-dev [amd64 armel armhf i386 ia64 powerpc s390],
+ uuid-dev,
+ gperf,
+Standards-Version: 3.9.3
+Homepage: http://launchpad.net/gearmand
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/gearmand.git
+Vcs-Git: git://anonscm.debian.org/collab-maint/gearmand.git
+XS-Testsuite: autopkgtest
+
+Package: libgearman7
+Priority: optional
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library providing Gearman client and worker functions
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the C reimplementation of the client library.
+
+Package: libgearman-dev
+Section: libdevel
+Architecture: any
+Depends: libgearman7 (= ${binary:Version}), libevent-dev, ${shlibs:Depends}, ${misc:Depends}
+Description: Development files for the Gearman Library
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the development headers for the libgearman library.
+
+Package: libgearman-dbg
+Depends: libgearman7-dbg, ${misc:Depends}
+Architecture: all
+Section: oldlibs
+Description: transitional dummy package
+ This is a transitional dummy package. It can safely be removed.
+
+Package: libgearman7-dbg
+Section: debug
+Architecture: any
+Depends: libgearman7 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: Debug symbols for the Gearman Client Library
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the debug symbols for the libgearman client library.
+
+Package: libgearman-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: API Documentation for the Gearman Library
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the API docs for the libgearman library.
+
+Package: gearman-job-server
+Architecture: any
+Pre-Depends: adduser
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: memcached
+Description: Job server for the Gearman distributed job queue
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the C reimplementation of the job server daemon
+
+Package: gearman-tools
+Architecture: any
+Depends: libgearman7 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: Tools for the Gearman distributed job queue
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains some command line tools for manipulating gearman jobs.
+
+Package: gearman
+Architecture: all
+Depends: gearman-tools, gearman-job-server, ${misc:Depends}
+Description: Distributed job queue
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package is an empty package that depends on both the client and the
+ server.

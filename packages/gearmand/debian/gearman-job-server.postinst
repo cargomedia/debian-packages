@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+GROUP="gearman"
+USER="gearman"
+LOGDIR="/var/log/gearman-job-server"
+chown $USER:$GROUP $LOGDIR
+
+#DEBHELPER#

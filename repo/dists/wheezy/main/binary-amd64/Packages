@@ -1,0 +1,176 @@
+Package: gearman
+Source: gearmand
+Version: 1.1.12
+Architecture: all
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Installed-Size: 17
+Depends: gearman-tools, gearman-job-server
+Homepage: http://launchpad.net/gearmand
+Priority: extra
+Section: misc
+Filename: pool/main/g/gearmand/gearman_1.1.12_all.deb
+Size: 14220
+SHA256: 81079ef2e6f9da31e75aea6241bf35ebc4ddeea4fec75926bb612f0132e710a6
+SHA1: e83af9fb41482871c4a53d34891fd5ed62ae4ec3
+MD5sum: 763186587073abf9b19dc58e0c6b02de
+Description: Distributed job queue
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package is an empty package that depends on both the client and the
+ server.
+
+Package: gearman-job-server
+Source: gearmand
+Version: 1.1.12
+Architecture: amd64
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Installed-Size: 340
+Pre-Depends: adduser
+Depends: libboost-program-options1.49.0 (>= 1.49.0-1), libc6 (>= 2.10), libevent-2.0-5 (>= 2.0.10-stable), libgcc1 (>= 1:4.1.1), libmemcached10, libmysqlclient18 (>= 5.5.24+dfsg-1), libpq5, libsqlite3-0 (>= 3.5.9), libssl1.0.0 (>= 1.0.0), libstdc++6 (>= 4.4.0), libtokyocabinet9 (>= 1.4.47), zlib1g (>= 1:1.1.4)
+Recommends: memcached
+Homepage: http://launchpad.net/gearmand
+Priority: extra
+Section: misc
+Filename: pool/main/g/gearmand/gearman-job-server_1.1.12_amd64.deb
+Size: 147032
+SHA256: eeb7e9325e82da731c180d722dacb51b91f6a6d49d60d6bdb88d702747110379
+SHA1: a5e0e70e0b5274e8d21f4857e2c26ccbe369fd50
+MD5sum: f7968d8e32614122c020569a08d25362
+Description: Job server for the Gearman distributed job queue
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the C reimplementation of the job server daemon
+
+Package: gearman-tools
+Source: gearmand
+Version: 1.1.12
+Architecture: amd64
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Installed-Size: 138
+Depends: libgearman7 (= 1.1.12), libboost-program-options1.49.0 (>= 1.49.0-1), libc6 (>= 2.4), libgcc1 (>= 1:4.1.1), libssl1.0.0 (>= 1.0.0), libstdc++6 (>= 4.4.0)
+Homepage: http://launchpad.net/gearmand
+Priority: extra
+Section: misc
+Filename: pool/main/g/gearmand/gearman-tools_1.1.12_amd64.deb
+Size: 62294
+SHA256: 1485c25d5faee0e8831b4ca9714cb29a7a37560e9d67612adedccde345c86bda
+SHA1: d5df81fadb0d0a481c1f29fea18ed09fc74acf2c
+MD5sum: a08555ae9fb09c5426f085c4f9644580
+Description: Tools for the Gearman distributed job queue
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains some command line tools for manipulating gearman jobs.
+
+Package: libgearman-dbg
+Source: gearmand
+Version: 1.1.12
+Architecture: all
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Installed-Size: 17
+Depends: libgearman7-dbg
+Homepage: http://launchpad.net/gearmand
+Priority: extra
+Section: oldlibs
+Filename: pool/main/g/gearmand/libgearman-dbg_1.1.12_all.deb
+Size: 14068
+SHA256: ffa50ec14c2bb764b82ac7da8f223d1e4e5dc3dd50bce6fb3ece1a4a002c9aea
+SHA1: 138e4848fc515e1d47bf196f3a53846fd2e21f6f
+MD5sum: 299fbf9f57462fc46ad7665642498b85
+Description: transitional dummy package
+ This is a transitional dummy package. It can safely be removed.
+
+Package: libgearman-dev
+Source: gearmand
+Version: 1.1.12
+Architecture: amd64
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Installed-Size: 349
+Depends: libgearman7 (= 1.1.12), libevent-dev
+Homepage: http://launchpad.net/gearmand
+Priority: extra
+Section: libdevel
+Filename: pool/main/g/gearmand/libgearman-dev_1.1.12_amd64.deb
+Size: 212146
+SHA256: 6f3df6523750c4ebef0015bf28b2495ae243cfe0a6123139a288df6f0b6f445f
+SHA1: 9f282e52e6d1f388500223dfd593c72904c0c662
+MD5sum: 0942fa92068e3734103ef68271f73fd7
+Description: Development files for the Gearman Library
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the development headers for the libgearman library.
+
+Package: libgearman-doc
+Source: gearmand
+Version: 1.1.12
+Architecture: all
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Installed-Size: 2230
+Homepage: http://launchpad.net/gearmand
+Priority: extra
+Section: doc
+Filename: pool/main/g/gearmand/libgearman-doc_1.1.12_all.deb
+Size: 2217422
+SHA256: a107004c839f65600e2046590a165e02bb0ccac858d4a63697acc8a6f64a7a02
+SHA1: 1ad000b128dcbdbc48ba549e605f0cb7d615d961
+MD5sum: 20e2a8feac0aa789e7cab065a9e2907c
+Description: API Documentation for the Gearman Library
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the API docs for the libgearman library.
+
+Package: libgearman7
+Source: gearmand
+Version: 1.1.12
+Architecture: amd64
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Installed-Size: 188
+Pre-Depends: multiarch-support
+Depends: libc6 (>= 2.9), libgcc1 (>= 1:4.1.1), libssl1.0.0 (>= 1.0.0), libstdc++6 (>= 4.1.1), libuuid1 (>= 2.20.1)
+Multi-Arch: same
+Homepage: http://launchpad.net/gearmand
+Priority: optional
+Section: misc
+Filename: pool/main/g/gearmand/libgearman7_1.1.12_amd64.deb
+Size: 93706
+SHA256: 0adb3d239ab0286b394c5af57bbac47cfc764d68dbbdacb0d24ca74c6269afe5
+SHA1: f5c2b7ce69ce6537576b1c8b8433698ddf74bee4
+MD5sum: b959dc05f6a279d64f8bce7a6b2bf574
+Description: Library providing Gearman client and worker functions
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the C reimplementation of the client library.
+
+Package: libgearman7-dbg
+Source: gearmand
+Version: 1.1.12
+Architecture: amd64
+Maintainer: Stig Sandbeck Mathisen <ssm@debian.org>
+Installed-Size: 3269
+Depends: libgearman7 (= 1.1.12)
+Homepage: http://launchpad.net/gearmand
+Priority: extra
+Section: debug
+Filename: pool/main/g/gearmand/libgearman7-dbg_1.1.12_amd64.deb
+Size: 3181246
+SHA256: ba90977903aed9feff90e215250e413af26c83fbdbedcd663a9fd6d7b109a27a
+SHA1: 6690aed3755ec9132c71e5ca1e8a0ff858186e7d
+MD5sum: 8df37bb7f1046e7e0b423d283ee74ee8
+Description: Debug symbols for the Gearman Client Library
+ Gearman is a system to farm out work to other machines, dispatching function
+ calls to machines that are better suited to do work, to do work in parallel,
+ to load balance lots of function calls, or to call functions between languages.
+ .
+ This package contains the debug symbols for the libgearman client library.
+
