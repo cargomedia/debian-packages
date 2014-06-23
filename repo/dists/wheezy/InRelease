@@ -1,3 +1,6 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
 Codename: wheezy
 Date: Fri, 20 Jun 2014 20:33:37 UTC
 Architectures: amd64
@@ -14,3 +17,14 @@ SHA256:
  7d7e9446eef9fe310939419f22bc515bbe7987e6046347854d97ec605923937b 7157 main/binary-amd64/Packages
  38e3772481b75fe90214ff508cfb11afa13156cbfbbb74bdc255435aa827b12a 1939 main/binary-amd64/Packages.gz
  f4aafa353a338baedf9e98523c13d7ffeda979ec3cf745f9fad977dd770595c8 36 main/binary-amd64/Release
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQEcBAEBAgAGBQJTpJqhAAoJEDNy6zNKRc2LzKAH/iPqpPDVJBfvoXLf8PGbXrLU
+8sqI4qZcPOhlOlIeeMRNghm8xIJkXfKHJRtTbcMJD/fsMYWzF/U0OVL8w4LjbtCk
+W5G6tklJidqNSgnYMg221xsdAjwifRPOkSIsTSz5+p/Q4VBFCLlxJUwCz6EvCERz
+aACPXQjD84iVNC+aMGBVul99eLxLV31VC8JWXLIQ2qj1FkQK2rGjZlwKeP62AJl1
+0nJ/iWylgmzamcZbIh8VjK7nAdw8DlyRzIgptnO7elFypsO4nvrHGcoSnWzqSEfJ
+GYVjow1neMnHAfEVMhZ1IyHxONdcOWN6HareG4pjjtCYIsdP+/GXpgIpXds1qeA=
+=i1cd
+-----END PGP SIGNATURE-----
