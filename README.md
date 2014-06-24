@@ -19,14 +19,14 @@ Available packages
 ------------------
 
 #### gearmand
-Version: 1.1.12 (unstable)
-Packages: libgearman7, libgearman-dev, libgearman7-dbg, libgearman-doc, gearman-job-server, gearman-tools, gearman
-Debianization via: https://github.com/ssm/pkg-gearmand/
+- Version: 1.1.12 (unstable)
+- Packages: libgearman7, libgearman-dev, libgearman7-dbg, libgearman-doc, gearman-job-server, gearman-tools, gearman
+- Debianization via: https://github.com/ssm/pkg-gearmand/
 
 #### arcconf
-Version: 1.5.20942
-Packages: arcconf
-Debianization via: https://github.com/eLvErDe/hwraid/pull/4
+- Version: 1.5.20942
+- Packages: arcconf
+- Debianization via: https://github.com/eLvErDe/hwraid/pull/4
 
 Development
 -----------
