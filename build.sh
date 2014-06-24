@@ -2,19 +2,30 @@
 set -e
 DIR="$(cd "$(dirname "${0}")" && pwd)"
 
-PACKAGE='gearmand'
+usage() { echo "Usage: ${0} -p <package>" 1>&2; exit 1; }
+
+while getopts "p:" o; do
+    case "${o}" in
+        p)
+            PACKAGE=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ -z "${PACKAGE}" ]; then
+    usage
+fi
+
 DIR_PACKAGE="${DIR}/packages/${PACKAGE}"
-VERSION=$(cat "${DIR_PACKAGE}/version" | xargs)
-URL=$(cat "${DIR_PACKAGE}/url" | xargs)
 
 cd "${DIR_PACKAGE}"
 rm -rf tmp/ && mkdir tmp/ && cd tmp/
-wget "${URL}"
-unp ${PACKAGE}-${VERSION}.tar.gz
-mv ${PACKAGE}-${VERSION}.tar.gz ${PACKAGE}_${VERSION}.orig.tar.gz
-cd ${PACKAGE}-${VERSION}/
-
-cp -r ../../debian ./debian
+. "${DIR_PACKAGE}/setup.sh"
+cp -r "${DIR_PACKAGE}/debian" ./debian
 mk-build-deps --install --remove debian/control
 dpkg-buildpackage -us -uc
 

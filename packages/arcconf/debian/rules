@@ -16,8 +16,6 @@ install:
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	test -e arcconf_v1_5_20942.zip || wget http://download.adaptec.com/raid/storage_manager/arcconf_v1_5_20942.zip
-	unzip -o arcconf_v1_5_20942.zip
 	install -D -m 755 linux_x64/cmdline/arcconf $(CURDIR)/cmdline/arcconf
 	dh_install
 
