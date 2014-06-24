@@ -5,5 +5,3 @@ wget "https://launchpad.net/gearmand/1.2/${VERSION}/+download/gearmand-${VERSION
 unp ${PACKAGE}-${VERSION}.tar.gz
 mv ${PACKAGE}-${VERSION}.tar.gz ${PACKAGE}_${VERSION}.orig.tar.gz
 cd ${PACKAGE}-${VERSION}/
-
-cp -r ../../debian ./debian
