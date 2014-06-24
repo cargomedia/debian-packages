@@ -1,3 +1,42 @@
+Package: arcconf
+Source: arcconf-64bit
+Version: 1:1.5.20942
+Architecture: amd64
+Maintainer: Adam Cécile (Le_Vert) <gandalf@le-vert.net>
+Installed-Size: 2103
+Homepage: http://www.adaptec.com/en-US/support/raid/sas_raid/SAS-5805Z/
+Priority: optional
+Section: admin
+Filename: pool/main/a/arcconf-64bit/arcconf_1.5.20942_amd64.deb
+Size: 853906
+SHA256: 4686190d82c966f5c6442c49410c95629ad9da531781b0db39f64cff9e7f58b0
+SHA1: f5d4fdf1fa253f39877696a381bb54b29ef02207
+MD5sum: 74d74fd9f4c94a3959f43b386a8d4767
+Description: Adaptec ARCCONF command line tool
+ .
+ Compatible Products:
+ Adaptec RAID 6405
+ Adaptec RAID 6405E
+ Adaptec RAID 6405T
+ Adaptec RAID 6445
+ Adaptec RAID 6805
+ Adaptec RAID 6805E
+ Adaptec RAID 6805Q
+ Adaptec RAID 6805T
+ Adaptec RAID 6805TQ
+ Adaptec RAID 7805
+ Adaptec RAID 7805Q
+ Adaptec RAID 78165
+ Adaptec RAID 71605E
+ Adaptec RAID 71605
+ Adaptec RAID 71605Q
+ Adaptec RAID 71685
+ Adaptec RAID 72405
+ Adaptec RAID 8805
+ Adaptec RAID 8885
+ Adaptec RAID 8885Q
+ Adaptec RAID 81605ZQ
+
 Package: gearman
 Source: gearmand
 Version: 1.1.12
