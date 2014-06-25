@@ -1,0 +1,18 @@
+Source: mysql-proxy
+Section: database
+Priority: extra
+Maintainer: Debian MySQL Maintainers <pkg-mysql-maint@lists.alioth.debian.org>
+Uploaders: Norbert Tretkowski <norbert@tretkowski.de>
+Build-Depends: debhelper (>= 5), autotools-dev, libmysqlclient-dev, liblua5.1-dev, pkg-config, libglib2.0-dev, libevent-dev (>= 1.4), check
+Standards-Version: 3.9.2
+Homepage: http://forge.mysql.com/wiki/MySQL_Proxy
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-mysql/mysql-proxy/
+Vcs-Svn: svn://svn.debian.org/svn/pkg-mysql/mysql-proxy/
+
+Package: mysql-proxy
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: high availability, load balancing and query modification for mysql
+ MySQL Proxy stands between database servers and clients to provide load
+ balancing and failover. Incoming queries can be filtered and modified using
+ Lua scripts.
