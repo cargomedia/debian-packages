@@ -213,3 +213,22 @@ Description: Debug symbols for the Gearman Client Library
  .
  This package contains the debug symbols for the libgearman client library.
 
+Package: mysql-proxy
+Version: 0.8.4-1
+Architecture: amd64
+Maintainer: Debian MySQL Maintainers <pkg-mysql-maint@lists.alioth.debian.org>
+Installed-Size: 853
+Depends: libc6 (>= 2.7), libevent-2.0-5 (>= 2.0.10-stable), libglib2.0-0 (>= 2.31.8), liblua5.1-0
+Homepage: http://forge.mysql.com/wiki/MySQL_Proxy
+Priority: extra
+Section: database
+Filename: pool/main/m/mysql-proxy/mysql-proxy_0.8.4-1_amd64.deb
+Size: 303076
+SHA256: c1ba1d6c5bff21fcaf7a83571556c464e664d7987a1fcab91cc5b32e1ec14319
+SHA1: 376345dfda08173997a487e63f576f6e9eba14ec
+MD5sum: e6d1e890c6135d0772ca041e2ca3785c
+Description: high availability, load balancing and query modification for mysql
+ MySQL Proxy stands between database servers and clients to provide load
+ balancing and failover. Incoming queries can be filtered and modified using
+ Lua scripts.
+
