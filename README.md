@@ -28,6 +28,11 @@ Available packages
 - Packages: arcconf
 - Debianization via: https://github.com/eLvErDe/hwraid/pull/4
 
+#### mysql-proxy
+- Version: 0.8.4
+- Packages: mysql-proxy
+- Debianization via: https://packages.debian.org/wheezy/mysql-proxy
+
 Development
 -----------
 
