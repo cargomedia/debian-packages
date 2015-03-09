@@ -31,7 +31,7 @@ case "$1" in
     ;;
   stop)
     log_begin_msg "Stopping MySQL Proxy daemon..."
-    start-stop-daemon --stop --quiet --retry 3 --exec $DAEMON --pidfile $PIDFILE
+    start-stop-daemon --stop --quiet --retry TERM/20/TERM/20 --exec $DAEMON --pidfile $PIDFILE
     log_end_msg $?
     ;;
   status)
