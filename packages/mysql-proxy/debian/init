@@ -26,12 +26,12 @@ if ! $ENABLED ; then exit 0 ; fi
 case "$1" in
   start)
     log_begin_msg "Starting MySQL Proxy daemon..."
-    start-stop-daemon --start --quiet --pidfile $PIDFILE --make-pidfile --name mysql-proxy --startas $DAEMON -b -- $OPTIONS
+    start-stop-daemon --start --oknodo --pidfile $PIDFILE --make-pidfile --name mysql-proxy --startas $DAEMON -b -- $OPTIONS
     log_end_msg $?
     ;;
   stop)
     log_begin_msg "Stopping MySQL Proxy daemon..."
-    start-stop-daemon --stop --quiet --retry TERM/20/TERM/20 --exec $DAEMON --pidfile $PIDFILE
+    start-stop-daemon --stop --oknodo --retry TERM/20/TERM/20 --exec $DAEMON --pidfile $PIDFILE
     log_end_msg $?
     ;;
   status)
@@ -40,8 +40,8 @@ case "$1" in
     ;;
   restart|force-reload)
     log_begin_msg "Reloading MySQL Proxy daemon..."
-    start-stop-daemon --stop --quiet --retry 3 --exec $DAEMON --pidfile $PIDFILE
-    start-stop-daemon --start --quiet --pidfile $PIDFILE --make-pidfile --name mysql-proxy --startas $DAEMON -b -- $OPTIONS
+    start-stop-daemon --stop --oknodo --retry TERM/20/TERM/20 --exec $DAEMON --pidfile $PIDFILE
+    start-stop-daemon --start --oknodo --pidfile $PIDFILE --make-pidfile --name mysql-proxy --startas $DAEMON -b -- $OPTIONS
     log_end_msg $?
     ;;
   *)

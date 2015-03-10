@@ -52,7 +52,7 @@ start()
 stop()
 {
   log_daemon_msg "Stopping Gearman Server" "gearmand"
-  if (start-stop-daemon --stop --retry TERM/20/TERM/20 --oknodo --pidfile $PIDFILE --exec $DAEMON); then
+  if (start-stop-daemon --stop  --oknodo --retry TERM/20/TERM/20 --pidfile $PIDFILE --exec $DAEMON); then
     log_end_msg 0
   else
     log_end_msg 1
