@@ -1,3 +1,9 @@
+gearmand (1.1.12-1) unstable; urgency=low
+
+  * Slightly modified init script, particularly stopping the service (See https://github.com/cargomedia/puppet-packages/issues/681)
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 11 Mar 2015 14:02:00 +0200
+
 gearmand (1.1.12) unstable; urgency=low
 
   * Imported Upstream version 1.1.12

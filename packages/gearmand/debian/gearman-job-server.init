@@ -40,15 +40,7 @@ start()
     mkdir ${PIDDIR}
     chown ${GEARMANUSER} ${PIDDIR}
   fi
-  if start-stop-daemon \
-    --start \
-    --exec $DAEMON \
-    -- --pid-file=$PIDFILE \
-       --user=$GEARMANUSER \
-       --daemon \
-       --log-file=/var/log/gearman-job-server/gearman.log \
-       $PARAMS 
-  then
+  if (start-stop-daemon --start --oknodo --exec $DAEMON -- --pid-file=$PIDFILE --user=$GEARMANUSER --daemon --log-file=/var/log/gearman-job-server/gearman.log $PARAMS); then
     log_end_msg 0
   else
     log_end_msg 1
@@ -60,12 +52,7 @@ start()
 stop()
 {
   log_daemon_msg "Stopping Gearman Server" "gearmand"
-  if start-stop-daemon \
-    --stop \
-    --oknodo \
-    --exec $DAEMON \
-    --pidfile $PIDFILE
-  then
+  if (start-stop-daemon --stop  --oknodo --retry TERM/20/TERM/20 --pidfile $PIDFILE --exec $DAEMON); then
     log_end_msg 0
   else
     log_end_msg 1
