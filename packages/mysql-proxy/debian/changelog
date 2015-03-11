@@ -1,4 +1,4 @@
-mysql-proxy (0.8.5-1) unstable; urgency=low
+mysql-proxy (0.8.4-2) unstable; urgency=low
 
   * Streamlined init scripts.
 

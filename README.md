@@ -19,7 +19,7 @@ Available packages
 ------------------
 
 #### gearmand
-- Version: 1.1.13 (unstable)
+- Version: 1.1.12 (unstable)
 - Packages: libgearman7, libgearman-dev, libgearman7-dbg, libgearman-doc, gearman-job-server, gearman-tools, gearman
 - Debianization via: https://github.com/ssm/pkg-gearmand/
 
@@ -29,7 +29,7 @@ Available packages
 - Debianization via: https://github.com/eLvErDe/hwraid/pull/4
 
 #### mysql-proxy
-- Version: 0.8.5
+- Version: 0.8.4
 - Packages: mysql-proxy
 - Debianization via: https://packages.debian.org/wheezy/mysql-proxy
 

@@ -1,4 +1,4 @@
-gearmand (1.1.13) unstable; urgency=low
+gearmand (1.1.12-1) unstable; urgency=low
 
   * Slightly modified init script, particularly stopping the service (See https://github.com/cargomedia/puppet-packages/issues/681)
 
