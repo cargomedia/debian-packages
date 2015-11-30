@@ -2,10 +2,13 @@
 set -e
 DIR="$(cd "$(dirname "${0}")" && pwd)"
 
-usage() { echo "Usage: ${0} -p <package>" 1>&2; exit 1; }
+usage() { echo "Usage: ${0} -c <codename> -p <package>" 1>&2; exit 1; }
 
-while getopts "p:" o; do
+while getopts "c:p:" o; do
     case "${o}" in
+        c)
+            CODENAME=${OPTARG}
+            ;;
         p)
             PACKAGE=${OPTARG}
             ;;
@@ -16,11 +19,14 @@ while getopts "p:" o; do
 done
 shift $((OPTIND-1))
 
+if [ -z "${CODENAME}" ]; then
+    usage
+fi
 if [ -z "${PACKAGE}" ]; then
     usage
 fi
 
-DIR_PACKAGE="${DIR}/packages/${PACKAGE}"
+DIR_PACKAGE="${DIR}/packages/${CODENAME}/${PACKAGE}"
 
 cd "${DIR_PACKAGE}"
 rm -rf tmp/ && mkdir tmp/ && cd tmp/
@@ -48,8 +54,8 @@ PKG_LIST=$(perl -lne '/^Package: (.+)$/ && print $1' "${DIR_PACKAGE}/debian/cont
 for PKG in ${PKG_LIST}; do
   echo
   echo "Adding ${PKG} to repo..."
-  if (reprepro -b "${DIR}/repo" list wheezy "${PKG}" | grep -q "${PKG}"); then
-    reprepro -b "${DIR}/repo" remove wheezy "${PKG}"
+  if (reprepro -b "${DIR}/repo" list "${CODENAME}" "${PKG}" | grep -q "${PKG}"); then
+    reprepro -b "${DIR}/repo" remove "${CODENAME}" "${PKG}"
   fi
-  reprepro -b "${DIR}/repo" includedeb wheezy "${DIR_PACKAGE}/pkg/${PKG}_"*.deb
+  reprepro -b "${DIR}/repo" includedeb "${CODENAME}" "${DIR_PACKAGE}/pkg/${PKG}_"*.deb
 done
