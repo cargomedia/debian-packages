@@ -18,22 +18,20 @@ deb http://debian-packages.cargomedia.ch <codename> main
 
 Available packages
 ------------------
-### wheezy
+#### wheezy
 
-##### gearmand
-- Version: 1.1.12 (unstable)
-- Packages: libgearman7, libgearman-dev, libgearman7-dbg, libgearman-doc, gearman-job-server, gearman-tools, gearman
-- Debianization via: https://github.com/ssm/pkg-gearmand/
-
-##### arcconf
-- Version: 1.5.20942
-- Packages: arcconf
-- Debianization via: https://github.com/eLvErDe/hwraid/pull/4
-
-#### mysql-proxy
-- Version: 0.8.4
-- Packages: mysql-proxy
-- Debianization via: https://packages.debian.org/wheezy/mysql-proxy
+- **gearmand**
+ - Version: 1.1.12 (unstable)
+ - Packages: libgearman7, libgearman-dev, libgearman7-dbg, libgearman-doc, gearman-job-server, gearman-tools, gearman
+ - Debianization via: https://github.com/ssm/pkg-gearmand/
+- **arcconf**
+ - Version: 1.5.20942
+ - Packages: arcconf
+ - Debianization via: https://github.com/eLvErDe/hwraid/pull/4
+- **mysql-proxy**
+ - Version: 0.8.4
+ - Packages: mysql-proxy
+ - Debianization via: https://packages.debian.org/wheezy/mysql-proxy
 
 Development
 -----------
