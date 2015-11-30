@@ -1,0 +1,4 @@
+usr/include/libgstreamer/*
+usr/include/libgstreamer-1.0/*
+usr/lib/*/libgstreamer.so
+usr/lib/*/pkgconfig/*

@@ -1,5 +1,7 @@
 #!/bin/sh
 
-git clone git://anongit.freedesktop.org/gstreamer/gstreamer
-cd gstreamer
-git checkout 1.6.1
+VERSION="1.6.1"
+wget "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${VERSION}.tar.xz"
+unp ${PACKAGE}-${VERSION}.tar.xz
+mv ${PACKAGE}-${VERSION}.tar.xz ${PACKAGE}_${VERSION}.orig.tar.xz
+cd ${PACKAGE}-${VERSION}/

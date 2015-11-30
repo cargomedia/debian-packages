@@ -2,20 +2,34 @@ Source: gstreamer
 Priority: optional
 Maintainer: Cargo Media <tech@cargomedia.ch>
 Build-Depends:
- libtool,
  autoconf,
  automake,
- make,
+ chrpath,
+ debhelper (>= 9),
+ dh-autoreconf,
+ libtool,
  bison,
  flex,
  gtk-doc-tools,
  gcc,
  cmake,
  indent,
- quilt
+ libgtk2.0-dev,
+ gtk-doc-tools,
+ cmake,
 Homepage: http://gstreamer.freedesktop.org/
 
 Package: libgstreamer
 Architecture: amd64
-Depends: ${misc:Depends}
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
 Description: Gstreamer library
+
+Package: libgstreamer-dev
+Architecture: amd64
+Depends:
+ libgstreamer (= ${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Gstreamer development headers
