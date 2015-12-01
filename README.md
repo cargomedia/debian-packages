@@ -36,7 +36,7 @@ Available packages
 #### vivid
 - **gstreamer**
  - Version: 1.6.1
- - Packages: libgstreamer1.0-0, libgstreamer1.0-dev
+ - Packages: gir1.2-gstreamer-1.0, gstreamer1.0-doc, gstreamer1.0-tools, libgstreamer1.0-0, libgstreamer1.0-0-dbg, libgstreamer1.0-dev
  - Debianization via: http://packages.ubuntu.com/source/xenial/gstreamer1.0
 
 Development
