@@ -10,11 +10,10 @@ Build-Depends:
  libtool,
  bison,
  flex,
- gtk-doc-tools,
  gcc,
  cmake,
  indent,
- libgtk2.0-dev,
+ libglib2.0-dev,
  gtk-doc-tools,
  cmake,
 Homepage: http://gstreamer.freedesktop.org/
