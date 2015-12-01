@@ -33,6 +33,12 @@ Available packages
  - Packages: mysql-proxy
  - Debianization via: https://packages.debian.org/wheezy/mysql-proxy
 
+#### vivid
+- **gstreamer**
+ - Version: 1.6.1
+ - Packages: libgstreamer1.0-0, libgstreamer1.0-dev
+ - Debianization via: http://packages.ubuntu.com/source/xenial/gstreamer1.0
+
 Development
 -----------
 For signing the repo, the vagrant-provisioner will look for keys in `keys/{private,public}.key`.

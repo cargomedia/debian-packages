@@ -1,4 +1,5 @@
 Source: gstreamer
+Section: libs
 Priority: optional
 Maintainer: Cargo Media <tech@cargomedia.ch>
 Build-Depends:
@@ -18,17 +19,43 @@ Build-Depends:
  cmake,
 Homepage: http://gstreamer.freedesktop.org/
 
-Package: libgstreamer
+Package: libgstreamer1.0-0
 Architecture: amd64
 Depends:
  ${shlibs:Depends},
- ${misc:Depends},
-Description: Gstreamer library
+ libc6 (>= 2.15),
+ libcap2 (>= 1:2.10),
+ libglib2.0-0 (>= 2.41.1),
+ libcap2-bin,
+Homepage: http://gstreamer.freedesktop.org
+Description: Core GStreamer libraries and elements
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ This package contains the core library and elements.
 
-Package: libgstreamer-dev
+
+Package: libgstreamer1.0-dev
 Architecture: amd64
 Depends:
- libgstreamer (= ${binary:Version}),
- ${shlibs:Depends},
- ${misc:Depends},
-Description: Gstreamer development headers
+ libgstreamer1.0-0 (= ${binary:Version}),
+ libc6-dev | libc-dev,
+ pkg-config,
+ libglib2.0-dev,
+ libc6 (>= 2.4),
+ libglib2.0-0 (>= 2.32),
+ gir1.2-gstreamer-1.0 (= 1.6.1-1),
+Description: GStreamer core development files
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ This package contains development files for the core library and
+ elements.
