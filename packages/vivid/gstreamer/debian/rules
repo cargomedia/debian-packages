@@ -3,7 +3,7 @@
 build:
 	dh build --before configure
 	./autogen.sh
-	./configure
+	./configure --prefix=/usr
 	make
 	dh build --after build
 

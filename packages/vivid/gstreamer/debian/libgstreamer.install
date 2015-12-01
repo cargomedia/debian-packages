@@ -1,1 +1,4 @@
-/usr/lib/*/libgstreamer.so.*
+usr/lib
+usr/libexec
+usr/bin
+usr/share
