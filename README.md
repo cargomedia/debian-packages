@@ -64,5 +64,5 @@ vagrant ssh <codename> -c 'sudo su'
 
 Build and test a package:
 ```
-/vagrant/build.sh -c <codename> -p <PACKAGE>
+/vagrant/build.sh -c <codename> -p <package>
 ```
