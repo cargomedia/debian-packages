@@ -1,4 +1,4 @@
 /.idea/
 /.vagrant/
-/packages/*/pkg/
+/packages/*/*/pkg/
 /keys/

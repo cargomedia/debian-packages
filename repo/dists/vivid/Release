@@ -1,0 +1,16 @@
+Codename: vivid
+Date: Wed, 02 Dec 2015 10:14:45 UTC
+Architectures: amd64
+Components: main
+MD5Sum:
+ 27abb9cd6be6061d09ffe0332cfdab0e 7323 main/binary-amd64/Packages
+ 96827c2ed2247b5c40514864de41dda0 1883 main/binary-amd64/Packages.gz
+ 063287201b2354699acfe229a752201d 36 main/binary-amd64/Release
+SHA1:
+ effd891321781c416cc4dcca2bc4d247363f28c7 7323 main/binary-amd64/Packages
+ 9e3354e4272ba1cbce0d7e7d7ec104e23c0cf0d6 1883 main/binary-amd64/Packages.gz
+ f9082edea14092794f38390390e06abf8a922f7d 36 main/binary-amd64/Release
+SHA256:
+ f189271421f85a707288f298adb1a9745dafe4e36c12fda1b151bb428abaabeb 7323 main/binary-amd64/Packages
+ 698d497d1e2c574175fc8b59a914f925935682094c07b424e1bf106e67f82855 1883 main/binary-amd64/Packages.gz
+ f4aafa353a338baedf9e98523c13d7ffeda979ec3cf745f9fad977dd770595c8 36 main/binary-amd64/Release
