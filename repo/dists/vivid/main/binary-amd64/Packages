@@ -1,17 +1,18 @@
 Package: gir1.2-gstreamer-1.0
-Source: gstreamer
+Source: gstreamer1.0
 Version: 1.6.1-1
 Architecture: amd64
-Maintainer: Cargo Media <tech@cargomedia.ch>
-Installed-Size: 1
-Homepage: http://gstreamer.freedesktop.org/
+Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Installed-Size: 1169
+Depends: gir1.2-glib-2.0, libgstreamer1.0-0 (>= 1.6.0)
+Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: introspection
-Filename: pool/main/g/gstreamer/gir1.2-gstreamer-1.0_1.6.1-1_amd64.deb
-Size: 1384
-SHA256: f165fbccac7535f2add44dee6fbae9cc3e3d2d203b3ee56ab990824f42ab4b05
-SHA1: 1f1a6084aa2c7a7a3b4e5f2f4f43cce82595ad4d
-MD5sum: d2b562f36b187a80876df1ae166a1ca2
+Filename: pool/main/g/gstreamer1.0/gir1.2-gstreamer-1.0_1.6.1-1_amd64.deb
+Size: 959946
+SHA256: b9195c37cfa42fd50120a795d5ecb24c5845ab4fa089d65174d986ff9327f02d
+SHA1: d9058efab4226b2632d10a1e55bdc57886e7b94e
+MD5sum: 5ab302d358cf8d5adeae835124e4587f
 Description: Description: GObject introspection data for the GStreamer library
  This package contains introspection data for the GStreamer streaming media
  framework.
@@ -27,21 +28,21 @@ Description: Description: GObject introspection data for the GStreamer library
  dynamic bindings.
 
 Package: gstreamer1.0-doc
-Source: gstreamer
+Source: gstreamer1.0
 Version: 1.6.1-1
 Architecture: all
-Maintainer: Cargo Media <tech@cargomedia.ch>
-Installed-Size: 1
+Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Installed-Size: 29736
 Depends: libglib2.0-doc
 Recommends: libgstreamer1.0-dev (= 1.6.1-1)
-Homepage: http://gstreamer.freedesktop.org/
+Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: doc
-Filename: pool/main/g/gstreamer/gstreamer1.0-doc_1.6.1-1_all.deb
-Size: 1394
-SHA256: 352641ccbfe8c6132704f95ef85395344ac51e76ac60e171818c14e09be2ee49
-SHA1: acb0eb3fb281090bb986d0f1a607dd96b118e596
-MD5sum: 556a4be8857e68c7153df28e6459bd4e
+Filename: pool/main/g/gstreamer1.0/gstreamer1.0-doc_1.6.1-1_all.deb
+Size: 4464590
+SHA256: c90798c28f41d0c7907ace22586ae0ffbaca61f81776b1daba6fc2420bbd95ef
+SHA1: a78643748b3d25de4e2d19d11711263bfd5e456e
+MD5sum: 2d884a5fcda10ae5728336f3a6b1f13b
 Description: GStreamer core documentation and manuals
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -57,21 +58,21 @@ Description: GStreamer core documentation and manuals
   * Various API docs
 
 Package: gstreamer1.0-tools
-Source: gstreamer
+Source: gstreamer1.0
 Version: 1.6.1-1
 Architecture: amd64
-Maintainer: Cargo Media <tech@cargomedia.ch>
-Installed-Size: 1
-Depends: pkg-config, libgstreamer1.0-0 (>= 1.5.1)
+Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Installed-Size: 984
+Depends: libc6 (>= 2.14), libglib2.0-0 (>= 2.32), libgstreamer1.0-0 (>= 1.5.1), pkg-config
 Suggests: gstreamer1.0-plugins-base
-Homepage: http://gstreamer.freedesktop.org/
+Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: utils
-Filename: pool/main/g/gstreamer/gstreamer1.0-tools_1.6.1-1_amd64.deb
-Size: 1384
-SHA256: 1a21cdb1bf884941390c1c66a6435ed7e1205244cb689749e2bbf8c992178c42
-SHA1: 1e27900945abc8589c42cad6fe6850ce17a2552b
-MD5sum: 4afa9e3ec81eb5c7c358948529eb7999
+Filename: pool/main/g/gstreamer1.0/gstreamer1.0-tools_1.6.1-1_amd64.deb
+Size: 930324
+SHA256: 5338edd7d1b9c19513eb8e1191ccac5b063a8d70ff158ce9fbd4caa1ed5615b5
+SHA1: 48b41a85f75c9e9c86639848e1af39aa68d3b8b6
+MD5sum: 616634483caa6c8ff7113583f28d84df
 Description: Tools for use with GStreamer
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -83,22 +84,23 @@ Description: Tools for use with GStreamer
  This package contains versioned command-line tools for GStreamer.
 
 Package: libgstreamer1.0-0
-Source: gstreamer
+Source: gstreamer1.0
 Version: 1.6.1-1
 Architecture: amd64
-Maintainer: Cargo Media <tech@cargomedia.ch>
-Installed-Size: 12361
-Depends: libc6 (>= 2.15), libglib2.0-0 (>= 2.41.1), libcap2-bin
+Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Installed-Size: 4310
+Pre-Depends: multiarch-support
+Depends: libc6 (>= 2.15), libcap2 (>= 1:2.10), libglib2.0-0 (>= 2.41.1), libcap2-bin
 Suggests: gstreamer1.0-tools, gstreamer1.0-plugins-base
 Multi-Arch: same
-Homepage: http://gstreamer.freedesktop.org/
+Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: libs
-Filename: pool/main/g/gstreamer/libgstreamer1.0-0_1.6.1-1_amd64.deb
-Size: 1474652
-SHA256: b5184cc1a6e772a1539ec18a342cfc986b42a7e94d803b1d22c1574b409c5ef7
-SHA1: 4f3b65f47d0d19391b9b2a958d8e74f16fef523d
-MD5sum: 69f989bd3c1f59141bebdd1a1addf4ca
+Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-0_1.6.1-1_amd64.deb
+Size: 1810514
+SHA256: 4ab230e15df5a8fb9da13a76d231118b224b3a25cc22831ebbb86e066b5c787a
+SHA1: 6da7332d1789f62325e90ce2ef65b5a5758d3c9d
+MD5sum: 3040688fee46763a075d08164066918a
 Description: Core GStreamer libraries and elements
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -110,21 +112,21 @@ Description: Core GStreamer libraries and elements
  This package contains the core library and elements.
 
 Package: libgstreamer1.0-0-dbg
-Source: gstreamer
+Source: gstreamer1.0
 Version: 1.6.1-1
 Architecture: amd64
-Maintainer: Cargo Media <tech@cargomedia.ch>
-Installed-Size: 1
+Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Installed-Size: 3092
 Depends: libgstreamer1.0-0 (= 1.6.1-1)
 Multi-Arch: same
-Homepage: http://gstreamer.freedesktop.org/
+Homepage: http://gstreamer.freedesktop.org
 Priority: extra
 Section: debug
-Filename: pool/main/g/gstreamer/libgstreamer1.0-0-dbg_1.6.1-1_amd64.deb
-Size: 1480
-SHA256: 9c2cceb72d0c4b488c47d8803deb785a76de72e57c3435c8f2c49bba3554db43
-SHA1: da46bdc5223882a1dda4f2b6ebb997b6d83d925c
-MD5sum: c4869a05960f63f487889c14a8c16a0e
+Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-0-dbg_1.6.1-1_amd64.deb
+Size: 2721726
+SHA256: 749a689a7776bdc6412e37842d70f8b6ee8d0d707da0cbad61f509fe14c81348
+SHA1: 2ce6de29b7cf77ece404856ac7d5df749f27e9a8
+MD5sum: e76847479e2ce714c8226a11fef2def1
 Description: Core GStreamer libraries and elements
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -139,22 +141,22 @@ Description: Core GStreamer libraries and elements
  /usr/lib/debug and are automatically used by gdb.
 
 Package: libgstreamer1.0-dev
-Source: gstreamer
+Source: gstreamer1.0
 Version: 1.6.1-1
 Architecture: amd64
-Maintainer: Cargo Media <tech@cargomedia.ch>
-Installed-Size: 950
-Depends: libgstreamer1.0-0 (= 1.6.1-1), libc6-dev | libc-dev, pkg-config, libglib2.0-dev, gir1.2-gstreamer-1.0 (= 1.6.1-1)
+Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Installed-Size: 4625
+Depends: libgstreamer1.0-0 (= 1.6.1-1), libc6-dev | libc-dev, pkg-config, libglib2.0-dev, libc6 (>= 2.4), libglib2.0-0 (>= 2.32), gir1.2-gstreamer-1.0 (= 1.6.1-1)
 Recommends: debhelper
 Suggests: gstreamer1.0-doc
-Homepage: http://gstreamer.freedesktop.org/
+Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: libdevel
-Filename: pool/main/g/gstreamer/libgstreamer1.0-dev_1.6.1-1_amd64.deb
-Size: 140214
-SHA256: 7d0eb9a1aee985ac7348ca67bd9663606ca10ad0e1cbd23c65574da5ad179d48
-SHA1: daa40dd093fcfa94d7048f466dfd161b0e756912
-MD5sum: f9c194c0dc637478af31cbdb7d771eda
+Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-dev_1.6.1-1_amd64.deb
+Size: 1260216
+SHA256: d186cf3499713a0971d7ea5efb6eb5f10cf3850bb508dac5da2303d28eec0e2f
+SHA1: 25881edd2b95117c3c1876533610fea55251910f
+MD5sum: 57eaf78516ce1144034ba71b784f2573
 Description: GStreamer core development files
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do

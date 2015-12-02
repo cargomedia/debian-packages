@@ -2,29 +2,29 @@
 Hash: SHA1
 
 Codename: vivid
-Date: Tue, 01 Dec 2015 16:16:48 UTC
+Date: Wed, 02 Dec 2015 10:14:45 UTC
 Architectures: amd64
 Components: main
 MD5Sum:
- 43c29fb4e4a5183e61a787f186e93dc5 6764 main/binary-amd64/Packages
- d2cdfb7afbc768fadd326519c7870392 1791 main/binary-amd64/Packages.gz
+ 27abb9cd6be6061d09ffe0332cfdab0e 7323 main/binary-amd64/Packages
+ 96827c2ed2247b5c40514864de41dda0 1883 main/binary-amd64/Packages.gz
  063287201b2354699acfe229a752201d 36 main/binary-amd64/Release
 SHA1:
- 4eb72d163424a0e910e697c7ce732ccaa2ddda5c 6764 main/binary-amd64/Packages
- 2637c7905085e44cf63b48ef5dbfe3acaf128046 1791 main/binary-amd64/Packages.gz
+ effd891321781c416cc4dcca2bc4d247363f28c7 7323 main/binary-amd64/Packages
+ 9e3354e4272ba1cbce0d7e7d7ec104e23c0cf0d6 1883 main/binary-amd64/Packages.gz
  f9082edea14092794f38390390e06abf8a922f7d 36 main/binary-amd64/Release
 SHA256:
- 9d245442613ccc5f6675b6ff02af7b74944597ab774a82971236a4bda5565ac5 6764 main/binary-amd64/Packages
- 48bd13d9deed80d767b4c5032064872479fd8fd32aab1f2bffdcfbd4e268b841 1791 main/binary-amd64/Packages.gz
+ f189271421f85a707288f298adb1a9745dafe4e36c12fda1b151bb428abaabeb 7323 main/binary-amd64/Packages
+ 698d497d1e2c574175fc8b59a914f925935682094c07b424e1bf106e67f82855 1883 main/binary-amd64/Packages.gz
  f4aafa353a338baedf9e98523c13d7ffeda979ec3cf745f9fad977dd770595c8 36 main/binary-amd64/Release
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQEcBAEBAgAGBQJWXcfwAAoJEDNy6zNKRc2Lr50H+wTkFLOc8/mGpf53JyAOsZ4T
-bj653Euf715HqWDA2shnm60yeHw9Xx291Vv9NBhnuxS4XzRpsU8l1pOwv5VB4rmI
-fFaZ8L1JdoYLJz4zGaSkMdGY46FRbN4MupPUbNpfsAlXQi41+Dx1G45LjJDSaO3t
-nEpr37ScOCCwYxoGcXYQ6b8odYYs/C6DOeM889YS2a3PZjn8dXCx9YYP3HlEtBZ1
-tO+oVMxlU01NCOyUSDaAqo9PuNuv4cJYloBV40vMQg7kXztSUGrkTa36XUTVMn4e
-ea0qtYgnZAZoI02ly9Bm50pCl4xhazOD/2h5vR8qqUQZtxvyXZveEuMtJTtIQuo=
-=yrec
+iQEcBAEBAgAGBQJWXsSVAAoJEDNy6zNKRc2LWDQH/11iC675OmmHX4XyeG4XNvP7
+WFGSd70oCLFlj0wRiqiGZ0rHNVQza5EY7YjEh/BELbvyiXJaBmTHUEQCxIJI7708
+DYTU12AryDgj1jAD1tIxdqM1AaQ1f6pdboq7clAU10Sp0ll6jLKe8+IXdJKT/Jbj
+ycnJaEwJFne9hqHiACBKa+vg3eWp5oro2L9KRSg1RkrKLKdlJQJpLXaUnL/k4xxT
+Li7DaDNMZgP904j3Q0doXvgt4IiOQBjAVz8uBevmrAiMJNvg3OBWHwR/Z/Um7viO
+Q77j+JkmSmYtS1BtdHEMUMSrDOZJvHgSpkreRti5trbkhYZWNb5rcsciU/FrfHE=
+=KmWF
 -----END PGP SIGNATURE-----
