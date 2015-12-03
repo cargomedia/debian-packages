@@ -38,6 +38,15 @@ Available packages
  - Version: 1.6.1
  - Packages: gir1.2-gstreamer-1.0, gstreamer1.0-doc, gstreamer1.0-tools, libgstreamer1.0-0, libgstreamer1.0-0-dbg, libgstreamer1.0-dev
  - Debianization via: http://packages.ubuntu.com/source/xenial/gstreamer1.0
+- **orc**
+ - Version: 0.4.24
+ - Packages: liborc-0.4-0-dbg_0.4.24 liborc-0.4-dev_0.4.24 liborc-0.4-0_0.4.24 liborc-0.4-doc_0.4.24
+ - Debianization via: http://packages.ubuntu.com/source/xenial/orc
+- **gst-plugins-base**
+ - Version: 1.6.1
+ - Packages: gir1.2-gst-plugins-base-1.0_1.6.1 gstreamer1.0-alsa_1.6.1 gstreamer1.0-plugins-base-apps_1.6.1 gstreamer1.0-plugins-base-dbg_1.6.1 gstreamer1.0-plugins-base-doc_1.6.1 gstreamer1.0-plugins-base_1.6.1 gstreamer1.0-x_1.6.1 libgstreamer-plugins-base1.0-0_1.6.1 libgstreamer-plugins-base1.0-dev_1.6.1
+ - Debianization via: http://packages.ubuntu.com/xenial/libgstreamer-plugins-base1.0-dev
+
 
 Development
 -----------
