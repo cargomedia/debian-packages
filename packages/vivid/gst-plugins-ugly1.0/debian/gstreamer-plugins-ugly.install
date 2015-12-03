@@ -1,0 +1,16 @@
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgsta52dec.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstasf.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstcdio.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstdvdlpcmdec.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstdvdread.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstdvdsub.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstlame.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstmad.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstmpeg2dec.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstrmdemux.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstsid.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgsttwolame.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstx264.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstxingmux.so
+debian/tmp/usr/share/locale
+debian/tmp/usr/share/gstreamer-@GST_ABI@/presets/GstX264Enc.prs
