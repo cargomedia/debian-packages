@@ -1,0 +1,2 @@
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstandroidmedia.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstmirsink.so
