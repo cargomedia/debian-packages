@@ -40,7 +40,9 @@ rm -rf pkg/ && mkdir pkg/
 mv tmp/*.deb pkg/
 rm -rf tmp/
 
-dpkg -i "${DIR_PACKAGE}/pkg/"*.deb
+if ! $(dpkg -i "${DIR_PACKAGE}/pkg/"*.deb); then
+    apt-get install -f
+fi
 
 PATH_TEST="${DIR_PACKAGE}/debian/tests/run-tests"
 if (test -e "${PATH_TEST}"); then
