@@ -1,0 +1,64 @@
+Description: Add a pkgconfig file to facilitate linking against libgstphotography
+Author: Iain Lane <iain.lane@canonical.com>
+Forwarded: not-needed
+
+Index: b/pkgconfig/gstreamer-plugins-good.pc.in
+===================================================================
+--- /dev/null
++++ b/pkgconfig/gstreamer-plugins-good.pc.in
+@@ -0,0 +1,12 @@
++prefix=@prefix@
++exec_prefix=@exec_prefix@
++libdir=@libdir@
++includedir=@includedir@/gstreamer-@GST_API_VERSION@
++pluginsdir=@libdir@/gstreamer-@GST_API_VERSION@
++
++Name: GStreamer Good Plugin libraries
++Description: Currently includes the photography interface library
++Requires: gstreamer-@GST_API_VERSION@ gstreamer-base-@GST_API_VERSION@
++Version: @VERSION@
++Libs: -L${libdir} -lgstphotography-@GST_API_VERSION@
++Cflags: -I${includedir}
+Index: b/pkgconfig/Makefile.am
+===================================================================
+--- a/pkgconfig/Makefile.am
++++ b/pkgconfig/Makefile.am
+@@ -5,7 +5,7 @@
+ 	gstreamer-plugins-good-@GST_API_VERSION@-uninstalled.pc
+ 
+ ### all-local: $(pcverfiles) $(pcverfiles_uninstalled)
+-all-local: $(pcverfiles_uninstalled)
++all-local: $(pcverfiles) $(pcverfiles_uninstalled)
+ 
+ cp_verbose = $(cp_verbose_$(V))
+ cp_verbose_ = $(cp_verbose_$(AM_DEFAULT_VERBOSITY))
+@@ -18,14 +18,14 @@
+ 	$(cp_verbose)cp $< $@
+ 
+ # do not install for now
+-# pkgconfigdir = $(libdir)/pkgconfig
+-# pkgconfig_DATA = $(pcverfiles)
++pkgconfigdir = $(libdir)/pkgconfig
++pkgconfig_DATA = $(pcverfiles)
+ 
+ CLEANFILES = $(pcverfiles) $(pcverfiles_uninstalled)
+ # pcinfiles = \
+ #           gstreamer-plugins-good.pc.in gstreamer-plugins-good-uninstalled.pc.in
+ pcinfiles = \
+-           gstreamer-plugins-good-uninstalled.pc.in
++           gstreamer-plugins-good.pc.in gstreamer-plugins-good-uninstalled.pc.in
+ 
+ DISTCLEANFILES = $(pcinfiles:.in=)
+ EXTRA_DIST = $(pcinfiles)
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -1106,6 +1106,7 @@
+ docs/plugins/Makefile
+ docs/version.entities
+ pkgconfig/Makefile
++pkgconfig/gstreamer-plugins-good.pc
+ pkgconfig/gstreamer-plugins-good-uninstalled.pc
+ gst-plugins-good.spec
+ )

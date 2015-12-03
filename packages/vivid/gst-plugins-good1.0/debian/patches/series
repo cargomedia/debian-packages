@@ -1,0 +1,4 @@
+add-pkgconfig-file
+import-camerabin
+import-jpegformat
+qtdemux-Set-maximum-sample-input-size-in-caps.patch
