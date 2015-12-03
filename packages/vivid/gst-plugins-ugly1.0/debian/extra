@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [ $# -lt 2 ]; then
+   echo "usage: $1 deps|control plugin"
+   exit 1
+fi
+
+case $1 in
+  deps)
+    case $2 in
+      *)
+        echo "ERROR invalid plugin: add your plugin to debian/extra"
+        exit 1
+        ;;
+    esac ;;
+
+  control)
+    case $2 in
+      *)
+        echo "ERROR invalid plugin: add your plugin to debian/extra"
+        exit 1
+        ;;
+    esac ;;
+  *) echo "ERROR use deps or control" ;;
+esac
+

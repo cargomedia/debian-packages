@@ -1,0 +1,98 @@
+Source: gst-plugins-ugly@GST_ABI@
+Section: libs
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Uploaders: Loic Minier <lool@dooz.org>,
+           Sebastian Dröge <slomo@debian.org>
+Build-Depends: BUILDDEPS
+Standards-Version: 3.9.3
+Vcs-Git: git://git.launchpad.net/~ubuntu-desktop/ubuntu/+source/gst-plugins-ugly@GST_ABI@
+Vcs-Browser: https://code.launchpad.net/~ubuntu-desktop/ubuntu/+source/gst-plugins-ugly@GST_ABI@/+git/gst-plugins-ugly@GST_ABI@
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-ugly.html
+
+Package: @GST_PKGNAME@-plugins-ugly-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends},
+         gstreamer@GST_ABI@-doc,
+         gstreamer@GST_ABI@-plugins-base-doc
+Description: GStreamer documentation for plugins from the "ugly" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ This package contains documentation for plugins from the "ugly" set,
+ a set of good-quality plug-ins that might pose distribution problems.
+
+Package: @GST_PKGNAME@-plugins-ugly
+Architecture: any
+Multi-Arch: same
+Depends: @GST_PKGNAME@-plugins-ugly-amr (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+XB-GStreamer-Version: ${gstreamer:Version}
+XB-GStreamer-Elements: ${gstreamer:Elements}
+XB-GStreamer-URI-Sources: ${gstreamer:URISources}
+XB-GStreamer-URI-Sinks: ${gstreamer:URISinks}
+XB-GStreamer-Encoders: ${gstreamer:Encoders}
+XB-GStreamer-Decoders: ${gstreamer:Decoders}
+Provides: ${gstreamer:Provides}
+Description: GStreamer plugins from the "ugly" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ This package contains plugins from the "ugly" set, a set of
+ good-quality plug-ins that might pose distribution problems.
+
+Package: @GST_PKGNAME@-plugins-ugly-amr
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+XB-GStreamer-Version: ${gstreamer:Version}
+XB-GStreamer-Elements: ${gstreamer:Elements}
+XB-GStreamer-URI-Sources: ${gstreamer:URISources}
+XB-GStreamer-URI-Sinks: ${gstreamer:URISinks}
+XB-GStreamer-Encoders: ${gstreamer:Encoders}
+XB-GStreamer-Decoders: ${gstreamer:Decoders}
+Provides: ${gstreamer:Provides}
+Replaces: @GST_PKGNAME@-plugins-ugly (<< 1.4.5)
+Breaks: @GST_PKGNAME@-plugins-ugly (<< 1.4.5)
+Description: GStreamer plugins from the "ugly" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ This package contains the AMR plugins from the "ugly" set, an audio
+ compression format which is optimised for coding speech.
+
+Package: @GST_PKGNAME@-plugins-ugly-dbg
+Architecture: any
+Multi-Arch: same
+Section: debug
+Priority: extra
+Depends: @GST_PKGNAME@-plugins-ugly (= ${binary:Version}),
+         ${misc:Depends}
+Description: GStreamer plugins from the "ugly" set (debug symbols)
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ This package contains unstripped shared libraries. It is provided primarily
+ to provide a backtrace with names in a debugger, this makes it somewhat
+ easier to interpret core dumps. The libraries are installed in
+ /usr/lib/debug and are automatically used by gdb.

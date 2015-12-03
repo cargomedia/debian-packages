@@ -1,0 +1,3 @@
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstamrnb.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstamrwbdec.so
+debian/tmp/usr/share/gstreamer-@GST_ABI@/presets/GstAmrnbEnc.prs
