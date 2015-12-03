@@ -1,0 +1,2 @@
+debian/tmp/usr/lib/*/libgstphotography-@GST_ABI@.so.*
+debian/tmp/usr/lib/*/libgstbasecamerabinsrc-@GST_ABI@.so.*

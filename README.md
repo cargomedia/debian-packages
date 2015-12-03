@@ -50,7 +50,11 @@ Available packages
  - Version: 1.6.1
  - Packages: gstreamer1.0-plugins-ugly-amr_1.6.1 gstreamer1.0-plugins-ugly-dbg_1.6.1 gstreamer1.0-plugins-ugly-doc_1.6.1 gstreamer1.0-plugins-ugly_1.6.1
  - Debianization via: http://packages.ubuntu.com/source/xenial/gst-plugins-ugly1.0
- 
+- **gst-plugins-good**
+ - Version: 1.6.1
+ - Packages: gstreamer1.0-plugins-good-dbg_1.6.1 gstreamer1.0-plugins-good-doc_1.6.1 gstreamer1.0-plugins-good_1.6.1 gstreamer1.0-pulseaudio_1.6.1 libgstreamer-plugins-good1.0-0_1.6.1 libgstreamer-plugins-good1.0-dev_1.6.1
+ - Debianization via: http://packages.ubuntu.com/source/xenial/gst-plugins-good1.0
+
 Development
 -----------
 For signing the repo, the vagrant-provisioner will look for keys in `keys/{private,public}.key`.
