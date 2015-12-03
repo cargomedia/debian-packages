@@ -1,0 +1,3152 @@
+Description: This is a copy of the jpegformat plugin from gst-plugins-good. It's needed for Ubuntu main, so we copy it.
+Forwarded: not-needed
+
+Index: b/configure.ac
+===================================================================
+--- a/configure.ac
++++ b/configure.ac
+@@ -358,6 +358,7 @@
+ AG_GST_CHECK_PLUGIN(imagefreeze)
+ AG_GST_CHECK_PLUGIN(interleave)
+ AG_GST_CHECK_PLUGIN(isomp4)
++AG_GST_CHECK_PLUGIN(jpegformat)
+ AG_GST_CHECK_PLUGIN(law)
+ AG_GST_CHECK_PLUGIN(level)
+ AG_GST_CHECK_PLUGIN(matroska)
+@@ -976,6 +977,7 @@
+ gst/imagefreeze/Makefile
+ gst/interleave/Makefile
+ gst/isomp4/Makefile
++gst/jpegformat/Makefile
+ gst/law/Makefile
+ gst/level/Makefile
+ gst/matroska/Makefile
+Index: b/gst/jpegformat/gstjifmux.c
+===================================================================
+--- /dev/null
++++ b/gst/jpegformat/gstjifmux.c
+@@ -0,0 +1,776 @@
++/* GStreamer
++ *
++ * jifmux: JPEG interchange format muxer
++ *
++ * Copyright (C) 2010 Stefan Kost <stefan.kost@nokia.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++/**
++ * SECTION:element-jifmux
++ * @short_description: JPEG interchange format writer
++ *
++ * Writes a JPEG image as JPEG/EXIF or JPEG/JFIF including various metadata. The
++ * jpeg image received on the sink pad should be minimal (e.g. should not
++ * contain metadata already).
++ *
++ * <refsect2>
++ * <title>Example launch line</title>
++ * |[
++ * gst-launch -v videotestsrc num-buffers=1 ! jpegenc ! jifmux ! filesink location=...
++ * ]|
++ * The above pipeline renders a frame, encodes to jpeg, adds metadata and writes
++ * it to disk.
++ * </refsect2>
++ */
++/*
++jpeg interchange format:
++file header : SOI, APPn{JFIF,EXIF,...}
++frame header: DQT, SOF
++scan header : {DAC,DHT},DRI,SOS
++<scan data>
++file trailer: EOI
++
++tests:
++gst-launch videotestsrc num-buffers=1 ! jpegenc ! jifmux ! filesink location=test1.jpeg
++gst-launch videotestsrc num-buffers=1 ! jpegenc ! taginject tags="comment=\"test image\"" ! jifmux ! filesink location=test2.jpeg
++*/
++
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include <string.h>
++#include <gst/base/gstbytereader.h>
++#include <gst/base/gstbytewriter.h>
++#include <gst/tag/tag.h>
++#include <gst/tag/xmpwriter.h>
++
++#include "gstjifmux.h"
++
++static GstStaticPadTemplate gst_jif_mux_src_pad_template =
++GST_STATIC_PAD_TEMPLATE ("src",
++    GST_PAD_SRC,
++    GST_PAD_ALWAYS,
++    GST_STATIC_CAPS ("image/jpeg")
++    );
++
++static GstStaticPadTemplate gst_jif_mux_sink_pad_template =
++GST_STATIC_PAD_TEMPLATE ("sink",
++    GST_PAD_SINK,
++    GST_PAD_ALWAYS,
++    GST_STATIC_CAPS ("image/jpeg")
++    );
++
++GST_DEBUG_CATEGORY_STATIC (jif_mux_debug);
++#define GST_CAT_DEFAULT jif_mux_debug
++
++#define COLORSPACE_UNKNOWN         (0 << 0)
++#define COLORSPACE_GRAYSCALE       (1 << 0)
++#define COLORSPACE_YUV             (1 << 1)
++#define COLORSPACE_RGB             (1 << 2)
++#define COLORSPACE_CMYK            (1 << 3)
++#define COLORSPACE_YCCK            (1 << 4)
++
++typedef struct _GstJifMuxMarker
++{
++  guint8 marker;
++  guint16 size;
++
++  const guint8 *data;
++  gboolean owned;
++} GstJifMuxMarker;
++
++struct _GstJifMuxPrivate
++{
++  GstPad *srcpad;
++
++  /* list of GstJifMuxMarker */
++  GList *markers;
++  guint scan_size;
++  const guint8 *scan_data;
++};
++
++static void gst_jif_mux_finalize (GObject * object);
++
++static void gst_jif_mux_reset (GstJifMux * self);
++static gboolean gst_jif_mux_sink_setcaps (GstJifMux * self, GstCaps * caps);
++static gboolean gst_jif_mux_sink_event (GstPad * pad, GstObject * parent,
++    GstEvent * event);
++static GstFlowReturn gst_jif_mux_chain (GstPad * pad, GstObject * parent,
++    GstBuffer * buffer);
++static GstStateChangeReturn gst_jif_mux_change_state (GstElement * element,
++    GstStateChange transition);
++
++#define gst_jif_mux_parent_class parent_class
++G_DEFINE_TYPE_WITH_CODE (GstJifMux, gst_jif_mux, GST_TYPE_ELEMENT,
++    G_IMPLEMENT_INTERFACE (GST_TYPE_TAG_SETTER, NULL);
++    G_IMPLEMENT_INTERFACE (GST_TYPE_TAG_XMP_WRITER, NULL));
++
++static void
++gst_jif_mux_class_init (GstJifMuxClass * klass)
++{
++  GObjectClass *gobject_class;
++  GstElementClass *gstelement_class;
++
++  gobject_class = (GObjectClass *) klass;
++  gstelement_class = (GstElementClass *) klass;
++
++  g_type_class_add_private (gobject_class, sizeof (GstJifMuxPrivate));
++
++  gobject_class->finalize = gst_jif_mux_finalize;
++
++  gstelement_class->change_state = GST_DEBUG_FUNCPTR (gst_jif_mux_change_state);
++
++  gst_element_class_add_pad_template (gstelement_class,
++      gst_static_pad_template_get (&gst_jif_mux_src_pad_template));
++  gst_element_class_add_pad_template (gstelement_class,
++      gst_static_pad_template_get (&gst_jif_mux_sink_pad_template));
++
++  gst_element_class_set_static_metadata (gstelement_class,
++      "JPEG stream muxer",
++      "Video/Formatter",
++      "Remuxes JPEG images with markers and tags",
++      "Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>");
++
++  GST_DEBUG_CATEGORY_INIT (jif_mux_debug, "jifmux", 0,
++      "JPEG interchange format muxer");
++}
++
++static void
++gst_jif_mux_init (GstJifMux * self)
++{
++  GstPad *sinkpad;
++
++  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GST_TYPE_JIF_MUX,
++      GstJifMuxPrivate);
++
++  /* create the sink and src pads */
++  sinkpad = gst_pad_new_from_static_template (&gst_jif_mux_sink_pad_template,
++      "sink");
++  gst_pad_set_chain_function (sinkpad, GST_DEBUG_FUNCPTR (gst_jif_mux_chain));
++  gst_pad_set_event_function (sinkpad,
++      GST_DEBUG_FUNCPTR (gst_jif_mux_sink_event));
++  gst_element_add_pad (GST_ELEMENT (self), sinkpad);
++
++  self->priv->srcpad =
++      gst_pad_new_from_static_template (&gst_jif_mux_src_pad_template, "src");
++  gst_element_add_pad (GST_ELEMENT (self), self->priv->srcpad);
++}
++
++static void
++gst_jif_mux_finalize (GObject * object)
++{
++  GstJifMux *self = GST_JIF_MUX (object);
++
++  gst_jif_mux_reset (self);
++  G_OBJECT_CLASS (parent_class)->finalize (object);
++}
++
++static gboolean
++gst_jif_mux_sink_setcaps (GstJifMux * self, GstCaps * caps)
++{
++  GstStructure *s = gst_caps_get_structure (caps, 0);
++  const gchar *variant;
++
++  /* should be {combined (default), EXIF, JFIF} */
++  if ((variant = gst_structure_get_string (s, "variant")) != NULL) {
++    GST_INFO_OBJECT (self, "muxing to '%s'", variant);
++    /* FIXME: do we want to switch it like this or use a gobject property ? */
++  }
++
++  return gst_pad_set_caps (self->priv->srcpad, caps);
++}
++
++static gboolean
++gst_jif_mux_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
++{
++  GstJifMux *self = GST_JIF_MUX (parent);
++  gboolean ret;
++
++  switch (GST_EVENT_TYPE (event)) {
++    case GST_EVENT_CAPS:
++    {
++      GstCaps *caps;
++
++      gst_event_parse_caps (event, &caps);
++      ret = gst_jif_mux_sink_setcaps (self, caps);
++      gst_event_unref (event);
++      break;
++    }
++    case GST_EVENT_TAG:{
++      GstTagList *list;
++      GstTagSetter *setter = GST_TAG_SETTER (self);
++      const GstTagMergeMode mode = gst_tag_setter_get_tag_merge_mode (setter);
++
++      gst_event_parse_tag (event, &list);
++
++      gst_tag_setter_merge_tags (setter, list, mode);
++
++      ret = gst_pad_event_default (pad, parent, event);
++      break;
++    }
++    default:
++      ret = gst_pad_event_default (pad, parent, event);
++      break;
++  }
++  return ret;
++}
++
++static void
++gst_jif_mux_marker_free (GstJifMuxMarker * m)
++{
++  if (m->owned)
++    g_free ((gpointer) m->data);
++
++  g_slice_free (GstJifMuxMarker, m);
++}
++
++static void
++gst_jif_mux_reset (GstJifMux * self)
++{
++  GList *node;
++  GstJifMuxMarker *m;
++
++  for (node = self->priv->markers; node; node = g_list_next (node)) {
++    m = (GstJifMuxMarker *) node->data;
++    gst_jif_mux_marker_free (m);
++  }
++  g_list_free (self->priv->markers);
++  self->priv->markers = NULL;
++}
++
++static GstJifMuxMarker *
++gst_jif_mux_new_marker (guint8 marker, guint16 size, const guint8 * data,
++    gboolean owned)
++{
++  GstJifMuxMarker *m = g_slice_new (GstJifMuxMarker);
++
++  m->marker = marker;
++  m->size = size;
++  m->data = data;
++  m->owned = owned;
++
++  return m;
++}
++
++static gboolean
++gst_jif_mux_parse_image (GstJifMux * self, GstBuffer * buf)
++{
++  GstByteReader reader;
++  GstJifMuxMarker *m;
++  guint8 marker = 0;
++  guint16 size = 0;
++  const guint8 *data = NULL;
++  GstMapInfo map;
++
++  gst_buffer_map (buf, &map, GST_MAP_READ);
++  gst_byte_reader_init (&reader, map.data, map.size);
++
++  GST_LOG_OBJECT (self, "Received buffer of size: %" G_GSIZE_FORMAT, map.size);
++
++  if (!gst_byte_reader_peek_uint8 (&reader, &marker))
++    goto error;
++
++  while (marker == 0xff) {
++    if (!gst_byte_reader_skip (&reader, 1))
++      goto error;
++
++    if (!gst_byte_reader_get_uint8 (&reader, &marker))
++      goto error;
++
++    switch (marker) {
++      case RST0:
++      case RST1:
++      case RST2:
++      case RST3:
++      case RST4:
++      case RST5:
++      case RST6:
++      case RST7:
++      case SOI:
++        GST_DEBUG_OBJECT (self, "marker = %x", marker);
++        m = gst_jif_mux_new_marker (marker, 0, NULL, FALSE);
++        self->priv->markers = g_list_prepend (self->priv->markers, m);
++        break;
++      case EOI:
++        GST_DEBUG_OBJECT (self, "marker = %x", marker);
++        m = gst_jif_mux_new_marker (marker, 0, NULL, FALSE);
++        self->priv->markers = g_list_prepend (self->priv->markers, m);
++        goto done;
++      default:
++        if (!gst_byte_reader_get_uint16_be (&reader, &size))
++          goto error;
++        if (!gst_byte_reader_get_data (&reader, size - 2, &data))
++          goto error;
++
++        m = gst_jif_mux_new_marker (marker, size - 2, data, FALSE);
++        self->priv->markers = g_list_prepend (self->priv->markers, m);
++
++        GST_DEBUG_OBJECT (self, "marker = %2x, size = %u", marker, size);
++        break;
++    }
++
++    if (marker == SOS) {
++      gint eoi_pos = -1;
++      gint i;
++
++      /* search the last 5 bytes for the EOI marker */
++      g_assert (map.size >= 5);
++      for (i = 5; i >= 2; i--) {
++        if (map.data[map.size - i] == 0xFF && map.data[map.size - i + 1] == EOI) {
++          eoi_pos = map.size - i;
++          break;
++        }
++      }
++      if (eoi_pos == -1) {
++        GST_WARNING_OBJECT (self, "Couldn't find an EOI marker");
++        eoi_pos = map.size;
++      }
++
++      /* remaining size except EOI is scan data */
++      self->priv->scan_size = eoi_pos - gst_byte_reader_get_pos (&reader);
++      if (!gst_byte_reader_get_data (&reader, self->priv->scan_size,
++              &self->priv->scan_data))
++        goto error;
++
++      GST_DEBUG_OBJECT (self, "scan data, size = %u", self->priv->scan_size);
++    }
++
++    if (!gst_byte_reader_peek_uint8 (&reader, &marker))
++      goto error;
++  }
++  GST_INFO_OBJECT (self, "done parsing at 0x%x / 0x%x",
++      gst_byte_reader_get_pos (&reader), (guint) map.size);
++
++done:
++  self->priv->markers = g_list_reverse (self->priv->markers);
++  gst_buffer_unmap (buf, &map);
++
++  return TRUE;
++
++  /* ERRORS */
++error:
++  {
++    GST_WARNING_OBJECT (self,
++        "Error parsing image header (need more that %u bytes available)",
++        gst_byte_reader_get_remaining (&reader));
++    gst_buffer_unmap (buf, &map);
++    return FALSE;
++  }
++}
++
++static gboolean
++gst_jif_mux_mangle_markers (GstJifMux * self)
++{
++  gboolean modified = FALSE;
++  GstTagList *tags = NULL;
++  gboolean cleanup_tags;
++  GstJifMuxMarker *m;
++  GList *node, *file_hdr = NULL, *frame_hdr = NULL, *scan_hdr = NULL;
++  GList *app0_jfif = NULL, *app1_exif = NULL, *app1_xmp = NULL, *com = NULL;
++  GstBuffer *xmp_data;
++  gchar *str = NULL;
++  gint colorspace = COLORSPACE_UNKNOWN;
++
++  /* update the APP markers
++   * - put any JFIF APP0 first
++   * - the Exif APP1 next,
++   * - the XMP APP1 next,
++   * - the PSIR APP13 next,
++   * - followed by all other marker segments
++   */
++
++  /* find some reference points where we insert before/after */
++  file_hdr = self->priv->markers;
++  for (node = self->priv->markers; node; node = g_list_next (node)) {
++    m = (GstJifMuxMarker *) node->data;
++
++    switch (m->marker) {
++      case APP0:
++        if (m->size > 5 && !memcmp (m->data, "JFIF\0", 5)) {
++          GST_DEBUG_OBJECT (self, "found APP0 JFIF");
++          colorspace |= COLORSPACE_GRAYSCALE | COLORSPACE_YUV;
++          if (!app0_jfif)
++            app0_jfif = node;
++        }
++        break;
++      case APP1:
++        if (m->size > 6 && (!memcmp (m->data, "EXIF\0\0", 6) ||
++                !memcmp (m->data, "Exif\0\0", 6))) {
++          GST_DEBUG_OBJECT (self, "found APP1 EXIF");
++          if (!app1_exif)
++            app1_exif = node;
++        } else if (m->size > 29
++            && !memcmp (m->data, "http://ns.adobe.com/xap/1.0/\0", 29)) {
++          GST_INFO_OBJECT (self, "found APP1 XMP, will be replaced");
++          if (!app1_xmp)
++            app1_xmp = node;
++        }
++        break;
++      case APP14:
++        /* check if this contains RGB */
++        /*
++         * This marker should have:
++         * - 'Adobe\0'
++         * - 2 bytes DCTEncodeVersion
++         * - 2 bytes flags0
++         * - 2 bytes flags1
++         * - 1 byte  ColorTransform
++         *             - 0 means unknown (RGB or CMYK)
++         *             - 1 YCbCr
++         *             - 2 YCCK
++         */
++
++        if ((m->size >= 14)
++            && (strncmp ((gchar *) m->data, "Adobe\0", 6) == 0)) {
++          switch (m->data[11]) {
++            case 0:
++              colorspace |= COLORSPACE_RGB | COLORSPACE_CMYK;
++              break;
++            case 1:
++              colorspace |= COLORSPACE_YUV;
++              break;
++            case 2:
++              colorspace |= COLORSPACE_YCCK;
++              break;
++            default:
++              break;
++          }
++        }
++
++        break;
++      case COM:
++        GST_INFO_OBJECT (self, "found COM, will be replaced");
++        if (!com)
++          com = node;
++        break;
++      case DQT:
++      case SOF0:
++      case SOF1:
++      case SOF2:
++      case SOF3:
++      case SOF5:
++      case SOF6:
++      case SOF7:
++      case SOF9:
++      case SOF10:
++      case SOF11:
++      case SOF13:
++      case SOF14:
++      case SOF15:
++        if (!frame_hdr)
++          frame_hdr = node;
++        break;
++      case DAC:
++      case DHT:
++      case DRI:
++      case SOS:
++        if (!scan_hdr)
++          scan_hdr = node;
++        break;
++    }
++  }
++
++  /* if we want combined or JFIF */
++  /* check if we don't have JFIF APP0 */
++  if (!app0_jfif && (colorspace & (COLORSPACE_GRAYSCALE | COLORSPACE_YUV))) {
++    /* build jfif header */
++    static const struct
++    {
++      gchar id[5];
++      guint8 ver[2];
++      guint8 du;
++      guint8 xd[2], yd[2];
++      guint8 tw, th;
++    } jfif_data = {
++      "JFIF", {
++      1, 2}, 0, {
++      0, 1},                    /* FIXME: check pixel-aspect from caps */
++      {
++    0, 1}, 0, 0};
++    m = gst_jif_mux_new_marker (APP0, sizeof (jfif_data),
++        (const guint8 *) &jfif_data, FALSE);
++    /* insert into self->markers list */
++    self->priv->markers = g_list_insert (self->priv->markers, m, 1);
++    app0_jfif = g_list_nth (self->priv->markers, 1);
++  }
++  /* else */
++  /* remove JFIF if exists */
++
++  /* Existing exif tags will be removed and our own will be added */
++  if (!tags) {
++    tags = (GstTagList *) gst_tag_setter_get_tag_list (GST_TAG_SETTER (self));
++    cleanup_tags = FALSE;
++  }
++  if (!tags) {
++    tags = gst_tag_list_new_empty ();
++    cleanup_tags = TRUE;
++  }
++
++  GST_DEBUG_OBJECT (self, "Tags to be serialized %" GST_PTR_FORMAT, tags);
++
++  /* FIXME: not happy with those
++   * - else where we would use VIDEO_CODEC = "Jpeg"
++   gst_tag_list_add (tags, GST_TAG_MERGE_REPLACE,
++   GST_TAG_VIDEO_CODEC, "image/jpeg", NULL);
++   */
++
++  /* Add EXIF */
++  {
++    GstBuffer *exif_data;
++    gsize exif_size;
++    guint8 *data;
++    GstJifMuxMarker *m;
++    GList *pos;
++
++    /* insert into self->markers list */
++    exif_data = gst_tag_list_to_exif_buffer_with_tiff_header (tags);
++    exif_size = exif_data ? gst_buffer_get_size (exif_data) : 0;
++
++    if (exif_data && exif_size + 8 >= G_GUINT64_CONSTANT (65536)) {
++      GST_WARNING_OBJECT (self, "Exif tags data size exceed maximum size");
++      gst_buffer_unref (exif_data);
++      exif_data = NULL;
++    }
++    if (exif_data) {
++      data = g_malloc0 (exif_size + 6);
++      memcpy (data, "Exif", 4);
++      gst_buffer_extract (exif_data, 0, data + 6, exif_size);
++      m = gst_jif_mux_new_marker (APP1, exif_size + 6, data, TRUE);
++      gst_buffer_unref (exif_data);
++
++      if (app1_exif) {
++        gst_jif_mux_marker_free ((GstJifMuxMarker *) app1_exif->data);
++        app1_exif->data = m;
++      } else {
++        pos = file_hdr;
++        if (app0_jfif)
++          pos = app0_jfif;
++        pos = g_list_next (pos);
++
++        self->priv->markers =
++            g_list_insert_before (self->priv->markers, pos, m);
++        if (pos) {
++          app1_exif = g_list_previous (pos);
++        } else {
++          app1_exif = g_list_last (self->priv->markers);
++        }
++      }
++      modified = TRUE;
++    }
++  }
++
++  /* add xmp */
++  xmp_data =
++      gst_tag_xmp_writer_tag_list_to_xmp_buffer (GST_TAG_XMP_WRITER (self),
++      tags, FALSE);
++  if (xmp_data) {
++    guint8 *data;
++    gsize size;
++    GList *pos;
++
++    size = gst_buffer_get_size (xmp_data);
++    data = g_malloc (size + 29);
++    memcpy (data, "http://ns.adobe.com/xap/1.0/\0", 29);
++    gst_buffer_extract (xmp_data, 0, &data[29], size);
++    m = gst_jif_mux_new_marker (APP1, size + 29, data, TRUE);
++
++    /*
++     * Replace the old xmp marker and not add a new one.
++     * There shouldn't be a xmp packet in the input, but it is better
++     * to be safe than add another one and end up with 2 packets.
++     */
++    if (app1_xmp) {
++      gst_jif_mux_marker_free ((GstJifMuxMarker *) app1_xmp->data);
++      app1_xmp->data = m;
++    } else {
++
++      pos = file_hdr;
++      if (app1_exif)
++        pos = app1_exif;
++      else if (app0_jfif)
++        pos = app0_jfif;
++      pos = g_list_next (pos);
++
++      self->priv->markers = g_list_insert_before (self->priv->markers, pos, m);
++
++    }
++    gst_buffer_unref (xmp_data);
++    modified = TRUE;
++  }
++
++  /* add jpeg comment from any of those */
++  (void) (gst_tag_list_get_string (tags, GST_TAG_COMMENT, &str) ||
++      gst_tag_list_get_string (tags, GST_TAG_DESCRIPTION, &str) ||
++      gst_tag_list_get_string (tags, GST_TAG_TITLE, &str));
++
++  if (str) {
++    GST_DEBUG_OBJECT (self, "set COM marker to '%s'", str);
++    /* insert new marker into self->markers list */
++    m = gst_jif_mux_new_marker (COM, strlen (str) + 1, (const guint8 *) str,
++        TRUE);
++    /* FIXME: if we have one already, replace */
++    /* this should go before SOS, maybe at the end of file-header */
++    self->priv->markers = g_list_insert_before (self->priv->markers,
++        frame_hdr, m);
++
++    modified = TRUE;
++  }
++
++  if (tags && cleanup_tags)
++    gst_tag_list_unref (tags);
++  return modified;
++}
++
++static GstFlowReturn
++gst_jif_mux_recombine_image (GstJifMux * self, GstBuffer ** new_buf,
++    GstBuffer * old_buf)
++{
++  GstBuffer *buf;
++  GstByteWriter *writer;
++  GstJifMuxMarker *m;
++  GList *node;
++  guint size = self->priv->scan_size;
++  gboolean writer_status = TRUE;
++  GstMapInfo map;
++
++  /* iterate list and collect size */
++  for (node = self->priv->markers; node; node = g_list_next (node)) {
++    m = (GstJifMuxMarker *) node->data;
++
++    /* some markers like e.g. SOI are empty */
++    if (m->size) {
++      size += 2 + m->size;
++    }
++    /* 0xff <marker> */
++    size += 2;
++  }
++  GST_INFO_OBJECT (self, "old size: %" G_GSIZE_FORMAT ", new size: %u",
++      gst_buffer_get_size (old_buf), size);
++
++  /* allocate new buffer */
++  buf = gst_buffer_new_allocate (NULL, size, NULL);
++
++  /* copy buffer metadata */
++  gst_buffer_copy_into (buf, old_buf,
++      GST_BUFFER_COPY_FLAGS | GST_BUFFER_COPY_TIMESTAMPS, 0, -1);
++
++  /* memcopy markers */
++  gst_buffer_map (buf, &map, GST_MAP_WRITE);
++  writer = gst_byte_writer_new_with_data (map.data, map.size, TRUE);
++
++  for (node = self->priv->markers; node && writer_status;
++      node = g_list_next (node)) {
++    m = (GstJifMuxMarker *) node->data;
++
++    writer_status &= gst_byte_writer_put_uint8 (writer, 0xff);
++    writer_status &= gst_byte_writer_put_uint8 (writer, m->marker);
++
++    GST_DEBUG_OBJECT (self, "marker = %2x, size = %u", m->marker, m->size + 2);
++
++    if (m->size) {
++      writer_status &= gst_byte_writer_put_uint16_be (writer, m->size + 2);
++      writer_status &= gst_byte_writer_put_data (writer, m->data, m->size);
++    }
++
++    if (m->marker == SOS) {
++      GST_DEBUG_OBJECT (self, "scan data, size = %u", self->priv->scan_size);
++      writer_status &=
++          gst_byte_writer_put_data (writer, self->priv->scan_data,
++          self->priv->scan_size);
++    }
++  }
++  gst_buffer_unmap (buf, &map);
++  gst_byte_writer_free (writer);
++
++  if (!writer_status) {
++    GST_WARNING_OBJECT (self, "Failed to write to buffer, calculated size "
++        "was probably too short");
++    g_assert_not_reached ();
++  }
++
++  *new_buf = buf;
++  return GST_FLOW_OK;
++}
++
++static GstFlowReturn
++gst_jif_mux_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
++{
++  GstJifMux *self = GST_JIF_MUX (parent);
++  GstFlowReturn fret = GST_FLOW_OK;
++
++#if 0
++  GST_MEMDUMP ("jpeg beg", GST_BUFFER_DATA (buf), 64);
++  GST_MEMDUMP ("jpeg end", GST_BUFFER_DATA (buf) + GST_BUFFER_SIZE (buf) - 64,
++      64);
++#endif
++
++  /* we should have received a whole picture from SOI to EOI
++   * build a list of markers */
++  if (gst_jif_mux_parse_image (self, buf)) {
++    /* modify marker list */
++    if (gst_jif_mux_mangle_markers (self)) {
++      /* the list was changed, remux */
++      GstBuffer *old = buf;
++      fret = gst_jif_mux_recombine_image (self, &buf, old);
++      gst_buffer_unref (old);
++    }
++  }
++
++  /* free the marker list */
++  gst_jif_mux_reset (self);
++
++  if (fret == GST_FLOW_OK) {
++    fret = gst_pad_push (self->priv->srcpad, buf);
++  }
++  return fret;
++}
++
++static GstStateChangeReturn
++gst_jif_mux_change_state (GstElement * element, GstStateChange transition)
++{
++  GstStateChangeReturn ret;
++  GstJifMux *self = GST_JIF_MUX_CAST (element);
++
++  switch (transition) {
++    case GST_STATE_CHANGE_NULL_TO_READY:
++      break;
++    case GST_STATE_CHANGE_READY_TO_PAUSED:
++      break;
++    case GST_STATE_CHANGE_PAUSED_TO_PLAYING:
++      break;
++    default:
++      break;
++  }
++
++  ret = GST_ELEMENT_CLASS (parent_class)->change_state (element, transition);
++
++  switch (transition) {
++    case GST_STATE_CHANGE_PLAYING_TO_PAUSED:
++      break;
++    case GST_STATE_CHANGE_PAUSED_TO_READY:
++      gst_tag_setter_reset_tags (GST_TAG_SETTER (self));
++      break;
++    case GST_STATE_CHANGE_READY_TO_NULL:
++      break;
++    default:
++      break;
++  }
++
++  return ret;
++}
+Index: b/gst/jpegformat/gstjifmux.h
+===================================================================
+--- /dev/null
++++ b/gst/jpegformat/gstjifmux.h
+@@ -0,0 +1,61 @@
++/* GStreamer
++ *
++ * jifmux: JPEG interchange format muxer
++ *
++ * Copyright (C) 2010 Stefan Kost <stefan.kost@nokia.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifndef __GST_JFIF_MUX_H__
++#define __GST_JFIF_MUX_H__
++
++#include <gst/gst.h>
++
++#include "gstjpegformat.h"
++
++G_BEGIN_DECLS
++
++#define GST_TYPE_JIF_MUX \
++  (gst_jif_mux_get_type())
++#define GST_JIF_MUX(obj) \
++  (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_JIF_MUX,GstJifMux))
++#define GST_JIF_MUX_CLASS(klass) \
++  (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_JIF_MUX,GstJifMuxClass))
++#define GST_IS_JIF_MUX(obj) \
++  (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_JIF_MUX))
++#define GST_IS_JIF_MUX_CLASS(klass) \
++  (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_JIF_MUX))
++#define GST_JIF_MUX_CAST(obj) ((GstJifMux *) (obj))
++
++typedef struct _GstJifMux           GstJifMux;
++typedef struct _GstJifMuxPrivate    GstJifMuxPrivate;
++typedef struct _GstJifMuxClass      GstJifMuxClass;
++
++struct _GstJifMux {
++  GstElement element;
++  GstJifMuxPrivate *priv;
++};
++
++struct _GstJifMuxClass {
++  GstElementClass  parent_class;
++};
++
++GType gst_jif_mux_get_type (void);
++
++G_END_DECLS
++
++#endif /* __GST_JFIF_MUX_H__ */
+Index: b/gst/jpegformat/gstjpegformat.c
+===================================================================
+--- /dev/null
++++ b/gst/jpegformat/gstjpegformat.c
+@@ -0,0 +1,47 @@
++/* GStreamer
++ *
++ * jpegformat: a plugin for JPEG Interchange Format
++ *
++ * Copyright (C) <2010> Stefan Kost <ensonic@users.sf.net>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include "gstjpegparse.h"
++#include "gstjifmux.h"
++
++static gboolean
++plugin_init (GstPlugin * plugin)
++{
++  if (!gst_element_register (plugin, "jpegparse", GST_RANK_NONE,
++          GST_TYPE_JPEG_PARSE))
++    return FALSE;
++  if (!gst_element_register (plugin, "jifmux", GST_RANK_SECONDARY,
++          GST_TYPE_JIF_MUX))
++    return FALSE;
++
++  return TRUE;
++}
++
++GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
++    GST_VERSION_MINOR,
++    jpegformat,
++    "JPEG interchange format plugin",
++    plugin_init, VERSION, "LGPL", GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN)
+Index: b/gst/jpegformat/gstjpegformat.h
+===================================================================
+--- /dev/null
++++ b/gst/jpegformat/gstjpegformat.h
+@@ -0,0 +1,92 @@
++/* GStreamer
++ *
++ * jpegformat: a plugin for JPEG Interchange Format
++ *
++ * Copyright (C) <2010> Stefan Kost <ensonic@users.sf.net>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++
++#ifndef __GST_JPEG_FORMAT_H__
++#define __GST_JPEG_FORMAT_H__
++
++G_BEGIN_DECLS
++
++/*
++ * JPEG Markers
++ */
++ 
++/* Start Of Frame markers, non-differential, Huffman coding */
++#define SOF0      0xc0  /* Baseline DCT */
++#define SOF1      0xc1  /* Extended sequential DCT */
++#define SOF2      0xc2  /* Progressive DCT */
++#define SOF3      0xc3  /* Lossless */
++
++/* Start Of Frame markers, differential, Huffman coding */
++#define SOF5      0xc5
++#define SOF6      0xc6
++#define SOF7      0xc7
++
++/* Start Of Frame markers, non-differential, arithmetic coding */
++#define JPG       0xc8  /* Reserved */
++#define SOF9      0xc9
++#define SOF10     0xca
++#define SOF11     0xcb
++
++/* Start Of Frame markers, differential, arithmetic coding */
++#define SOF13     0xcd
++#define SOF14     0xce
++#define SOF15     0xcf
++
++/* Restart interval termination */
++#define RST0      0xd0  /* Restart ... */
++#define RST1      0xd1
++#define RST2      0xd2
++#define RST3      0xd3
++#define RST4      0xd4
++#define RST5      0xd5
++#define RST6      0xd6
++#define RST7      0xd7
++
++#define SOI       0xd8  /* Start of image */
++#define EOI       0xd9  /* End Of Image */
++#define SOS       0xda  /* Start Of Scan */
++
++#define DHT       0xc4  /* Huffman Table(s) */
++#define DAC       0xcc  /* Algorithmic Coding Table */
++#define DQT       0xdb  /* Quantisation Table(s) */
++#define DNL       0xdc  /* Number of lines */
++#define DRI       0xdd  /* Restart Interval */
++#define DHP       0xde  /* Hierarchical progression */
++#define EXP       0xdf
++
++#define APP0      0xe0  /* Application marker */
++#define APP1      0xe1
++#define APP2      0xe2
++#define APP13     0xed
++#define APP14     0xee
++#define APP15     0xef
++
++#define JPG0      0xf0  /* Reserved ... */
++#define JPG13     0xfd
++#define COM       0xfe  /* Comment */
++
++#define TEM       0x01
++
++G_END_DECLS
++
++#endif /* __GST_JPEG_FORMAT_H__ */
+Index: b/gst/jpegformat/gstjpegparse.c
+===================================================================
+--- /dev/null
++++ b/gst/jpegformat/gstjpegparse.c
+@@ -0,0 +1,940 @@
++/* GStreamer
++ *
++ * jpegparse: a parser for JPEG streams
++ *
++ * Copyright (C) <2009> Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
++ *                      Víctor Manuel Jáquez Leal <vjaquez@igalia.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++/**
++ * SECTION:element-jpegparse
++ * @short_description: JPEG parser
++ *
++ * Parses a JPEG stream into JPEG images.  It looks for EOI boundaries to
++ * split a continuous stream into single-frame buffers. Also reads the
++ * image header searching for image properties such as width and height
++ * among others. Jpegparse can also extract metadata (e.g. xmp).
++ *
++ * <refsect2>
++ * <title>Example launch line</title>
++ * |[
++ * gst-launch -v souphttpsrc location=... ! jpegparse ! matroskamux ! filesink location=...
++ * ]|
++ * The above pipeline fetches a motion JPEG stream from an IP camera over
++ * HTTP and stores it in a matroska file.
++ * </refsect2>
++ */
++/* FIXME: output plain JFIF APP marker only. This provides best code reuse.
++ * JPEG decoders would not need to handle this part anymore. Also when remuxing
++ * (... ! jpegparse ! ... ! jifmux ! ...) metadata consolidation would be
++ * easier.
++ */
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include <string.h>
++#include <gst/base/gstbytereader.h>
++#include <gst/tag/tag.h>
++
++#include "gstjpegparse.h"
++
++static GstStaticPadTemplate gst_jpeg_parse_src_pad_template =
++GST_STATIC_PAD_TEMPLATE ("src",
++    GST_PAD_SRC,
++    GST_PAD_ALWAYS,
++    GST_STATIC_CAPS ("image/jpeg, "
++        "format = (string) { I420, Y41B, UYVY, YV12 }, "
++        "width = (int) [ 0, MAX ],"
++        "height = (int) [ 0, MAX ], "
++        "framerate = (fraction) [ 0/1, MAX ], " "parsed = (boolean) true")
++    );
++
++static GstStaticPadTemplate gst_jpeg_parse_sink_pad_template =
++GST_STATIC_PAD_TEMPLATE ("sink",
++    GST_PAD_SINK,
++    GST_PAD_ALWAYS,
++    GST_STATIC_CAPS ("image/jpeg")
++    );
++
++GST_DEBUG_CATEGORY_STATIC (jpeg_parse_debug);
++#define GST_CAT_DEFAULT jpeg_parse_debug
++
++struct _GstJpegParsePrivate
++{
++  guint last_offset;
++  guint last_entropy_len;
++  gboolean last_resync;
++
++  /* negotiated state */
++  gint caps_width, caps_height;
++  gint caps_framerate_numerator;
++  gint caps_framerate_denominator;
++
++  /* the parsed frame size */
++  guint16 width, height;
++
++  /* format color space */
++  const gchar *format;
++
++  /* TRUE if the src caps sets a specific framerate */
++  gboolean has_fps;
++
++  /* the (expected) timestamp of the next frame */
++  guint64 next_ts;
++
++  /* duration of the current frame */
++  guint64 duration;
++
++  /* video state */
++  gint framerate_numerator;
++  gint framerate_denominator;
++
++  /* tags */
++  GstTagList *tags;
++};
++
++static GstFlowReturn
++gst_jpeg_parse_handle_frame (GstBaseParse * bparse, GstBaseParseFrame * frame,
++    gint * skipsize);
++static gboolean gst_jpeg_parse_set_sink_caps (GstBaseParse * parse,
++    GstCaps * caps);
++static gboolean gst_jpeg_parse_sink_event (GstBaseParse * parse,
++    GstEvent * event);
++static gboolean gst_jpeg_parse_start (GstBaseParse * parse);
++static gboolean gst_jpeg_parse_stop (GstBaseParse * parse);
++static GstFlowReturn gst_jpeg_parse_pre_push_frame (GstBaseParse * bparse,
++    GstBaseParseFrame * frame);
++
++#define gst_jpeg_parse_parent_class parent_class
++G_DEFINE_TYPE (GstJpegParse, gst_jpeg_parse, GST_TYPE_BASE_PARSE);
++
++static void
++gst_jpeg_parse_class_init (GstJpegParseClass * klass)
++{
++  GstBaseParseClass *gstbaseparse_class;
++  GstElementClass *gstelement_class;
++  GObjectClass *gobject_class;
++
++  gstbaseparse_class = (GstBaseParseClass *) klass;
++  gstelement_class = (GstElementClass *) klass;
++  gobject_class = (GObjectClass *) klass;
++
++  g_type_class_add_private (gobject_class, sizeof (GstJpegParsePrivate));
++
++  gstbaseparse_class->start = gst_jpeg_parse_start;
++  gstbaseparse_class->stop = gst_jpeg_parse_stop;
++  gstbaseparse_class->set_sink_caps = gst_jpeg_parse_set_sink_caps;
++  gstbaseparse_class->sink_event = gst_jpeg_parse_sink_event;
++  gstbaseparse_class->handle_frame = gst_jpeg_parse_handle_frame;
++  gstbaseparse_class->pre_push_frame = gst_jpeg_parse_pre_push_frame;
++
++  gst_element_class_add_pad_template (gstelement_class,
++      gst_static_pad_template_get (&gst_jpeg_parse_src_pad_template));
++  gst_element_class_add_pad_template (gstelement_class,
++      gst_static_pad_template_get (&gst_jpeg_parse_sink_pad_template));
++
++  gst_element_class_set_static_metadata (gstelement_class,
++      "JPEG stream parser",
++      "Video/Parser",
++      "Parse JPEG images into single-frame buffers",
++      "Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>");
++
++  GST_DEBUG_CATEGORY_INIT (jpeg_parse_debug, "jpegparse", 0, "JPEG parser");
++}
++
++static void
++gst_jpeg_parse_init (GstJpegParse * parse)
++{
++  parse->priv = G_TYPE_INSTANCE_GET_PRIVATE (parse, GST_TYPE_JPEG_PARSE,
++      GstJpegParsePrivate);
++
++  parse->priv->next_ts = GST_CLOCK_TIME_NONE;
++}
++
++static gboolean
++gst_jpeg_parse_set_sink_caps (GstBaseParse * bparse, GstCaps * caps)
++{
++  GstJpegParse *parse = GST_JPEG_PARSE_CAST (bparse);
++  GstStructure *s = gst_caps_get_structure (caps, 0);
++  const GValue *framerate;
++
++  if ((framerate = gst_structure_get_value (s, "framerate")) != NULL) {
++    if (GST_VALUE_HOLDS_FRACTION (framerate)) {
++      parse->priv->framerate_numerator =
++          gst_value_get_fraction_numerator (framerate);
++      parse->priv->framerate_denominator =
++          gst_value_get_fraction_denominator (framerate);
++      parse->priv->has_fps = TRUE;
++      GST_DEBUG_OBJECT (parse, "got framerate of %d/%d",
++          parse->priv->framerate_numerator, parse->priv->framerate_denominator);
++    }
++  }
++
++  return TRUE;
++}
++
++
++/*
++ * gst_jpeg_parse_skip_to_jpeg_header:
++ * @parse: the parser
++ *
++ * Flush everything until the next JPEG header.  The header is considered
++ * to be the a start marker SOI (0xff 0xd8) followed by any other marker
++ * (0xff ...).
++ *
++ * Returns: TRUE if the header was found, FALSE if more data is needed.
++ */
++static gboolean
++gst_jpeg_parse_skip_to_jpeg_header (GstJpegParse * parse, GstMapInfo * mapinfo,
++    gint * skipsize)
++{
++  gboolean ret = TRUE;
++  GstByteReader reader;
++
++  if (mapinfo->size < 4)
++    return FALSE;
++
++  gst_byte_reader_init (&reader, mapinfo->data, mapinfo->size);
++
++  *skipsize = gst_byte_reader_masked_scan_uint32 (&reader, 0xffffff00,
++      0xffd8ff00, 0, mapinfo->size);
++  if (*skipsize == -1) {
++    *skipsize = mapinfo->size - 3;      /* Last 3 bytes + 1 more may match header. */
++    ret = FALSE;
++  }
++  return ret;
++}
++
++static inline gboolean
++gst_jpeg_parse_parse_tag_has_entropy_segment (guint8 tag)
++{
++  if (tag == SOS || (tag >= RST0 && tag <= RST7))
++    return TRUE;
++  return FALSE;
++}
++
++/* returns image length in bytes if parsed successfully,
++ * otherwise 0 if more data needed,
++ * if < 0 the absolute value needs to be flushed */
++static gint
++gst_jpeg_parse_get_image_length (GstJpegParse * parse, GstMapInfo * mapinfo)
++{
++  guint size;
++  gboolean resync;
++  gint offset, noffset;
++  GstByteReader reader;
++
++  size = mapinfo->size;
++  gst_byte_reader_init (&reader, mapinfo->data, mapinfo->size);
++
++  /* TODO could be removed as previous functions already guarantee this to be
++   * true */
++  /* we expect at least 4 bytes, first of which start marker */
++  if (gst_byte_reader_masked_scan_uint32 (&reader, 0xffff0000, 0xffd80000, 0,
++          4))
++    return 0;
++
++  GST_DEBUG ("Parsing jpeg image data (%u bytes)", size);
++
++  GST_DEBUG ("Parse state: offset=%d, resync=%d, entropy len=%d",
++      parse->priv->last_offset, parse->priv->last_resync,
++      parse->priv->last_entropy_len);
++
++  /* offset is 2 less than actual offset;
++   * - adapter needs at least 4 bytes for scanning,
++   * - start and end marker ensure at least that much
++   */
++  /* resume from state offset */
++  offset = parse->priv->last_offset;
++
++  while (1) {
++    guint frame_len;
++    guint32 value;
++
++    noffset =
++        gst_byte_reader_masked_scan_uint32_peek (&reader, 0x0000ff00,
++        0x0000ff00, offset, size - offset, &value);
++    /* lost sync if 0xff marker not where expected */
++    if ((resync = (noffset != offset))) {
++      GST_DEBUG ("Lost sync at 0x%08x, resyncing", offset + 2);
++    }
++    /* may have marker, but could have been resyncng */
++    resync = resync || parse->priv->last_resync;
++    /* Skip over extra 0xff */
++    while ((noffset >= 0) && ((value & 0xff) == 0xff)) {
++      noffset++;
++      noffset =
++          gst_byte_reader_masked_scan_uint32_peek (&reader, 0x0000ff00,
++          0x0000ff00, noffset, size - noffset, &value);
++    }
++    /* enough bytes left for marker? (we need 0xNN after the 0xff) */
++    if (noffset < 0) {
++      GST_DEBUG ("at end of input and no EOI marker found, need more data");
++      goto need_more_data;
++    }
++
++    /* now lock on the marker we found */
++    offset = noffset;
++    value = value & 0xff;
++    if (value == 0xd9) {
++      GST_DEBUG ("0x%08x: EOI marker", offset + 2);
++      /* clear parse state */
++      parse->priv->last_resync = FALSE;
++      parse->priv->last_offset = 0;
++      return (offset + 4);
++    } else if (value == 0xd8) {
++      /* Skip this frame if we found another SOI marker */
++      GST_DEBUG ("0x%08x: SOI marker before EOI, skipping", offset + 2);
++      /* clear parse state */
++      parse->priv->last_resync = FALSE;
++      parse->priv->last_offset = 0;
++      return -(offset + 2);
++    }
++
++    if (value >= 0xd0 && value <= 0xd7)
++      frame_len = 0;
++    else {
++      /* peek tag and subsequent length */
++      if (offset + 2 + 4 > size)
++        goto need_more_data;
++      else
++        gst_byte_reader_masked_scan_uint32_peek (&reader, 0x0, 0x0, offset + 2,
++            4, &frame_len);
++      frame_len = frame_len & 0xffff;
++    }
++    GST_DEBUG ("0x%08x: tag %02x, frame_len=%u", offset + 2, value, frame_len);
++    /* the frame length includes the 2 bytes for the length; here we want at
++     * least 2 more bytes at the end for an end marker */
++    if (offset + 2 + 2 + frame_len + 2 > size) {
++      goto need_more_data;
++    }
++
++    if (gst_jpeg_parse_parse_tag_has_entropy_segment (value)) {
++      guint eseglen = parse->priv->last_entropy_len;
++
++      GST_DEBUG ("0x%08x: finding entropy segment length", offset + 2);
++      noffset = offset + 2 + frame_len + eseglen;
++      while (1) {
++        noffset = gst_byte_reader_masked_scan_uint32_peek (&reader, 0x0000ff00,
++            0x0000ff00, noffset, size - noffset, &value);
++        if (noffset < 0) {
++          /* need more data */
++          parse->priv->last_entropy_len = size - offset - 4 - frame_len - 2;
++          goto need_more_data;
++        }
++        if ((value & 0xff) != 0x00) {
++          eseglen = noffset - offset - frame_len - 2;
++          break;
++        }
++        noffset++;
++      }
++      parse->priv->last_entropy_len = 0;
++      frame_len += eseglen;
++      GST_DEBUG ("entropy segment length=%u => frame_len=%u", eseglen,
++          frame_len);
++    }
++    if (resync) {
++      /* check if we will still be in sync if we interpret
++       * this as a sync point and skip this frame */
++      noffset = offset + frame_len + 2;
++      noffset =
++          gst_byte_reader_masked_scan_uint32 (&reader, 0x0000ff00, 0x0000ff00,
++          noffset, 4);
++      if (noffset < 0) {
++        /* ignore and continue resyncing until we hit the end
++         * of our data or find a sync point that looks okay */
++        offset++;
++        continue;
++      }
++      GST_DEBUG ("found sync at 0x%x", offset + 2);
++    }
++
++    offset += frame_len + 2;
++  }
++
++  /* EXITS */
++need_more_data:
++  {
++    parse->priv->last_offset = offset;
++    parse->priv->last_resync = resync;
++    return 0;
++  }
++}
++
++static inline gboolean
++gst_jpeg_parse_sof (GstJpegParse * parse, GstByteReader * reader)
++{
++  guint8 numcomps = 0;          /* Number of components in image
++                                   (1 for gray, 3 for YUV, etc.) */
++  guint8 precision;             /* precision (in bits) for the samples */
++  guint8 compId[3] G_GNUC_UNUSED;       /* unique value identifying each component */
++  guint8 qtId[3] G_GNUC_UNUSED; /* quantization table ID to use for this comp */
++  guint8 blockWidth[3];         /* Array[numComponents] giving the number of
++                                   blocks (horiz) in this component */
++  guint8 blockHeight[3];        /* Same for the vertical part of this component */
++  guint8 i, value = 0;
++  gint temp;
++
++  /* flush length field */
++  if (!gst_byte_reader_skip (reader, 2))
++    return FALSE;
++
++  /* Get sample precision */
++  if (!gst_byte_reader_get_uint8 (reader, &precision))
++    return FALSE;
++
++  /* Get w and h */
++  if (!gst_byte_reader_get_uint16_be (reader, &parse->priv->height))
++    return FALSE;
++  if (!gst_byte_reader_get_uint16_be (reader, &parse->priv->width))
++    return FALSE;
++
++  /* Get number of components */
++  if (!gst_byte_reader_get_uint8 (reader, &numcomps))
++    return FALSE;
++
++  if (numcomps > 3)             /* FIXME */
++    return FALSE;
++
++  /* Get decimation and quantization table id for each component */
++  for (i = 0; i < numcomps; i++) {
++    /* Get component ID number */
++    if (!gst_byte_reader_get_uint8 (reader, &value))
++      return FALSE;
++    compId[i] = value;
++
++    /* Get decimation */
++    if (!gst_byte_reader_get_uint8 (reader, &value))
++      return FALSE;
++    blockWidth[i] = (value & 0xf0) >> 4;
++    blockHeight[i] = (value & 0x0f);
++
++    /* Get quantization table id */
++    if (!gst_byte_reader_get_uint8 (reader, &value))
++      return FALSE;
++    qtId[i] = value;
++  }
++
++  if (numcomps == 1) {
++    /* gray image - no format */
++    parse->priv->format = "";
++  } else if (numcomps == 3) {
++    temp = (blockWidth[0] * blockHeight[0]) / (blockWidth[1] * blockHeight[1]);
++
++    if (temp == 4 && blockHeight[0] == 2)
++      parse->priv->format = "I420";
++    else if (temp == 4 && blockHeight[0] == 4)
++      parse->priv->format = "Y41B";
++    else if (temp == 2)
++      parse->priv->format = "UYVY";
++    else if (temp == 1)
++      parse->priv->format = "YV12";
++    else
++      parse->priv->format = "";
++  } else {
++    return FALSE;
++  }
++
++  GST_DEBUG_OBJECT (parse, "Header parsed");
++
++  return TRUE;
++}
++
++static inline gboolean
++gst_jpeg_parse_skip_marker (GstJpegParse * parse,
++    GstByteReader * reader, guint8 marker)
++{
++  guint16 size = 0;
++
++  if (!gst_byte_reader_get_uint16_be (reader, &size))
++    return FALSE;
++
++#ifndef GST_DISABLE_GST_DEBUG
++  /* We'd pry the id of the skipped application segment */
++  if (marker >= APP0 && marker <= APP15) {
++    const gchar *id_str = NULL;
++
++    if (gst_byte_reader_peek_string_utf8 (reader, &id_str)) {
++      GST_DEBUG_OBJECT (parse, "unhandled marker %x: '%s' skiping %u bytes",
++          marker, id_str ? id_str : "(NULL)", size);
++    } else {
++      GST_DEBUG_OBJECT (parse, "unhandled marker %x skiping %u bytes", marker,
++          size);
++    }
++  }
++#else
++  GST_DEBUG_OBJECT (parse, "unhandled marker %x skiping %u bytes", marker,
++      size);
++#endif // GST_DISABLE_GST_DEBUG
++
++  if (!gst_byte_reader_skip (reader, size - 2))
++    return FALSE;
++
++  return TRUE;
++}
++
++static inline GstTagList *
++get_tag_list (GstJpegParse * parse)
++{
++  if (!parse->priv->tags)
++    parse->priv->tags = gst_tag_list_new_empty ();
++  return parse->priv->tags;
++}
++
++static inline void
++extract_and_queue_tags (GstJpegParse * parse, guint size, guint8 * data,
++    GstTagList * (*tag_func) (GstBuffer * buff))
++{
++  GstTagList *tags;
++  GstBuffer *buf;
++
++  buf = gst_buffer_new_wrapped_full (GST_MEMORY_FLAG_READONLY, data, size, 0,
++      size, NULL, NULL);
++
++  tags = tag_func (buf);
++  gst_buffer_unref (buf);
++
++  if (tags) {
++    GstTagList *taglist = parse->priv->tags;
++    if (taglist) {
++      gst_tag_list_insert (taglist, tags, GST_TAG_MERGE_REPLACE);
++      gst_tag_list_unref (tags);
++    } else {
++      parse->priv->tags = tags;
++    }
++    GST_DEBUG_OBJECT (parse, "collected tags: %" GST_PTR_FORMAT,
++        parse->priv->tags);
++  }
++}
++
++static inline gboolean
++gst_jpeg_parse_app1 (GstJpegParse * parse, GstByteReader * reader)
++{
++  guint16 size = 0;
++  const gchar *id_str;
++  const guint8 *data = NULL;
++
++  if (!gst_byte_reader_get_uint16_be (reader, &size))
++    return FALSE;
++
++  size -= 2;                    /* 2 bytes for the mark */
++  if (!gst_byte_reader_peek_string_utf8 (reader, &id_str))
++    return FALSE;
++
++  if (!strncmp (id_str, "Exif", 4)) {
++
++    /* skip id + NUL + padding */
++    if (!gst_byte_reader_skip (reader, 6))
++      return FALSE;
++    size -= 6;
++
++    /* handle exif metadata */
++    if (!gst_byte_reader_get_data (reader, size, &data))
++      return FALSE;
++
++    extract_and_queue_tags (parse, size, (guint8 *) data,
++        gst_tag_list_from_exif_buffer_with_tiff_header);
++
++    GST_LOG_OBJECT (parse, "parsed marker %x: '%s' %u bytes",
++        APP1, id_str, size);
++
++  } else if (!strncmp (id_str, "http://ns.adobe.com/xap/1.0/", 28)) {
++
++    /* skip the id + NUL */
++    if (!gst_byte_reader_skip (reader, 29))
++      return FALSE;
++    size -= 29;
++
++    /* handle xmp metadata */
++    if (!gst_byte_reader_get_data (reader, size, &data))
++      return FALSE;
++
++    extract_and_queue_tags (parse, size, (guint8 *) data,
++        gst_tag_list_from_xmp_buffer);
++
++    GST_LOG_OBJECT (parse, "parsed marker %x: '%s' %u bytes",
++        APP1, id_str, size);
++
++  } else {
++    if (!gst_jpeg_parse_skip_marker (parse, reader, APP1))
++      return FALSE;
++  }
++
++  return TRUE;
++}
++
++static inline gchar *
++get_utf8_from_data (const guint8 * data, guint16 size)
++{
++  const gchar *env_vars[] = { "GST_JPEG_TAG_ENCODING",
++    "GST_TAG_ENCODING", NULL
++  };
++  const char *str = (gchar *) data;
++
++  return gst_tag_freeform_string_to_utf8 (str, size, env_vars);
++}
++
++/* read comment and post as tag */
++static inline gboolean
++gst_jpeg_parse_com (GstJpegParse * parse, GstByteReader * reader)
++{
++  const guint8 *data = NULL;
++  guint16 size = 0;
++  gchar *comment;
++
++  if (!gst_byte_reader_get_uint16_be (reader, &size))
++    return FALSE;
++
++  size -= 2;
++  if (!gst_byte_reader_get_data (reader, size, &data))
++    return FALSE;
++
++  comment = get_utf8_from_data (data, size);
++
++  if (comment) {
++    GstTagList *taglist = get_tag_list (parse);
++    gst_tag_list_add (taglist, GST_TAG_MERGE_REPLACE,
++        GST_TAG_COMMENT, comment, NULL);
++    GST_DEBUG_OBJECT (parse, "collected tags: %" GST_PTR_FORMAT, taglist);
++    g_free (comment);
++  }
++
++  return TRUE;
++}
++
++static gboolean
++gst_jpeg_parse_read_header (GstJpegParse * parse, GstMapInfo * map, gint len)
++{
++  GstByteReader reader;
++  guint8 marker = 0;
++  gboolean foundSOF = FALSE;
++
++  gst_byte_reader_init (&reader, map->data, len);
++
++  if (!gst_byte_reader_peek_uint8 (&reader, &marker))
++    goto error;
++
++  while (marker == 0xff) {
++    if (!gst_byte_reader_skip (&reader, 1))
++      goto error;
++
++    if (!gst_byte_reader_get_uint8 (&reader, &marker))
++      goto error;
++
++    GST_DEBUG_OBJECT (parse, "marker = %x", marker);
++
++    switch (marker) {
++      case SOS:                /* start of scan (begins compressed data) */
++        goto done;
++
++      case SOI:
++        break;
++
++      case DRI:
++        if (!gst_byte_reader_skip (&reader, 4)) /* fixed size */
++          goto error;
++        break;
++
++      case COM:
++        if (!gst_jpeg_parse_com (parse, &reader))
++          goto error;
++        break;
++
++      case APP1:
++        if (!gst_jpeg_parse_app1 (parse, &reader))
++          goto error;
++        break;
++
++      case DHT:
++      case DQT:
++        /* Ignore these codes */
++        if (!gst_jpeg_parse_skip_marker (parse, &reader, marker))
++          goto error;
++        break;
++
++      case SOF0:
++        /* parse Start Of Frame */
++        if (!gst_jpeg_parse_sof (parse, &reader))
++          goto error;
++
++        foundSOF = TRUE;
++        goto done;
++
++      default:
++        if (marker == JPG || (marker >= JPG0 && marker <= JPG13) ||
++            (marker >= APP0 && marker <= APP15)) {
++          if (!gst_jpeg_parse_skip_marker (parse, &reader, marker))
++            goto error;
++        } else
++          goto unhandled;
++    }
++
++    if (!gst_byte_reader_peek_uint8 (&reader, &marker))
++      goto error;
++  }
++done:
++
++  return foundSOF;
++
++  /* ERRORS */
++error:
++  {
++    GST_WARNING_OBJECT (parse,
++        "Error parsing image header (need more than %u bytes available)",
++        gst_byte_reader_get_remaining (&reader));
++    return FALSE;
++  }
++unhandled:
++  {
++    GST_WARNING_OBJECT (parse, "unhandled marker %x, leaving", marker);
++    /* Not SOF or SOI.  Must not be a JPEG file (or file pointer
++     * is placed wrong).  In either case, it's an error. */
++    return FALSE;
++  }
++}
++
++static gboolean
++gst_jpeg_parse_set_new_caps (GstJpegParse * parse, gboolean header_ok)
++{
++  GstCaps *caps;
++  gboolean res;
++
++  GST_DEBUG_OBJECT (parse, "setting caps on srcpad (hdr_ok=%d, have_fps=%d)",
++      header_ok, parse->priv->has_fps);
++
++  caps = gst_caps_new_simple ("image/jpeg",
++      "parsed", G_TYPE_BOOLEAN, TRUE, NULL);
++
++  if (header_ok == TRUE) {
++    gst_caps_set_simple (caps,
++        "format", G_TYPE_STRING, parse->priv->format,
++        "width", G_TYPE_INT, parse->priv->width,
++        "height", G_TYPE_INT, parse->priv->height, NULL);
++  }
++
++  if (parse->priv->has_fps == TRUE) {
++    /* we have a framerate */
++    gst_caps_set_simple (caps, "framerate", GST_TYPE_FRACTION,
++        parse->priv->framerate_numerator,
++        parse->priv->framerate_denominator, NULL);
++
++    if (!GST_CLOCK_TIME_IS_VALID (parse->priv->duration)
++        && parse->priv->framerate_numerator != 0) {
++      parse->priv->duration = gst_util_uint64_scale_int (GST_SECOND,
++          parse->priv->framerate_denominator, parse->priv->framerate_numerator);
++    }
++  } else {
++    /* unknown duration */
++    parse->priv->duration = GST_CLOCK_TIME_NONE;
++    gst_caps_set_simple (caps, "framerate", GST_TYPE_FRACTION, 1, 1, NULL);
++  }
++
++  GST_DEBUG_OBJECT (parse,
++      "setting downstream caps on %s:%s to %" GST_PTR_FORMAT,
++      GST_DEBUG_PAD_NAME (GST_BASE_PARSE_SRC_PAD (parse)), caps);
++  res = gst_pad_set_caps (GST_BASE_PARSE_SRC_PAD (parse), caps);
++  gst_caps_unref (caps);
++
++  return res;
++
++}
++
++static GstFlowReturn
++gst_jpeg_parse_pre_push_frame (GstBaseParse * bparse, GstBaseParseFrame * frame)
++{
++  GstJpegParse *parse = GST_JPEG_PARSE_CAST (bparse);
++  GstBuffer *outbuf = frame->buffer;
++
++  GST_BUFFER_TIMESTAMP (outbuf) = parse->priv->next_ts;
++
++  if (parse->priv->has_fps && GST_CLOCK_TIME_IS_VALID (parse->priv->next_ts)
++      && GST_CLOCK_TIME_IS_VALID (parse->priv->duration)) {
++    parse->priv->next_ts += parse->priv->duration;
++  } else {
++    parse->priv->duration = GST_CLOCK_TIME_NONE;
++    parse->priv->next_ts = GST_CLOCK_TIME_NONE;
++  }
++
++  GST_BUFFER_DURATION (outbuf) = parse->priv->duration;
++
++  return GST_FLOW_OK;
++}
++
++static GstFlowReturn
++gst_jpeg_parse_handle_frame (GstBaseParse * bparse, GstBaseParseFrame * frame,
++    gint * skipsize)
++{
++  GstJpegParse *parse = GST_JPEG_PARSE_CAST (bparse);
++  gint len;
++  GstClockTime timestamp, duration;
++  GstMapInfo mapinfo;
++  gboolean header_ok;
++
++  timestamp = GST_BUFFER_PTS (frame->buffer);
++  duration = GST_BUFFER_DURATION (frame->buffer);
++
++  if (!gst_buffer_map (frame->buffer, &mapinfo, GST_MAP_READ)) {
++    return GST_FLOW_ERROR;
++  }
++
++  if (!gst_jpeg_parse_skip_to_jpeg_header (parse, &mapinfo, skipsize)) {
++    gst_buffer_unmap (frame->buffer, &mapinfo);
++    return GST_FLOW_OK;
++  }
++
++  if (G_UNLIKELY (!GST_CLOCK_TIME_IS_VALID (parse->priv->next_ts)))
++    parse->priv->next_ts = timestamp;
++
++  if (G_LIKELY (GST_CLOCK_TIME_IS_VALID (duration)))
++    parse->priv->duration = duration;
++
++  len = gst_jpeg_parse_get_image_length (parse, &mapinfo);
++  if (len == 0) {
++    gst_buffer_unmap (frame->buffer, &mapinfo);
++    return GST_FLOW_OK;
++  } else if (len < 0) {
++    *skipsize = -len;
++    gst_buffer_unmap (frame->buffer, &mapinfo);
++    return GST_FLOW_OK;
++  }
++
++  /* check if we already have a EOI */
++  GST_LOG_OBJECT (parse, "parsed image of size %d", len);
++
++  /* reset the offset (only when we flushed) */
++  parse->priv->last_offset = 0;
++  parse->priv->last_entropy_len = 0;
++
++  header_ok = gst_jpeg_parse_read_header (parse, &mapinfo, len);
++
++  gst_buffer_unmap (frame->buffer, &mapinfo);
++
++  if (parse->priv->width != parse->priv->caps_width
++      || parse->priv->height != parse->priv->caps_height
++      || parse->priv->framerate_numerator !=
++      parse->priv->caps_framerate_numerator
++      || parse->priv->framerate_denominator !=
++      parse->priv->caps_framerate_denominator) {
++    if (!gst_jpeg_parse_set_new_caps (parse, header_ok)) {
++      GST_ELEMENT_ERROR (parse, CORE, NEGOTIATION,
++          ("Can't set caps to the src pad"), ("Can't set caps to the src pad"));
++      return GST_FLOW_ERROR;
++    }
++
++    if (parse->priv->tags) {
++      GST_DEBUG_OBJECT (parse, "Pushing tags: %" GST_PTR_FORMAT,
++          parse->priv->tags);
++      gst_pad_push_event (GST_BASE_PARSE_SRC_PAD (parse),
++          gst_event_new_tag (parse->priv->tags));
++      parse->priv->tags = NULL;
++    }
++
++    parse->priv->caps_width = parse->priv->width;
++    parse->priv->caps_height = parse->priv->height;
++    parse->priv->caps_framerate_numerator = parse->priv->framerate_numerator;
++    parse->priv->caps_framerate_denominator =
++        parse->priv->framerate_denominator;
++  }
++
++
++  return gst_base_parse_finish_frame (bparse, frame, len);
++}
++
++static gboolean
++gst_jpeg_parse_sink_event (GstBaseParse * bparse, GstEvent * event)
++{
++  GstJpegParse *parse = GST_JPEG_PARSE_CAST (bparse);
++  gboolean res = TRUE;
++
++  GST_DEBUG_OBJECT (parse, "event : %s", GST_EVENT_TYPE_NAME (event));
++
++  switch (GST_EVENT_TYPE (event)) {
++    case GST_EVENT_FLUSH_STOP:
++      parse->priv->next_ts = GST_CLOCK_TIME_NONE;
++      parse->priv->duration = GST_CLOCK_TIME_NONE;
++      parse->priv->last_offset = 0;
++      parse->priv->last_entropy_len = 0;
++      parse->priv->last_resync = FALSE;
++      break;
++    case GST_EVENT_TAG:{
++      if (gst_pad_has_current_caps (GST_BASE_PARSE_SRC_PAD (parse)))
++        res = GST_BASE_PARSE_CLASS (parent_class)->sink_event (bparse, event);
++      else {
++        GstTagList *taglist = NULL;
++
++        gst_event_parse_tag (event, &taglist);
++        /* Hold on to the tags till the srcpad caps are definitely set */
++        gst_tag_list_insert (get_tag_list (parse), taglist,
++            GST_TAG_MERGE_REPLACE);
++        GST_DEBUG ("collected tags: %" GST_PTR_FORMAT, parse->priv->tags);
++        gst_event_unref (event);
++      }
++      break;
++    }
++    default:
++      res = GST_BASE_PARSE_CLASS (parent_class)->sink_event (bparse, event);
++      break;
++  }
++
++  return res;
++}
++
++static gboolean
++gst_jpeg_parse_start (GstBaseParse * bparse)
++{
++  GstJpegParse *parse;
++
++  parse = GST_JPEG_PARSE_CAST (bparse);
++
++  parse->priv->has_fps = FALSE;
++
++  parse->priv->width = parse->priv->height = 0;
++  parse->priv->framerate_numerator = 0;
++  parse->priv->framerate_denominator = 1;
++
++  parse->priv->caps_framerate_numerator =
++      parse->priv->caps_framerate_denominator = 0;
++  parse->priv->caps_width = parse->priv->caps_height = -1;
++
++  parse->priv->next_ts = GST_CLOCK_TIME_NONE;
++  parse->priv->duration = GST_CLOCK_TIME_NONE;
++
++  parse->priv->last_offset = 0;
++  parse->priv->last_entropy_len = 0;
++  parse->priv->last_resync = FALSE;
++
++  parse->priv->tags = NULL;
++
++  return TRUE;
++}
++
++static gboolean
++gst_jpeg_parse_stop (GstBaseParse * bparse)
++{
++  GstJpegParse *parse;
++
++  parse = GST_JPEG_PARSE_CAST (bparse);
++
++  if (parse->priv->tags) {
++    gst_tag_list_unref (parse->priv->tags);
++    parse->priv->tags = NULL;
++  }
++
++  return TRUE;
++}
+Index: b/gst/jpegformat/gstjpegparse.h
+===================================================================
+--- /dev/null
++++ b/gst/jpegformat/gstjpegparse.h
+@@ -0,0 +1,63 @@
++/* GStreamer
++ *
++ * jpegparse: a parser for JPEG streams
++ *
++ * Copyright (C) <2009> Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
++ * Boston, MA 02110-1301, USA.
++ */
++
++#ifndef __GST_JPEG_PARSE_H__
++#define __GST_JPEG_PARSE_H__
++
++#include <gst/gst.h>
++#include <gst/base/gstadapter.h>
++#include <gst/base/gstbaseparse.h>
++
++#include "gstjpegformat.h"
++
++G_BEGIN_DECLS
++
++#define GST_TYPE_JPEG_PARSE \
++  (gst_jpeg_parse_get_type())
++#define GST_JPEG_PARSE(obj) \
++  (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_JPEG_PARSE,GstJpegParse))
++#define GST_JPEG_PARSE_CLASS(klass) \
++  (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_JPEG_PARSE,GstJpegParseClass))
++#define GST_IS_JPEG_PARSE(obj) \
++  (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_JPEG_PARSE))
++#define GST_IS_JPEG_PARSE_CLASS(klass) \
++  (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_JPEG_PARSE))
++#define GST_JPEG_PARSE_CAST(obj) ((GstJpegParse *)obj)
++
++typedef struct _GstJpegParse           GstJpegParse;
++typedef struct _GstJpegParsePrivate    GstJpegParsePrivate;
++typedef struct _GstJpegParseClass      GstJpegParseClass;
++
++struct _GstJpegParse {
++  GstBaseParse parse;
++  GstJpegParsePrivate *priv;
++};
++
++struct _GstJpegParseClass {
++  GstBaseParseClass  parent_class;
++};
++
++GType gst_jpeg_parse_get_type (void);
++
++G_END_DECLS
++
++#endif /* __GST_JPEG_PARSE_H__ */
+Index: b/gst/jpegformat/Makefile.am
+===================================================================
+--- /dev/null
++++ b/gst/jpegformat/Makefile.am
+@@ -0,0 +1,11 @@
++plugin_LTLIBRARIES = libgstjpegformat.la
++
++libgstjpegformat_la_SOURCES = gstjpegformat.c gstjpegparse.c gstjifmux.c
++libgstjpegformat_la_CFLAGS = $(GST_PLUGINS_BAD_CFLAGS) \
++	$(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
++libgstjpegformat_la_LIBADD = \
++    $(GST_PLUGINS_BASE_LIBS) -lgsttag-@GST_API_VERSION@ $(GST_BASE_LIBS) $(GST_LIBS)
++libgstjpegformat_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
++libgstjpegformat_la_LIBTOOLFLAGS = $(GST_PLUGIN_LIBTOOLFLAGS)
++
++noinst_HEADERS = gstjpegformat.h gstjpegparse.h gstjifmux.h
+Index: b/gst/jpegformat/Makefile.in
+===================================================================
+--- /dev/null
++++ b/gst/jpegformat/Makefile.in
+@@ -0,0 +1,1099 @@
++# Makefile.in generated by automake 1.14.1 from Makefile.am.
++# @configure_input@
++
++# Copyright (C) 1994-2013 Free Software Foundation, Inc.
++
++# This Makefile.in is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
++
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
++# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
++# PARTICULAR PURPOSE.
++
++@SET_MAKE@
++
++
++VPATH = @srcdir@
++am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'
++am__make_running_with_option = \
++  case $${target_option-} in \
++      ?) ;; \
++      *) echo "am__make_running_with_option: internal error: invalid" \
++              "target option '$${target_option-}' specified" >&2; \
++         exit 1;; \
++  esac; \
++  has_opt=no; \
++  sane_makeflags=$$MAKEFLAGS; \
++  if $(am__is_gnu_make); then \
++    sane_makeflags=$$MFLAGS; \
++  else \
++    case $$MAKEFLAGS in \
++      *\\[\ \	]*) \
++        bs=\\; \
++        sane_makeflags=`printf '%s\n' "$$MAKEFLAGS" \
++          | sed "s/$$bs$$bs[$$bs $$bs	]*//g"`;; \
++    esac; \
++  fi; \
++  skip_next=no; \
++  strip_trailopt () \
++  { \
++    flg=`printf '%s\n' "$$flg" | sed "s/$$1.*$$//"`; \
++  }; \
++  for flg in $$sane_makeflags; do \
++    test $$skip_next = yes && { skip_next=no; continue; }; \
++    case $$flg in \
++      *=*|--*) continue;; \
++        -*I) strip_trailopt 'I'; skip_next=yes;; \
++      -*I?*) strip_trailopt 'I';; \
++        -*O) strip_trailopt 'O'; skip_next=yes;; \
++      -*O?*) strip_trailopt 'O';; \
++        -*l) strip_trailopt 'l'; skip_next=yes;; \
++      -*l?*) strip_trailopt 'l';; \
++      -[dEDm]) skip_next=yes;; \
++      -[JT]) skip_next=yes;; \
++    esac; \
++    case $$flg in \
++      *$$target_option*) has_opt=yes; break;; \
++    esac; \
++  done; \
++  test $$has_opt = yes
++am__make_dryrun = (target_option=n; $(am__make_running_with_option))
++am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
++pkgdatadir = $(datadir)/@PACKAGE@
++pkgincludedir = $(includedir)/@PACKAGE@
++pkglibdir = $(libdir)/@PACKAGE@
++pkglibexecdir = $(libexecdir)/@PACKAGE@
++am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
++install_sh_DATA = $(install_sh) -c -m 644
++install_sh_PROGRAM = $(install_sh) -c
++install_sh_SCRIPT = $(install_sh) -c
++INSTALL_HEADER = $(INSTALL_DATA)
++transform = $(program_transform_name)
++NORMAL_INSTALL = :
++PRE_INSTALL = :
++POST_INSTALL = :
++NORMAL_UNINSTALL = :
++PRE_UNINSTALL = :
++POST_UNINSTALL = :
++build_triplet = @build@
++host_triplet = @host@
++target_triplet = @target@
++subdir = gst/jpegformat
++DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
++	$(top_srcdir)/depcomp $(noinst_HEADERS)
++ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
++am__aclocal_m4_deps = $(top_srcdir)/common/m4/as-ac-expand.m4 \
++	$(top_srcdir)/common/m4/as-auto-alt.m4 \
++	$(top_srcdir)/common/m4/as-compiler-flag.m4 \
++	$(top_srcdir)/common/m4/as-libtool.m4 \
++	$(top_srcdir)/common/m4/as-version.m4 \
++	$(top_srcdir)/common/m4/ax_create_stdint_h.m4 \
++	$(top_srcdir)/common/m4/gst-arch.m4 \
++	$(top_srcdir)/common/m4/gst-args.m4 \
++	$(top_srcdir)/common/m4/gst-check.m4 \
++	$(top_srcdir)/common/m4/gst-default.m4 \
++	$(top_srcdir)/common/m4/gst-dowhile.m4 \
++	$(top_srcdir)/common/m4/gst-error.m4 \
++	$(top_srcdir)/common/m4/gst-feature.m4 \
++	$(top_srcdir)/common/m4/gst-gettext.m4 \
++	$(top_srcdir)/common/m4/gst-glib2.m4 \
++	$(top_srcdir)/common/m4/gst-package-release-datetime.m4 \
++	$(top_srcdir)/common/m4/gst-platform.m4 \
++	$(top_srcdir)/common/m4/gst-plugin-docs.m4 \
++	$(top_srcdir)/common/m4/gst-plugindir.m4 \
++	$(top_srcdir)/common/m4/gst-x11.m4 \
++	$(top_srcdir)/common/m4/gst.m4 \
++	$(top_srcdir)/common/m4/gtk-doc.m4 \
++	$(top_srcdir)/common/m4/introspection.m4 \
++	$(top_srcdir)/common/m4/orc.m4 $(top_srcdir)/common/m4/pkg.m4 \
++	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gsettings.m4 \
++	$(top_srcdir)/m4/gst-fionread.m4 $(top_srcdir)/m4/gst-sdl.m4 \
++	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
++	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
++	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libgcrypt.m4 \
++	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
++	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
++	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
++	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
++	$(top_srcdir)/configure.ac
++am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
++	$(ACLOCAL_M4)
++mkinstalldirs = $(install_sh) -d
++CONFIG_HEADER = $(top_builddir)/config.h
++CONFIG_CLEAN_FILES =
++CONFIG_CLEAN_VPATH_FILES =
++am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
++am__vpath_adj = case $$p in \
++    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
++    *) f=$$p;; \
++  esac;
++am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
++am__install_max = 40
++am__nobase_strip_setup = \
++  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
++am__nobase_strip = \
++  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
++am__nobase_list = $(am__nobase_strip_setup); \
++  for p in $$list; do echo "$$p $$p"; done | \
++  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
++  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
++    if (++n[$$2] == $(am__install_max)) \
++      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
++    END { for (dir in files) print dir, files[dir] }'
++am__base_list = \
++  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
++  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
++am__uninstall_files_from_dir = { \
++  test -z "$$files" \
++    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
++    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
++         $(am__cd) "$$dir" && rm -f $$files; }; \
++  }
++am__installdirs = "$(DESTDIR)$(plugindir)"
++LTLIBRARIES = $(plugin_LTLIBRARIES)
++am__DEPENDENCIES_1 =
++libgstjpegformat_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
++am_libgstjpegformat_la_OBJECTS = libgstjpegformat_la-gstjpegformat.lo \
++	libgstjpegformat_la-gstjpegparse.lo \
++	libgstjpegformat_la-gstjifmux.lo
++libgstjpegformat_la_OBJECTS = $(am_libgstjpegformat_la_OBJECTS)
++AM_V_lt = $(am__v_lt_@AM_V@)
++am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
++am__v_lt_0 = --silent
++am__v_lt_1 = 
++libgstjpegformat_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
++	$(libgstjpegformat_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
++	--mode=link $(CCLD) $(libgstjpegformat_la_CFLAGS) $(CFLAGS) \
++	$(libgstjpegformat_la_LDFLAGS) $(LDFLAGS) -o $@
++AM_V_P = $(am__v_P_@AM_V@)
++am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
++am__v_P_0 = false
++am__v_P_1 = :
++AM_V_GEN = $(am__v_GEN_@AM_V@)
++am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
++am__v_GEN_0 = @echo "  GEN     " $@;
++am__v_GEN_1 = 
++AM_V_at = $(am__v_at_@AM_V@)
++am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
++am__v_at_0 = @
++am__v_at_1 = 
++DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
++depcomp = $(SHELL) $(top_srcdir)/depcomp
++am__depfiles_maybe = depfiles
++am__mv = mv -f
++COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
++	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
++LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
++	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
++	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
++	$(AM_CFLAGS) $(CFLAGS)
++AM_V_CC = $(am__v_CC_@AM_V@)
++am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
++am__v_CC_0 = @echo "  CC      " $@;
++am__v_CC_1 = 
++CCLD = $(CC)
++LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
++	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
++	$(AM_LDFLAGS) $(LDFLAGS) -o $@
++AM_V_CCLD = $(am__v_CCLD_@AM_V@)
++am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
++am__v_CCLD_0 = @echo "  CCLD    " $@;
++am__v_CCLD_1 = 
++SOURCES = $(libgstjpegformat_la_SOURCES)
++DIST_SOURCES = $(libgstjpegformat_la_SOURCES)
++am__can_run_installinfo = \
++  case $$AM_UPDATE_INFO_DIR in \
++    n|no|NO) false;; \
++    *) (install-info --version) >/dev/null 2>&1;; \
++  esac
++HEADERS = $(noinst_HEADERS)
++am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
++# Read a list of newline-separated strings from the standard input,
++# and print each of them once, without duplicates.  Input order is
++# *not* preserved.
++am__uniquify_input = $(AWK) '\
++  BEGIN { nonempty = 0; } \
++  { items[$$0] = 1; nonempty = 1; } \
++  END { if (nonempty) { for (i in items) print i; }; } \
++'
++# Make sure the list of sources is unique.  This is necessary because,
++# e.g., the same source file might be shared among _SOURCES variables
++# for different programs/libraries.
++am__define_uniq_tagged_files = \
++  list='$(am__tagged_files)'; \
++  unique=`for i in $$list; do \
++    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
++  done | $(am__uniquify_input)`
++ETAGS = etags
++CTAGS = ctags
++DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
++ACLOCAL = @ACLOCAL@
++ACLOCAL_AMFLAGS = @ACLOCAL_AMFLAGS@
++ACMENC_CFLAGS = @ACMENC_CFLAGS@
++ACMMP3DEC_CFLAGS = @ACMMP3DEC_CFLAGS@
++AMTAR = @AMTAR@
++AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
++APEXSINK_CFLAGS = @APEXSINK_CFLAGS@
++APEXSINK_LIBS = @APEXSINK_LIBS@
++AR = @AR@
++AS = @AS@
++ASSRENDER_CFLAGS = @ASSRENDER_CFLAGS@
++ASSRENDER_LIBS = @ASSRENDER_LIBS@
++AUTOCONF = @AUTOCONF@
++AUTOHEADER = @AUTOHEADER@
++AUTOMAKE = @AUTOMAKE@
++AWK = @AWK@
++BLUEZ_CFLAGS = @BLUEZ_CFLAGS@
++BLUEZ_LIBS = @BLUEZ_LIBS@
++BZ2_LIBS = @BZ2_LIBS@
++CC = @CC@
++CCASFLAGS = @CCASFLAGS@
++CCDEPMODE = @CCDEPMODE@
++CFLAGS = @CFLAGS@
++CHROMAPRINT_CFLAGS = @CHROMAPRINT_CFLAGS@
++CHROMAPRINT_LIBS = @CHROMAPRINT_LIBS@
++CLUTTER_CFLAGS = @CLUTTER_CFLAGS@
++CLUTTER_GLX_CFLAGS = @CLUTTER_GLX_CFLAGS@
++CLUTTER_GLX_LIBS = @CLUTTER_GLX_LIBS@
++CLUTTER_LIBS = @CLUTTER_LIBS@
++CLUTTER_X11_CFLAGS = @CLUTTER_X11_CFLAGS@
++CLUTTER_X11_LIBS = @CLUTTER_X11_LIBS@
++CPP = @CPP@
++CPPFLAGS = @CPPFLAGS@
++CURL_CFLAGS = @CURL_CFLAGS@
++CURL_LIBS = @CURL_LIBS@
++CXX = @CXX@
++CXXCPP = @CXXCPP@
++CXXDEPMODE = @CXXDEPMODE@
++CXXFLAGS = @CXXFLAGS@
++CYGPATH_W = @CYGPATH_W@
++DAALA_CFLAGS = @DAALA_CFLAGS@
++DAALA_LIBS = @DAALA_LIBS@
++DBUS_CFLAGS = @DBUS_CFLAGS@
++DBUS_LIBS = @DBUS_LIBS@
++DCCP_LIBS = @DCCP_LIBS@
++DECKLINK_CXXFLAGS = @DECKLINK_CXXFLAGS@
++DECKLINK_LIBS = @DECKLINK_LIBS@
++DEFAULT_AUDIOSINK = @DEFAULT_AUDIOSINK@
++DEFAULT_AUDIOSRC = @DEFAULT_AUDIOSRC@
++DEFAULT_VIDEOSINK = @DEFAULT_VIDEOSINK@
++DEFAULT_VIDEOSRC = @DEFAULT_VIDEOSRC@
++DEFAULT_VISUALIZER = @DEFAULT_VISUALIZER@
++DEFS = @DEFS@
++DEPDIR = @DEPDIR@
++DEPRECATED_CFLAGS = @DEPRECATED_CFLAGS@
++DIRECT3D_LIBS = @DIRECT3D_LIBS@
++DIRECTDRAW_LIBS = @DIRECTDRAW_LIBS@
++DIRECTFB_CFLAGS = @DIRECTFB_CFLAGS@
++DIRECTFB_LIBS = @DIRECTFB_LIBS@
++DIRECTSOUND_LIBS = @DIRECTSOUND_LIBS@
++DIRECTX_CFLAGS = @DIRECTX_CFLAGS@
++DIRECTX_LDFLAGS = @DIRECTX_LDFLAGS@
++DLLTOOL = @DLLTOOL@
++DSYMUTIL = @DSYMUTIL@
++DTS_LIBS = @DTS_LIBS@
++DUMPBIN = @DUMPBIN@
++DVDNAV_CFLAGS = @DVDNAV_CFLAGS@
++DVDNAV_LIBS = @DVDNAV_LIBS@
++ECHO_C = @ECHO_C@
++ECHO_N = @ECHO_N@
++ECHO_T = @ECHO_T@
++EGREP = @EGREP@
++ERROR_CFLAGS = @ERROR_CFLAGS@
++ERROR_CXXFLAGS = @ERROR_CXXFLAGS@
++ERROR_OBJCFLAGS = @ERROR_OBJCFLAGS@
++EXEEXT = @EXEEXT@
++EXIF_CFLAGS = @EXIF_CFLAGS@
++EXIF_LIBS = @EXIF_LIBS@
++FAAC_LIBS = @FAAC_LIBS@
++FAAD_IS_NEAAC = @FAAD_IS_NEAAC@
++FAAD_LIBS = @FAAD_LIBS@
++FFLAGS = @FFLAGS@
++FGREP = @FGREP@
++FLITE_CFLAGS = @FLITE_CFLAGS@
++FLITE_LIBS = @FLITE_LIBS@
++FLUIDSYNTH_CFLAGS = @FLUIDSYNTH_CFLAGS@
++FLUIDSYNTH_LIBS = @FLUIDSYNTH_LIBS@
++GCOV = @GCOV@
++GCOV_CFLAGS = @GCOV_CFLAGS@
++GCOV_LIBS = @GCOV_LIBS@
++GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
++GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
++GIO_CFLAGS = @GIO_CFLAGS@
++GIO_LDFLAGS = @GIO_LDFLAGS@
++GIO_LIBS = @GIO_LIBS@
++GLIB_CFLAGS = @GLIB_CFLAGS@
++GLIB_COMPILE_SCHEMAS = @GLIB_COMPILE_SCHEMAS@
++GLIB_EXTRA_CFLAGS = @GLIB_EXTRA_CFLAGS@
++GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
++GLIB_LIBS = @GLIB_LIBS@
++GLIB_MKENUMS = @GLIB_MKENUMS@
++GLIB_PREFIX = @GLIB_PREFIX@
++GLIB_REQ = @GLIB_REQ@
++GL_CFLAGS = @GL_CFLAGS@
++GL_LIBS = @GL_LIBS@
++GL_OBJCFLAGS = @GL_OBJCFLAGS@
++GME_LIBS = @GME_LIBS@
++GMODULE_EXPORT_CFLAGS = @GMODULE_EXPORT_CFLAGS@
++GMODULE_EXPORT_LIBS = @GMODULE_EXPORT_LIBS@
++GMODULE_NO_EXPORT_CFLAGS = @GMODULE_NO_EXPORT_CFLAGS@
++GMODULE_NO_EXPORT_LIBS = @GMODULE_NO_EXPORT_LIBS@
++GMSGFMT = @GMSGFMT@
++GMSGFMT_015 = @GMSGFMT_015@
++GMYTH_CFLAGS = @GMYTH_CFLAGS@
++GMYTH_LIBS = @GMYTH_LIBS@
++GNUSTEP_CONFIG = @GNUSTEP_CONFIG@
++GRAPHENE_CFLAGS = @GRAPHENE_CFLAGS@
++GRAPHENE_LIBS = @GRAPHENE_LIBS@
++GREP = @GREP@
++GSETTINGS_CFLAGS = @GSETTINGS_CFLAGS@
++GSETTINGS_DISABLE_SCHEMAS_COMPILE = @GSETTINGS_DISABLE_SCHEMAS_COMPILE@
++GSETTINGS_LIBS = @GSETTINGS_LIBS@
++GSM_LIBS = @GSM_LIBS@
++GSTPB_PLUGINS_DIR = @GSTPB_PLUGINS_DIR@
++GSTPB_PREFIX = @GSTPB_PREFIX@
++GST_AGE = @GST_AGE@
++GST_ALL_LDFLAGS = @GST_ALL_LDFLAGS@
++GST_API_VERSION = @GST_API_VERSION@
++GST_BASE_CFLAGS = @GST_BASE_CFLAGS@
++GST_BASE_LIBS = @GST_BASE_LIBS@
++GST_CFLAGS = @GST_CFLAGS@
++GST_CHECK_CFLAGS = @GST_CHECK_CFLAGS@
++GST_CHECK_LIBS = @GST_CHECK_LIBS@
++GST_CONTROLLER_CFLAGS = @GST_CONTROLLER_CFLAGS@
++GST_CONTROLLER_LIBS = @GST_CONTROLLER_LIBS@
++GST_CURRENT = @GST_CURRENT@
++GST_CXXFLAGS = @GST_CXXFLAGS@
++GST_LEVEL_DEFAULT = @GST_LEVEL_DEFAULT@
++GST_LIBS = @GST_LIBS@
++GST_LIBVERSION = @GST_LIBVERSION@
++GST_LIB_LDFLAGS = @GST_LIB_LDFLAGS@
++GST_LICENSE = @GST_LICENSE@
++GST_LT_LDFLAGS = @GST_LT_LDFLAGS@
++GST_OBJCFLAGS = @GST_OBJCFLAGS@
++GST_OPTION_CFLAGS = @GST_OPTION_CFLAGS@
++GST_OPTION_CXXFLAGS = @GST_OPTION_CXXFLAGS@
++GST_OPTION_OBJCFLAGS = @GST_OPTION_OBJCFLAGS@
++GST_PACKAGE_NAME = @GST_PACKAGE_NAME@
++GST_PACKAGE_ORIGIN = @GST_PACKAGE_ORIGIN@
++GST_PKG_CONFIG_PATH = @GST_PKG_CONFIG_PATH@
++GST_PLUGINS_ALL = @GST_PLUGINS_ALL@
++GST_PLUGINS_BAD_CFLAGS = @GST_PLUGINS_BAD_CFLAGS@
++GST_PLUGINS_BAD_CXXFLAGS = @GST_PLUGINS_BAD_CXXFLAGS@
++GST_PLUGINS_BAD_OBJCFLAGS = @GST_PLUGINS_BAD_OBJCFLAGS@
++GST_PLUGINS_BASE_CFLAGS = @GST_PLUGINS_BASE_CFLAGS@
++GST_PLUGINS_BASE_DIR = @GST_PLUGINS_BASE_DIR@
++GST_PLUGINS_BASE_LIBS = @GST_PLUGINS_BASE_LIBS@
++GST_PLUGINS_DIR = @GST_PLUGINS_DIR@
++GST_PLUGINS_GOOD_CFLAGS = @GST_PLUGINS_GOOD_CFLAGS@
++GST_PLUGINS_GOOD_DIR = @GST_PLUGINS_GOOD_DIR@
++GST_PLUGINS_GOOD_LIBS = @GST_PLUGINS_GOOD_LIBS@
++GST_PLUGINS_LIBAV_CFLAGS = @GST_PLUGINS_LIBAV_CFLAGS@
++GST_PLUGINS_LIBAV_DIR = @GST_PLUGINS_LIBAV_DIR@
++GST_PLUGINS_LIBAV_LIBS = @GST_PLUGINS_LIBAV_LIBS@
++GST_PLUGINS_NONPORTED = @GST_PLUGINS_NONPORTED@
++GST_PLUGINS_SELECTED = @GST_PLUGINS_SELECTED@
++GST_PLUGINS_UGLY_CFLAGS = @GST_PLUGINS_UGLY_CFLAGS@
++GST_PLUGINS_UGLY_DIR = @GST_PLUGINS_UGLY_DIR@
++GST_PLUGINS_UGLY_LIBS = @GST_PLUGINS_UGLY_LIBS@
++GST_PLUGIN_LDFLAGS = @GST_PLUGIN_LDFLAGS@
++GST_PLUGIN_LIBTOOLFLAGS = @GST_PLUGIN_LIBTOOLFLAGS@
++GST_PREFIX = @GST_PREFIX@
++GST_REVISION = @GST_REVISION@
++GST_TOOLS_DIR = @GST_TOOLS_DIR@
++GST_VIDEO_CFLAGS = @GST_VIDEO_CFLAGS@
++GST_VIDEO_LIBS = @GST_VIDEO_LIBS@
++GTK3_CFLAGS = @GTK3_CFLAGS@
++GTK3_LIBS = @GTK3_LIBS@
++GTKDOC_CHECK = @GTKDOC_CHECK@
++GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
++GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
++GTKDOC_MKPDF = @GTKDOC_MKPDF@
++GTKDOC_REBASE = @GTKDOC_REBASE@
++GTK_BASE_DIR = @GTK_BASE_DIR@
++GTK_CFLAGS = @GTK_CFLAGS@
++GTK_LIBS = @GTK_LIBS@
++GTK_VERSION = @GTK_VERSION@
++G_UDEV_CFLAGS = @G_UDEV_CFLAGS@
++G_UDEV_LIBS = @G_UDEV_LIBS@
++HAVE_CLUTTER = @HAVE_CLUTTER@
++HAVE_CLUTTER_GLX = @HAVE_CLUTTER_GLX@
++HAVE_CLUTTER_X11 = @HAVE_CLUTTER_X11@
++HAVE_CXX = @HAVE_CXX@
++HAVE_DIRECT3D = @HAVE_DIRECT3D@
++HAVE_DIRECTDRAW = @HAVE_DIRECTDRAW@
++HAVE_DIRECTSOUND = @HAVE_DIRECTSOUND@
++HAVE_DTS = @HAVE_DTS@
++HAVE_EGL = @HAVE_EGL@
++HAVE_FAAC = @HAVE_FAAC@
++HAVE_FAAD = @HAVE_FAAD@
++HAVE_FLITE = @HAVE_FLITE@
++HAVE_GL = @HAVE_GL@
++HAVE_GLES2 = @HAVE_GLES2@
++HAVE_GLU = @HAVE_GLU@
++HAVE_GRAPHENE = @HAVE_GRAPHENE@
++HAVE_GSM = @HAVE_GSM@
++HAVE_GTK3 = @HAVE_GTK3@
++HAVE_JPEG = @HAVE_JPEG@
++HAVE_NAS = @HAVE_NAS@
++HAVE_OPENJPEG = @HAVE_OPENJPEG@
++HAVE_PNG = @HAVE_PNG@
++HAVE_SRTP = @HAVE_SRTP@
++HAVE_WASAPI = @HAVE_WASAPI@
++HAVE_WILDMIDI = @HAVE_WILDMIDI@
++HAVE_WINKS = @HAVE_WINKS@
++HAVE_WINSCREENCAP = @HAVE_WINSCREENCAP@
++HAVE_X = @HAVE_X@
++HAVE_X11 = @HAVE_X11@
++HTML_DIR = @HTML_DIR@
++INSTALL = @INSTALL@
++INSTALL_DATA = @INSTALL_DATA@
++INSTALL_PROGRAM = @INSTALL_PROGRAM@
++INSTALL_SCRIPT = @INSTALL_SCRIPT@
++INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
++INTLLIBS = @INTLLIBS@
++INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
++INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
++INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
++INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
++INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
++INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
++INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
++INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
++INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
++JPEG_LIBS = @JPEG_LIBS@
++KATE_CFLAGS = @KATE_CFLAGS@
++KATE_LIBS = @KATE_LIBS@
++LD = @LD@
++LDFLAGS = @LDFLAGS@
++LIBDC1394_CFLAGS = @LIBDC1394_CFLAGS@
++LIBDC1394_LIBS = @LIBDC1394_LIBS@
++LIBDIR = @LIBDIR@
++LIBGCRYPT_CFLAGS = @LIBGCRYPT_CFLAGS@
++LIBGCRYPT_CONFIG = @LIBGCRYPT_CONFIG@
++LIBGCRYPT_LIBS = @LIBGCRYPT_LIBS@
++LIBICONV = @LIBICONV@
++LIBINTL = @LIBINTL@
++LIBM = @LIBM@
++LIBMMS_CFLAGS = @LIBMMS_CFLAGS@
++LIBMMS_LIBS = @LIBMMS_LIBS@
++LIBOBJS = @LIBOBJS@
++LIBPNG_CFLAGS = @LIBPNG_CFLAGS@
++LIBPNG_LIBS = @LIBPNG_LIBS@
++LIBS = @LIBS@
++LIBTOOL = @LIBTOOL@
++LIBUDEV_CFLAGS = @LIBUDEV_CFLAGS@
++LIBUDEV_LIBS = @LIBUDEV_LIBS@
++LIBUSB_CFLAGS = @LIBUSB_CFLAGS@
++LIBUSB_LIBS = @LIBUSB_LIBS@
++LIBVISUAL_CFLAGS = @LIBVISUAL_CFLAGS@
++LIBVISUAL_LIBS = @LIBVISUAL_LIBS@
++LIBXML2_CFLAGS = @LIBXML2_CFLAGS@
++LIBXML2_LIBS = @LIBXML2_LIBS@
++LIPO = @LIPO@
++LN_S = @LN_S@
++LOCALEDIR = @LOCALEDIR@
++LRDF_CFLAGS = @LRDF_CFLAGS@
++LRDF_LIBS = @LRDF_LIBS@
++LTLIBICONV = @LTLIBICONV@
++LTLIBINTL = @LTLIBINTL@
++LTLIBOBJS = @LTLIBOBJS@
++MAINT = @MAINT@
++MAKEINFO = @MAKEINFO@
++MANIFEST_TOOL = @MANIFEST_TOOL@
++MIMIC_CFLAGS = @MIMIC_CFLAGS@
++MIMIC_LIBS = @MIMIC_LIBS@
++MJPEG_CFLAGS = @MJPEG_CFLAGS@
++MJPEG_LIBS = @MJPEG_LIBS@
++MKDIR_P = @MKDIR_P@
++MODPLUG_CFLAGS = @MODPLUG_CFLAGS@
++MODPLUG_LIBS = @MODPLUG_LIBS@
++MPEG2ENC_CFLAGS = @MPEG2ENC_CFLAGS@
++MPEG2ENC_LIBS = @MPEG2ENC_LIBS@
++MPG123_CFLAGS = @MPG123_CFLAGS@
++MPG123_LIBS = @MPG123_LIBS@
++MPLEX_CFLAGS = @MPLEX_CFLAGS@
++MPLEX_LDFLAGS = @MPLEX_LDFLAGS@
++MPLEX_LIBS = @MPLEX_LIBS@
++MSGFMT = @MSGFMT@
++MSGFMT_015 = @MSGFMT_015@
++MSGMERGE = @MSGMERGE@
++MUSEPACK_LIBS = @MUSEPACK_LIBS@
++NAS_CFLAGS = @NAS_CFLAGS@
++NAS_LIBS = @NAS_LIBS@
++NEON_CFLAGS = @NEON_CFLAGS@
++NEON_LIBS = @NEON_LIBS@
++NETTLE_CFLAGS = @NETTLE_CFLAGS@
++NETTLE_LIBS = @NETTLE_LIBS@
++NM = @NM@
++NMEDIT = @NMEDIT@
++OBJC = @OBJC@
++OBJCDEPMODE = @OBJCDEPMODE@
++OBJCFLAGS = @OBJCFLAGS@
++OBJDUMP = @OBJDUMP@
++OBJEXT = @OBJEXT@
++OFA_CFLAGS = @OFA_CFLAGS@
++OFA_LIBS = @OFA_LIBS@
++OPENAL_CFLAGS = @OPENAL_CFLAGS@
++OPENAL_LIBS = @OPENAL_LIBS@
++OPENCV_CFLAGS = @OPENCV_CFLAGS@
++OPENCV_LIBS = @OPENCV_LIBS@
++OPENCV_PREFIX = @OPENCV_PREFIX@
++OPENEXR_CFLAGS = @OPENEXR_CFLAGS@
++OPENEXR_LIBS = @OPENEXR_LIBS@
++OPENJPEG_CFLAGS = @OPENJPEG_CFLAGS@
++OPENJPEG_LIBS = @OPENJPEG_LIBS@
++OPENNI2_CFLAGS = @OPENNI2_CFLAGS@
++OPENNI2_LIBS = @OPENNI2_LIBS@
++OPUS_CFLAGS = @OPUS_CFLAGS@
++OPUS_LIBS = @OPUS_LIBS@
++ORCC = @ORCC@
++ORCC_FLAGS = @ORCC_FLAGS@
++ORC_CFLAGS = @ORC_CFLAGS@
++ORC_LIBS = @ORC_LIBS@
++OTOOL = @OTOOL@
++OTOOL64 = @OTOOL64@
++PACKAGE = @PACKAGE@
++PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
++PACKAGE_NAME = @PACKAGE_NAME@
++PACKAGE_STRING = @PACKAGE_STRING@
++PACKAGE_TARNAME = @PACKAGE_TARNAME@
++PACKAGE_URL = @PACKAGE_URL@
++PACKAGE_VERSION = @PACKAGE_VERSION@
++PACKAGE_VERSION_MAJOR = @PACKAGE_VERSION_MAJOR@
++PACKAGE_VERSION_MICRO = @PACKAGE_VERSION_MICRO@
++PACKAGE_VERSION_MINOR = @PACKAGE_VERSION_MINOR@
++PACKAGE_VERSION_NANO = @PACKAGE_VERSION_NANO@
++PACKAGE_VERSION_RELEASE = @PACKAGE_VERSION_RELEASE@
++PATH_SEPARATOR = @PATH_SEPARATOR@
++PKG_CONFIG = @PKG_CONFIG@
++PLUGINDIR = @PLUGINDIR@
++POSUB = @POSUB@
++PROFILE_CFLAGS = @PROFILE_CFLAGS@
++PVR_CFLAGS = @PVR_CFLAGS@
++PVR_LIBS = @PVR_LIBS@
++PYTHON = @PYTHON@
++PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
++PYTHON_PLATFORM = @PYTHON_PLATFORM@
++PYTHON_PREFIX = @PYTHON_PREFIX@
++PYTHON_VERSION = @PYTHON_VERSION@
++RANLIB = @RANLIB@
++RSVG_2_36_2_CFLAGS = @RSVG_2_36_2_CFLAGS@
++RSVG_2_36_2_LIBS = @RSVG_2_36_2_LIBS@
++RSVG_CFLAGS = @RSVG_CFLAGS@
++RSVG_LIBS = @RSVG_LIBS@
++RTMP_CFLAGS = @RTMP_CFLAGS@
++RTMP_LIBS = @RTMP_LIBS@
++SBC_CFLAGS = @SBC_CFLAGS@
++SBC_LIBS = @SBC_LIBS@
++SCHRO_CFLAGS = @SCHRO_CFLAGS@
++SCHRO_LIBS = @SCHRO_LIBS@
++SDL_CFLAGS = @SDL_CFLAGS@
++SDL_CLUTTER = @SDL_CLUTTER@
++SDL_CONFIG = @SDL_CONFIG@
++SDL_LIBS = @SDL_LIBS@
++SED = @SED@
++SET_MAKE = @SET_MAKE@
++SHELL = @SHELL@
++SHM_LIBS = @SHM_LIBS@
++SLV2_CFLAGS = @SLV2_CFLAGS@
++SLV2_LIBS = @SLV2_LIBS@
++SNDFILE_CFLAGS = @SNDFILE_CFLAGS@
++SNDFILE_LIBS = @SNDFILE_LIBS@
++SNDIO_LIBS = @SNDIO_LIBS@
++SOUNDTOUCH_CFLAGS = @SOUNDTOUCH_CFLAGS@
++SOUNDTOUCH_LIBS = @SOUNDTOUCH_LIBS@
++SPANDSP_CFLAGS = @SPANDSP_CFLAGS@
++SPANDSP_LIBS = @SPANDSP_LIBS@
++SPC_LIBS = @SPC_LIBS@
++SRTP_LIBS = @SRTP_LIBS@
++SSH2_CFLAGS = @SSH2_CFLAGS@
++SSH2_LIBS = @SSH2_LIBS@
++STRIP = @STRIP@
++TELETEXTDEC_CFLAGS = @TELETEXTDEC_CFLAGS@
++TELETEXTDEC_LIBS = @TELETEXTDEC_LIBS@
++TIGER_CFLAGS = @TIGER_CFLAGS@
++TIGER_LIBS = @TIGER_LIBS@
++TIMIDITY_CFLAGS = @TIMIDITY_CFLAGS@
++TIMIDITY_LIBS = @TIMIDITY_LIBS@
++USE_GLES2 = @USE_GLES2@
++USE_NLS = @USE_NLS@
++USE_OPENGL = @USE_OPENGL@
++VALGRIND_CFLAGS = @VALGRIND_CFLAGS@
++VALGRIND_LIBS = @VALGRIND_LIBS@
++VALGRIND_PATH = @VALGRIND_PATH@
++VDPAU_CFLAGS = @VDPAU_CFLAGS@
++VDPAU_LIBS = @VDPAU_LIBS@
++VERSION = @VERSION@
++VOAACENC_CFLAGS = @VOAACENC_CFLAGS@
++VOAACENC_LIBS = @VOAACENC_LIBS@
++VOAMRWBENC_CFLAGS = @VOAMRWBENC_CFLAGS@
++VOAMRWBENC_LIBS = @VOAMRWBENC_LIBS@
++WARNING_CFLAGS = @WARNING_CFLAGS@
++WARNING_CXXFLAGS = @WARNING_CXXFLAGS@
++WARNING_OBJCFLAGS = @WARNING_OBJCFLAGS@
++WASAPI_LIBS = @WASAPI_LIBS@
++WAYLAND_CFLAGS = @WAYLAND_CFLAGS@
++WAYLAND_EGL_CFLAGS = @WAYLAND_EGL_CFLAGS@
++WAYLAND_EGL_LIBS = @WAYLAND_EGL_LIBS@
++WAYLAND_LIBS = @WAYLAND_LIBS@
++WEBP_CFLAGS = @WEBP_CFLAGS@
++WEBP_LIBS = @WEBP_LIBS@
++WILDMIDI_CFLAGS = @WILDMIDI_CFLAGS@
++WILDMIDI_LIBS = @WILDMIDI_LIBS@
++WINKS_LIBS = @WINKS_LIBS@
++WINSCREENCAP_LIBS = @WINSCREENCAP_LIBS@
++WINSOCK2_LIBS = @WINSOCK2_LIBS@
++X11_CFLAGS = @X11_CFLAGS@
++X11_LIBS = @X11_LIBS@
++XCOMPOSITE_CFLAGS = @XCOMPOSITE_CFLAGS@
++XCOMPOSITE_LIBS = @XCOMPOSITE_LIBS@
++XGETTEXT = @XGETTEXT@
++XGETTEXT_015 = @XGETTEXT_015@
++XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
++XMKMF = @XMKMF@
++XVID_LIBS = @XVID_LIBS@
++X_CFLAGS = @X_CFLAGS@
++X_EXTRA_LIBS = @X_EXTRA_LIBS@
++X_LIBS = @X_LIBS@
++X_PRE_LIBS = @X_PRE_LIBS@
++ZBAR_CFLAGS = @ZBAR_CFLAGS@
++ZBAR_LIBS = @ZBAR_LIBS@
++abs_builddir = @abs_builddir@
++abs_srcdir = @abs_srcdir@
++abs_top_builddir = @abs_top_builddir@
++abs_top_srcdir = @abs_top_srcdir@
++ac_ct_AR = @ac_ct_AR@
++ac_ct_CC = @ac_ct_CC@
++ac_ct_CXX = @ac_ct_CXX@
++ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
++ac_ct_OBJC = @ac_ct_OBJC@
++am__include = @am__include@
++am__leading_dot = @am__leading_dot@
++am__quote = @am__quote@
++am__tar = @am__tar@
++am__untar = @am__untar@
++bindir = @bindir@
++build = @build@
++build_alias = @build_alias@
++build_cpu = @build_cpu@
++build_os = @build_os@
++build_vendor = @build_vendor@
++builddir = @builddir@
++datadir = @datadir@
++datarootdir = @datarootdir@
++docdir = @docdir@
++dvidir = @dvidir@
++exec_prefix = @exec_prefix@
++gsettingsschemadir = @gsettingsschemadir@
++host = @host@
++host_alias = @host_alias@
++host_cpu = @host_cpu@
++host_os = @host_os@
++host_vendor = @host_vendor@
++htmldir = @htmldir@
++includedir = @includedir@
++infodir = @infodir@
++install_sh = @install_sh@
++libdir = @libdir@
++libexecdir = @libexecdir@
++localedir = @localedir@
++localstatedir = @localstatedir@
++mandir = @mandir@
++mkdir_p = @mkdir_p@
++oldincludedir = @oldincludedir@
++pdfdir = @pdfdir@
++pkgpyexecdir = @pkgpyexecdir@
++pkgpythondir = @pkgpythondir@
++plugindir = @plugindir@
++prefix = @prefix@
++program_transform_name = @program_transform_name@
++psdir = @psdir@
++pyexecdir = @pyexecdir@
++pythondir = @pythondir@
++sbindir = @sbindir@
++sharedstatedir = @sharedstatedir@
++srcdir = @srcdir@
++sysconfdir = @sysconfdir@
++target = @target@
++target_alias = @target_alias@
++target_cpu = @target_cpu@
++target_os = @target_os@
++target_vendor = @target_vendor@
++top_build_prefix = @top_build_prefix@
++top_builddir = @top_builddir@
++top_srcdir = @top_srcdir@
++wayland_scanner = @wayland_scanner@
++plugin_LTLIBRARIES = libgstjpegformat.la
++libgstjpegformat_la_SOURCES = gstjpegformat.c gstjpegparse.c gstjifmux.c
++libgstjpegformat_la_CFLAGS = $(GST_PLUGINS_BAD_CFLAGS) \
++	$(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
++
++libgstjpegformat_la_LIBADD = \
++    $(GST_PLUGINS_BASE_LIBS) -lgsttag-@GST_API_VERSION@ $(GST_BASE_LIBS) $(GST_LIBS)
++
++libgstjpegformat_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
++libgstjpegformat_la_LIBTOOLFLAGS = $(GST_PLUGIN_LIBTOOLFLAGS)
++noinst_HEADERS = gstjpegformat.h gstjpegparse.h gstjifmux.h
++all: all-am
++
++.SUFFIXES:
++.SUFFIXES: .c .lo .o .obj
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
++	@for dep in $?; do \
++	  case '$(am__configure_deps)' in \
++	    *$$dep*) \
++	      ( cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh ) \
++	        && { if test -f $@; then exit 0; else break; fi; }; \
++	      exit 1;; \
++	  esac; \
++	done; \
++	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu gst/jpegformat/Makefile'; \
++	$(am__cd) $(top_srcdir) && \
++	  $(AUTOMAKE) --gnu gst/jpegformat/Makefile
++.PRECIOUS: Makefile
++Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
++	@case '$?' in \
++	  *config.status*) \
++	    cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh;; \
++	  *) \
++	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
++	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
++	esac;
++
++$(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
++	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
++
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
++	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
++	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
++$(am__aclocal_m4_deps):
++
++install-pluginLTLIBRARIES: $(plugin_LTLIBRARIES)
++	@$(NORMAL_INSTALL)
++	@list='$(plugin_LTLIBRARIES)'; test -n "$(plugindir)" || list=; \
++	list2=; for p in $$list; do \
++	  if test -f $$p; then \
++	    list2="$$list2 $$p"; \
++	  else :; fi; \
++	done; \
++	test -z "$$list2" || { \
++	  echo " $(MKDIR_P) '$(DESTDIR)$(plugindir)'"; \
++	  $(MKDIR_P) "$(DESTDIR)$(plugindir)" || exit 1; \
++	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 '$(DESTDIR)$(plugindir)'"; \
++	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 "$(DESTDIR)$(plugindir)"; \
++	}
++
++uninstall-pluginLTLIBRARIES:
++	@$(NORMAL_UNINSTALL)
++	@list='$(plugin_LTLIBRARIES)'; test -n "$(plugindir)" || list=; \
++	for p in $$list; do \
++	  $(am__strip_dir) \
++	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(plugindir)/$$f'"; \
++	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(plugindir)/$$f"; \
++	done
++
++clean-pluginLTLIBRARIES:
++	-test -z "$(plugin_LTLIBRARIES)" || rm -f $(plugin_LTLIBRARIES)
++	@list='$(plugin_LTLIBRARIES)'; \
++	locs=`for p in $$list; do echo $$p; done | \
++	      sed 's|^[^/]*$$|.|; s|/[^/]*$$||; s|$$|/so_locations|' | \
++	      sort -u`; \
++	test -z "$$locs" || { \
++	  echo rm -f $${locs}; \
++	  rm -f $${locs}; \
++	}
++
++libgstjpegformat.la: $(libgstjpegformat_la_OBJECTS) $(libgstjpegformat_la_DEPENDENCIES) $(EXTRA_libgstjpegformat_la_DEPENDENCIES) 
++	$(AM_V_CCLD)$(libgstjpegformat_la_LINK) -rpath $(plugindir) $(libgstjpegformat_la_OBJECTS) $(libgstjpegformat_la_LIBADD) $(LIBS)
++
++mostlyclean-compile:
++	-rm -f *.$(OBJEXT)
++
++distclean-compile:
++	-rm -f *.tab.c
++
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstjpegformat_la-gstjifmux.Plo@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstjpegformat_la-gstjpegformat.Plo@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgstjpegformat_la-gstjpegparse.Plo@am__quote@
++
++.c.o:
++@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
++@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
++@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
++
++.c.obj:
++@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
++@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
++@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
++
++.c.lo:
++@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
++@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
++@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
++
++libgstjpegformat_la-gstjpegformat.lo: gstjpegformat.c
++@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstjpegformat_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstjpegformat_la_CFLAGS) $(CFLAGS) -MT libgstjpegformat_la-gstjpegformat.lo -MD -MP -MF $(DEPDIR)/libgstjpegformat_la-gstjpegformat.Tpo -c -o libgstjpegformat_la-gstjpegformat.lo `test -f 'gstjpegformat.c' || echo '$(srcdir)/'`gstjpegformat.c
++@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstjpegformat_la-gstjpegformat.Tpo $(DEPDIR)/libgstjpegformat_la-gstjpegformat.Plo
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstjpegformat.c' object='libgstjpegformat_la-gstjpegformat.lo' libtool=yes @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstjpegformat_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstjpegformat_la_CFLAGS) $(CFLAGS) -c -o libgstjpegformat_la-gstjpegformat.lo `test -f 'gstjpegformat.c' || echo '$(srcdir)/'`gstjpegformat.c
++
++libgstjpegformat_la-gstjpegparse.lo: gstjpegparse.c
++@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstjpegformat_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstjpegformat_la_CFLAGS) $(CFLAGS) -MT libgstjpegformat_la-gstjpegparse.lo -MD -MP -MF $(DEPDIR)/libgstjpegformat_la-gstjpegparse.Tpo -c -o libgstjpegformat_la-gstjpegparse.lo `test -f 'gstjpegparse.c' || echo '$(srcdir)/'`gstjpegparse.c
++@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstjpegformat_la-gstjpegparse.Tpo $(DEPDIR)/libgstjpegformat_la-gstjpegparse.Plo
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstjpegparse.c' object='libgstjpegformat_la-gstjpegparse.lo' libtool=yes @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstjpegformat_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstjpegformat_la_CFLAGS) $(CFLAGS) -c -o libgstjpegformat_la-gstjpegparse.lo `test -f 'gstjpegparse.c' || echo '$(srcdir)/'`gstjpegparse.c
++
++libgstjpegformat_la-gstjifmux.lo: gstjifmux.c
++@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstjpegformat_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstjpegformat_la_CFLAGS) $(CFLAGS) -MT libgstjpegformat_la-gstjifmux.lo -MD -MP -MF $(DEPDIR)/libgstjpegformat_la-gstjifmux.Tpo -c -o libgstjpegformat_la-gstjifmux.lo `test -f 'gstjifmux.c' || echo '$(srcdir)/'`gstjifmux.c
++@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgstjpegformat_la-gstjifmux.Tpo $(DEPDIR)/libgstjpegformat_la-gstjifmux.Plo
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gstjifmux.c' object='libgstjpegformat_la-gstjifmux.lo' libtool=yes @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(libgstjpegformat_la_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgstjpegformat_la_CFLAGS) $(CFLAGS) -c -o libgstjpegformat_la-gstjifmux.lo `test -f 'gstjifmux.c' || echo '$(srcdir)/'`gstjifmux.c
++
++mostlyclean-libtool:
++	-rm -f *.lo
++
++clean-libtool:
++	-rm -rf .libs _libs
++
++ID: $(am__tagged_files)
++	$(am__define_uniq_tagged_files); mkid -fID $$unique
++tags: tags-am
++TAGS: tags
++
++tags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
++	set x; \
++	here=`pwd`; \
++	$(am__define_uniq_tagged_files); \
++	shift; \
++	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
++	  test -n "$$unique" || unique=$$empty_fix; \
++	  if test $$# -gt 0; then \
++	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
++	      "$$@" $$unique; \
++	  else \
++	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
++	      $$unique; \
++	  fi; \
++	fi
++ctags: ctags-am
++
++CTAGS: ctags
++ctags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
++	$(am__define_uniq_tagged_files); \
++	test -z "$(CTAGS_ARGS)$$unique" \
++	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
++	     $$unique
++
++GTAGS:
++	here=`$(am__cd) $(top_builddir) && pwd` \
++	  && $(am__cd) $(top_srcdir) \
++	  && gtags -i $(GTAGS_ARGS) "$$here"
++cscopelist: cscopelist-am
++
++cscopelist-am: $(am__tagged_files)
++	list='$(am__tagged_files)'; \
++	case "$(srcdir)" in \
++	  [\\/]* | ?:[\\/]*) sdir="$(srcdir)" ;; \
++	  *) sdir=$(subdir)/$(srcdir) ;; \
++	esac; \
++	for i in $$list; do \
++	  if test -f "$$i"; then \
++	    echo "$(subdir)/$$i"; \
++	  else \
++	    echo "$$sdir/$$i"; \
++	  fi; \
++	done >> $(top_builddir)/cscope.files
++
++distclean-tags:
++	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
++
++distdir: $(DISTFILES)
++	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
++	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
++	list='$(DISTFILES)'; \
++	  dist_files=`for file in $$list; do echo $$file; done | \
++	  sed -e "s|^$$srcdirstrip/||;t" \
++	      -e "s|^$$topsrcdirstrip/|$(top_builddir)/|;t"`; \
++	case $$dist_files in \
++	  */*) $(MKDIR_P) `echo "$$dist_files" | \
++			   sed '/\//!d;s|^|$(distdir)/|;s,/[^/]*$$,,' | \
++			   sort -u` ;; \
++	esac; \
++	for file in $$dist_files; do \
++	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
++	  if test -d $$d/$$file; then \
++	    dir=`echo "/$$file" | sed -e 's,/[^/]*$$,,'`; \
++	    if test -d "$(distdir)/$$file"; then \
++	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
++	    fi; \
++	    if test -d $(srcdir)/$$file && test $$d != $(srcdir); then \
++	      cp -fpR $(srcdir)/$$file "$(distdir)$$dir" || exit 1; \
++	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
++	    fi; \
++	    cp -fpR $$d/$$file "$(distdir)$$dir" || exit 1; \
++	  else \
++	    test -f "$(distdir)/$$file" \
++	    || cp -p $$d/$$file "$(distdir)/$$file" \
++	    || exit 1; \
++	  fi; \
++	done
++check-am: all-am
++check: check-am
++all-am: Makefile $(LTLIBRARIES) $(HEADERS)
++installdirs:
++	for dir in "$(DESTDIR)$(plugindir)"; do \
++	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
++	done
++install: install-am
++install-exec: install-exec-am
++install-data: install-data-am
++uninstall: uninstall-am
++
++install-am: all-am
++	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
++
++installcheck: installcheck-am
++install-strip:
++	if test -z '$(STRIP)'; then \
++	  $(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
++	    install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
++	      install; \
++	else \
++	  $(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
++	    install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
++	    "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'" install; \
++	fi
++mostlyclean-generic:
++
++clean-generic:
++
++distclean-generic:
++	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
++	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
++
++maintainer-clean-generic:
++	@echo "This command is intended for maintainers to use"
++	@echo "it deletes files that may require special tools to rebuild."
++clean: clean-am
++
++clean-am: clean-generic clean-libtool clean-pluginLTLIBRARIES \
++	mostlyclean-am
++
++distclean: distclean-am
++	-rm -rf ./$(DEPDIR)
++	-rm -f Makefile
++distclean-am: clean-am distclean-compile distclean-generic \
++	distclean-tags
++
++dvi: dvi-am
++
++dvi-am:
++
++html: html-am
++
++html-am:
++
++info: info-am
++
++info-am:
++
++install-data-am: install-pluginLTLIBRARIES
++
++install-dvi: install-dvi-am
++
++install-dvi-am:
++
++install-exec-am:
++
++install-html: install-html-am
++
++install-html-am:
++
++install-info: install-info-am
++
++install-info-am:
++
++install-man:
++
++install-pdf: install-pdf-am
++
++install-pdf-am:
++
++install-ps: install-ps-am
++
++install-ps-am:
++
++installcheck-am:
++
++maintainer-clean: maintainer-clean-am
++	-rm -rf ./$(DEPDIR)
++	-rm -f Makefile
++maintainer-clean-am: distclean-am maintainer-clean-generic
++
++mostlyclean: mostlyclean-am
++
++mostlyclean-am: mostlyclean-compile mostlyclean-generic \
++	mostlyclean-libtool
++
++pdf: pdf-am
++
++pdf-am:
++
++ps: ps-am
++
++ps-am:
++
++uninstall-am: uninstall-pluginLTLIBRARIES
++
++.MAKE: install-am install-strip
++
++.PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
++	clean-libtool clean-pluginLTLIBRARIES cscopelist-am ctags \
++	ctags-am distclean distclean-compile distclean-generic \
++	distclean-libtool distclean-tags distdir dvi dvi-am html \
++	html-am info info-am install install-am install-data \
++	install-data-am install-dvi install-dvi-am install-exec \
++	install-exec-am install-html install-html-am install-info \
++	install-info-am install-man install-pdf install-pdf-am \
++	install-pluginLTLIBRARIES install-ps install-ps-am \
++	install-strip installcheck installcheck-am installdirs \
++	maintainer-clean maintainer-clean-generic mostlyclean \
++	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
++	pdf pdf-am ps ps-am tags tags-am uninstall uninstall-am \
++	uninstall-pluginLTLIBRARIES
++
++
++Android.mk: Makefile.am $(BUILT_SOURCES)
++	androgenizer \
++	-:PROJECT libgstjpegformat -:SHARED libgstjpegformat \
++	 -:TAGS eng debug \
++         -:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
++	 -:SOURCES $(libgstjpegformat_la_SOURCES) \
++	 -:CFLAGS $(DEFS) $(DEFAULT_INCLUDES) $(libgstjpegformat_la_CFLAGS) \
++	 -:LDFLAGS $(libgstjpegformat_la_LDFLAGS) \
++	           $(libgstjpegformat_la_LIBADD) \
++	           -ldl \
++	 -:PASSTHROUGH LOCAL_ARM_MODE:=arm \
++		       LOCAL_MODULE_PATH:='$$(TARGET_OUT)/lib/gstreamer-0.10' \
++	> $@
++
++# Tell versions [3.59,3.63) of GNU make to not export all variables.
++# Otherwise a system limit (for SysV at least) may be exceeded.
++.NOEXPORT:

@@ -46,7 +46,10 @@ Available packages
  - Version: 1.6.1
  - Packages: gir1.2-gst-plugins-base-1.0_1.6.1 gstreamer1.0-alsa_1.6.1 gstreamer1.0-plugins-base-apps_1.6.1 gstreamer1.0-plugins-base-dbg_1.6.1 gstreamer1.0-plugins-base-doc_1.6.1 gstreamer1.0-plugins-base_1.6.1 gstreamer1.0-x_1.6.1 libgstreamer-plugins-base1.0-0_1.6.1 libgstreamer-plugins-base1.0-dev_1.6.1
  - Debianization via: http://packages.ubuntu.com/xenial/libgstreamer-plugins-base1.0-dev
-
+- **gst-plugins-good**
+ - Version: 1.6.1
+ - Packages: gstreamer1.0-plugins-good-dbg_1.6.1 gstreamer1.0-plugins-good-doc_1.6.1 gstreamer1.0-plugins-good_1.6.1 gstreamer1.0-pulseaudio_1.6.1 libgstreamer-plugins-good1.0-0_1.6.1 libgstreamer-plugins-good1.0-dev_1.6.1
+ - Debianization via: http://packages.ubuntu.com/source/xenial/gst-plugins-good1.0
 
 Development
 -----------
