@@ -1,0 +1,31 @@
+Description: Have libgstreamer-plugins-bad-1.0.pc Require the moved copy in -good
+Author: Iain Lane <iain.lane@canonical.com>
+Forwarded: not-needed
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/gst-plugins-bad1.0/+bug/1170923
+
+Index: b/pkgconfig/gstreamer-plugins-bad.pc.in
+===================================================================
+--- a/pkgconfig/gstreamer-plugins-bad.pc.in
++++ b/pkgconfig/gstreamer-plugins-bad.pc.in
+@@ -7,7 +7,5 @@
+ 
+ Name: GStreamer Bad Plugin libraries
+ Description: Streaming media framework, bad plugins libraries
+-Requires: gstreamer-@GST_API_VERSION@
++Requires: gstreamer-@GST_API_VERSION@ gstreamer-plugins-good-@GST_API_VERSION@
+ Version: @VERSION@
+-Libs: -L${libdir}
+-Cflags: -I${includedir}
+Index: b/pkgconfig/gstreamer-plugins-bad-uninstalled.pc.in
+===================================================================
+--- a/pkgconfig/gstreamer-plugins-bad-uninstalled.pc.in
++++ b/pkgconfig/gstreamer-plugins-bad-uninstalled.pc.in
+@@ -9,6 +9,6 @@
+ Name: GStreamer Bad Plugin libraries, Uninstalled
+ Description: Streaming media framework, bad plugins libraries, uninstalled
+ Version: @VERSION@
+-Requires: gstreamer-@GST_API_VERSION@
+-Libs: -L@abs_top_builddir@/gst-libs/gst/basecamerabinsrc -L@abs_top_builddir@/gst-libs/gst/codecparsers -L@abs_top_builddir@/gst-libs/gst/egl -L@abs_top_builddir@/gst-libs/gst/insertbin -L@abs_top_builddir@/gst-libs/gst/interfaces -L@abs_top_builddir@/gst-libs/gst/mpegts -L@abs_top_builddir@/gst-libs/gst/signalprocessor -L@abs_top_builddir@/gst-libs/gst/video
++Requires: gstreamer-@GST_API_VERSION@ gstreamer-plugins-good-@GST_API_VERSION@
++Libs: -L@abs_top_builddir@/gst-libs/gst/codecparsers -L@abs_top_builddir@/gst-libs/gst/egl -L@abs_top_builddir@/gst-libs/gst/insertbin -L@abs_top_builddir@/gst-libs/gst/interfaces -L@abs_top_builddir@/gst-libs/gst/mpegts -L@abs_top_builddir@/gst-libs/gst/signalprocessor -L@abs_top_builddir@/gst-libs/gst/video
+ Cflags: -I@abs_top_srcdir@/gst-libs -I@abs_top_builddir@/gst-libs
