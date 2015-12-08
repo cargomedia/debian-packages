@@ -9,10 +9,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: introspection
 Filename: pool/main/g/gstreamer1.0/gir1.2-gstreamer-1.0_1.6.1-1_amd64.deb
-Size: 959946
-SHA256: b9195c37cfa42fd50120a795d5ecb24c5845ab4fa089d65174d986ff9327f02d
-SHA1: d9058efab4226b2632d10a1e55bdc57886e7b94e
-MD5sum: 5ab302d358cf8d5adeae835124e4587f
+Size: 959918
+SHA256: a4577ac82dee429bed17ed978ac27d5dce2ad2480fbf2a0dc3b00e98649d5a48
+SHA1: eeefd9787f53d0fb538ce07720b4f627588382d1
+MD5sum: 3e97b612a76914173caaea9d906e584d
 Description: Description: GObject introspection data for the GStreamer library
  This package contains introspection data for the GStreamer streaming media
  framework.
@@ -27,6 +27,22 @@ Description: Description: GObject introspection data for the GStreamer library
  It can be used by packages using the GIRepository format to generate
  dynamic bindings.
 
+Package: graphene
+Version: 1.2.10-1
+Architecture: amd64
+Maintainer: Cargomedia <tech@cargomedia.com>
+Installed-Size: 644
+Depends: libc6 (>= 2.15), libglib2.0-0 (>= 2.14.0)
+Homepage: http://github.com/ebassi/graphene
+Priority: extra
+Section: libs
+Filename: pool/main/g/graphene/graphene_1.2.10-1_amd64.deb
+Size: 72772
+SHA256: 7427590b5a3ed37b9df44c70f86e6b62ddc22d9611c89cb6124ed41bd2753d35
+SHA1: 09b2e7ce4f9c6e44b9c37a15ad35eeff23a7bf95
+MD5sum: 064efadd81b981bd895ef1128faeabf8
+Description: A thin layer of types for graphic libraries
+
 Package: gstreamer1.0-doc
 Source: gstreamer1.0
 Version: 1.6.1-1
@@ -39,10 +55,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: doc
 Filename: pool/main/g/gstreamer1.0/gstreamer1.0-doc_1.6.1-1_all.deb
-Size: 4464590
-SHA256: c90798c28f41d0c7907ace22586ae0ffbaca61f81776b1daba6fc2420bbd95ef
-SHA1: a78643748b3d25de4e2d19d11711263bfd5e456e
-MD5sum: 2d884a5fcda10ae5728336f3a6b1f13b
+Size: 4464306
+SHA256: 283ec156cb8685642aeb540880b4239fee685850f14c7ae8b0f35b2517733090
+SHA1: 9ba47bae6f0fec782ba95cc4ea8463a72a39fe68
+MD5sum: 37f55035223529adb422f2f75f82ddc1
 Description: GStreamer core documentation and manuals
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -69,10 +85,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: utils
 Filename: pool/main/g/gstreamer1.0/gstreamer1.0-tools_1.6.1-1_amd64.deb
-Size: 930324
-SHA256: 5338edd7d1b9c19513eb8e1191ccac5b063a8d70ff158ce9fbd4caa1ed5615b5
-SHA1: 48b41a85f75c9e9c86639848e1af39aa68d3b8b6
-MD5sum: 616634483caa6c8ff7113583f28d84df
+Size: 930310
+SHA256: c7e9fb9a2c5f51665a8cde3bb74f37eb2d242b3436474f04493fbab264c8f679
+SHA1: ebc3af2ddba7d70fb248580c339bc2d8f91ef9ad
+MD5sum: 6bf0129c6d2c3e3b1e4d98d3a9ef03e9
 Description: Tools for use with GStreamer
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -97,10 +113,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: libs
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-0_1.6.1-1_amd64.deb
-Size: 1810514
-SHA256: 4ab230e15df5a8fb9da13a76d231118b224b3a25cc22831ebbb86e066b5c787a
-SHA1: 6da7332d1789f62325e90ce2ef65b5a5758d3c9d
-MD5sum: 3040688fee46763a075d08164066918a
+Size: 1810642
+SHA256: 276e6373b4ac61f9b1172e628c305f5cb6e4352bf55218b3649d6dc0600a7806
+SHA1: 818963e7727fce40d647a6f02a2d14bc7f92c56c
+MD5sum: a356b8e61da4c330410086f2675458ad
 Description: Core GStreamer libraries and elements
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -123,10 +139,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: extra
 Section: debug
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-0-dbg_1.6.1-1_amd64.deb
-Size: 2721726
-SHA256: 749a689a7776bdc6412e37842d70f8b6ee8d0d707da0cbad61f509fe14c81348
-SHA1: 2ce6de29b7cf77ece404856ac7d5df749f27e9a8
-MD5sum: e76847479e2ce714c8226a11fef2def1
+Size: 2721502
+SHA256: b51e26718c1e2a702e31b3483d0ada2d63955839f825b7606e5c237418c29e90
+SHA1: 6500beb1caa3ee13a9ac14a52ccea7deab8888db
+MD5sum: 2e01a8792633558e9483451569a64ec3
 Description: Core GStreamer libraries and elements
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -153,10 +169,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: libdevel
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-dev_1.6.1-1_amd64.deb
-Size: 1260216
-SHA256: d186cf3499713a0971d7ea5efb6eb5f10cf3850bb508dac5da2303d28eec0e2f
-SHA1: 25881edd2b95117c3c1876533610fea55251910f
-MD5sum: 57eaf78516ce1144034ba71b784f2573
+Size: 1260268
+SHA256: bbb76d81ed803a59c4c109522ab871b0eaf3a099c1c0bc20f9782579437a846d
+SHA1: a488d8a5104b87ffdca17e01b11368527dbe92d7
+MD5sum: 28559dae94fa78641224a1a31fe8688e
 Description: GStreamer core development files
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -167,4 +183,128 @@ Description: GStreamer core development files
  .
  This package contains development files for the core library and
  elements.
+
+Package: libsrtp
+Version: 1.5.3
+Architecture: amd64
+Maintainer: Cargomedia <tech@cargomedia.com>
+Installed-Size: 382
+Homepage: https://github.com/cisco/libsrtp
+Priority: extra
+Section: libs
+Filename: pool/main/libs/libsrtp/libsrtp_1.5.3_amd64.deb
+Size: 84504
+SHA256: 6e2618127844b2f0b4a38742d7f49f31bf571efef28c53bb389fbc123a0aead9
+SHA1: ca3e08aeede5088f8d13fb0bd712cc9f71bd59c7
+MD5sum: 4c7d187dbab1fe328eb1b7edc26b1c9f
+Description: Library for SRTP (Secure Realtime Transport Protocol)
+
+Package: libwebsockets-dev
+Source: libwebsockets
+Version: 1.2.2-1
+Architecture: amd64
+Maintainer: Peter Pentchev <roam@ringlet.net>
+Installed-Size: 295
+Depends: libwebsockets3 (= 1.2.2-1)
+Multi-Arch: same
+Homepage: http://www.libwebsockets.org/
+Priority: optional
+Section: libdevel
+Filename: pool/main/libw/libwebsockets/libwebsockets-dev_1.2.2-1_amd64.deb
+Size: 74008
+SHA256: 93c33c82cb2933925a4422cf1012a695fab33254078a35d68ed6d3c83d488da0
+SHA1: 738bda200b866518014277357f663b511499f7ea
+MD5sum: adf2aa1620e28f024df9c85e679d16c9
+Description: lightweight C websockets library - development files
+ Libwebsockets is a lightweight pure C library for both websockets
+ clients and servers built to use minimal CPU and memory resources
+ and provide fast throughput in both directions.
+ .
+ This package contains the header files needed for developing programs
+ using libwebsockets and a static library.
+
+Package: libwebsockets-test-server
+Source: libwebsockets
+Version: 1.2.2-1
+Architecture: amd64
+Maintainer: Peter Pentchev <roam@ringlet.net>
+Installed-Size: 3073
+Depends: libwebsockets3 (= 1.2.2-1), libc6 (>= 2.14), libssl1.0.0 (>= 1.0.0), zlib1g (>= 1:1.1.4)
+Multi-Arch: foreign
+Homepage: http://www.libwebsockets.org/
+Priority: optional
+Section: utils
+Filename: pool/main/libw/libwebsockets/libwebsockets-test-server_1.2.2-1_amd64.deb
+Size: 2569202
+SHA256: 3ac286c0f3cb5bad8b27736d8c91dce7a2882695840a836fa832dac2c38abbb3
+SHA1: 6c0a5100c751ceb4893886c70b23c043b3948e28
+MD5sum: c6f25b921bebaefb0518560bdb21a50c
+Description: lightweight C websockets library - test servers
+ Libwebsockets is a lightweight pure C library for both websockets
+ clients and servers built to use minimal CPU and memory resources
+ and provide fast throughput in both directions.
+ .
+ This package contains several demonstration test servers.
+
+Package: libwebsockets3
+Source: libwebsockets
+Version: 1.2.2-1
+Architecture: amd64
+Maintainer: Peter Pentchev <roam@ringlet.net>
+Installed-Size: 114
+Depends: libc6 (>= 2.14), libssl1.0.0 (>= 1.0.0), zlib1g (>= 1:1.1.4)
+Multi-Arch: same
+Homepage: http://www.libwebsockets.org/
+Priority: optional
+Section: libs
+Filename: pool/main/libw/libwebsockets/libwebsockets3_1.2.2-1_amd64.deb
+Size: 44742
+SHA256: 33c2e0cd16fc90bfde0de61d3549caa79afb9cd37645424d57aa6f7ce804edd7
+SHA1: df0373f14acee3a35e46a9300ccda5503e3d4d4d
+MD5sum: 5ed76cd35c56e797a594b18020929009
+Description: lightweight C websockets library
+ Libwebsockets is a lightweight pure C library for both websockets
+ clients and servers built to use minimal CPU and memory resources
+ and provide fast throughput in both directions.
+ .
+ This package contains the shared library.
+
+Package: libwebsockets3-dbg
+Source: libwebsockets
+Version: 1.2.2-1
+Architecture: amd64
+Maintainer: Peter Pentchev <roam@ringlet.net>
+Installed-Size: 14
+Depends: libwebsockets3 (= 1.2.2-1)
+Multi-Arch: same
+Homepage: http://www.libwebsockets.org/
+Priority: extra
+Section: debug
+Filename: pool/main/libw/libwebsockets/libwebsockets3-dbg_1.2.2-1_amd64.deb
+Size: 4346
+SHA256: 2275988f389de7edc2e1be35381b0284d5a21d7449af1776fe4f4b31ec1f5391
+SHA1: 332799c9295d6403dd0107b4aff560f42a071610
+MD5sum: d448d6c755322de48bbebab01710433b
+Description: lightweight C websockets library - debug symbols
+ Libwebsockets is a lightweight pure C library for both websockets
+ clients and servers built to use minimal CPU and memory resources
+ and provide fast throughput in both directions.
+ .
+ This package contains the debugging symbols for the library.
+
+Package: usrsctp
+Version: 49335e1-git
+Architecture: amd64
+Maintainer: Cargomedia <tech@cargomedia.com>
+Installed-Size: 1908
+Depends: libc6 (>= 2.14)
+Homepage: http://sctp.fh-muenster.de/sctp-user-land-stack.html
+Priority: extra
+Section: libs
+Filename: pool/main/u/usrsctp/usrsctp_49335e1-git_amd64.deb
+Size: 299002
+SHA256: 0a6c290151f61b42d256387af274320d5d555e930974193112a96cdb89dc630f
+SHA1: 65d188c044fcd387d80a238c06c7857d2cab7d8b
+MD5sum: 4934ea3fef1b1b3d05551c7166c51a24
+Description: This is a userland SCTP stack supporting FreeBSD, Linux, Mac OS X and Windows
 

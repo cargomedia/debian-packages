@@ -2,29 +2,29 @@
 Hash: SHA1
 
 Codename: vivid
-Date: Wed, 02 Dec 2015 10:14:45 UTC
+Date: Tue, 08 Dec 2015 11:26:42 UTC
 Architectures: amd64
 Components: main
 MD5Sum:
- 27abb9cd6be6061d09ffe0332cfdab0e 7323 main/binary-amd64/Packages
- 96827c2ed2247b5c40514864de41dda0 1883 main/binary-amd64/Packages.gz
+ 6a14e539f996cc85d8e62291f0572241 12395 main/binary-amd64/Packages
+ 65c6c662e1d3f29148794d1d25abce7a 3291 main/binary-amd64/Packages.gz
  063287201b2354699acfe229a752201d 36 main/binary-amd64/Release
 SHA1:
- effd891321781c416cc4dcca2bc4d247363f28c7 7323 main/binary-amd64/Packages
- 9e3354e4272ba1cbce0d7e7d7ec104e23c0cf0d6 1883 main/binary-amd64/Packages.gz
+ b85a72b9709ed943009252e8e39d064e11337177 12395 main/binary-amd64/Packages
+ 059fb76b4c1fb0de4c8a057dbd6bba0dee3c9cf9 3291 main/binary-amd64/Packages.gz
  f9082edea14092794f38390390e06abf8a922f7d 36 main/binary-amd64/Release
 SHA256:
- f189271421f85a707288f298adb1a9745dafe4e36c12fda1b151bb428abaabeb 7323 main/binary-amd64/Packages
- 698d497d1e2c574175fc8b59a914f925935682094c07b424e1bf106e67f82855 1883 main/binary-amd64/Packages.gz
+ 4123db24cb7939fcf87db21e782712d6f98a54963cd61bf72eef69b0fc470a07 12395 main/binary-amd64/Packages
+ 887aa2ca236564afb0183dcec89fbc4afb8724aaa11ff714ee07b36e855884fe 3291 main/binary-amd64/Packages.gz
  f4aafa353a338baedf9e98523c13d7ffeda979ec3cf745f9fad977dd770595c8 36 main/binary-amd64/Release
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQEcBAEBAgAGBQJWXsSVAAoJEDNy6zNKRc2LWDQH/11iC675OmmHX4XyeG4XNvP7
-WFGSd70oCLFlj0wRiqiGZ0rHNVQza5EY7YjEh/BELbvyiXJaBmTHUEQCxIJI7708
-DYTU12AryDgj1jAD1tIxdqM1AaQ1f6pdboq7clAU10Sp0ll6jLKe8+IXdJKT/Jbj
-ycnJaEwJFne9hqHiACBKa+vg3eWp5oro2L9KRSg1RkrKLKdlJQJpLXaUnL/k4xxT
-Li7DaDNMZgP904j3Q0doXvgt4IiOQBjAVz8uBevmrAiMJNvg3OBWHwR/Z/Um7viO
-Q77j+JkmSmYtS1BtdHEMUMSrDOZJvHgSpkreRti5trbkhYZWNb5rcsciU/FrfHE=
-=KmWF
+iQEcBAEBAgAGBQJWZr5yAAoJEDNy6zNKRc2LOkcH/jbGcVpn0bKPRQqCU/2iF9T7
+DkgIur+V1a//m4UaRUoXLDutwQW3dndOlSQqzl/f2dEZxl5NVYYZpz8wZ9mH0JiB
+GsEfIaFVHnEDJsoAR8ghIw3KCLdZzJJWocouOei6ptND1bWw0a0Sw8JTWIA8PVzr
+DBEHSR+Cakk7xoCFVae5asIK185EVucg3Cyl7rrd6ZgLvIWRCUumcAbYmwOlkRvN
+n/sqpxowlUgrfRxfPNLoK5VofqUhxpz2wAPo+bfIZZqYpgcUQXPDJlQ33wjNaNpq
+n/iJ6y1/d6D/TcPQCXHIUGTzDEvr38k8FHiYEsAMsJxKalaoAYpjGhVT8Jrs2Kg=
+=HeBX
 -----END PGP SIGNATURE-----
