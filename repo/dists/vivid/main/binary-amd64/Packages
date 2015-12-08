@@ -9,10 +9,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: introspection
 Filename: pool/main/g/gstreamer1.0/gir1.2-gstreamer-1.0_1.6.1-1_amd64.deb
-Size: 959946
-SHA256: b9195c37cfa42fd50120a795d5ecb24c5845ab4fa089d65174d986ff9327f02d
-SHA1: d9058efab4226b2632d10a1e55bdc57886e7b94e
-MD5sum: 5ab302d358cf8d5adeae835124e4587f
+Size: 959918
+SHA256: a4577ac82dee429bed17ed978ac27d5dce2ad2480fbf2a0dc3b00e98649d5a48
+SHA1: eeefd9787f53d0fb538ce07720b4f627588382d1
+MD5sum: 3e97b612a76914173caaea9d906e584d
 Description: Description: GObject introspection data for the GStreamer library
  This package contains introspection data for the GStreamer streaming media
  framework.
@@ -55,10 +55,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: doc
 Filename: pool/main/g/gstreamer1.0/gstreamer1.0-doc_1.6.1-1_all.deb
-Size: 4464590
-SHA256: c90798c28f41d0c7907ace22586ae0ffbaca61f81776b1daba6fc2420bbd95ef
-SHA1: a78643748b3d25de4e2d19d11711263bfd5e456e
-MD5sum: 2d884a5fcda10ae5728336f3a6b1f13b
+Size: 4464306
+SHA256: 283ec156cb8685642aeb540880b4239fee685850f14c7ae8b0f35b2517733090
+SHA1: 9ba47bae6f0fec782ba95cc4ea8463a72a39fe68
+MD5sum: 37f55035223529adb422f2f75f82ddc1
 Description: GStreamer core documentation and manuals
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -85,10 +85,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: utils
 Filename: pool/main/g/gstreamer1.0/gstreamer1.0-tools_1.6.1-1_amd64.deb
-Size: 930324
-SHA256: 5338edd7d1b9c19513eb8e1191ccac5b063a8d70ff158ce9fbd4caa1ed5615b5
-SHA1: 48b41a85f75c9e9c86639848e1af39aa68d3b8b6
-MD5sum: 616634483caa6c8ff7113583f28d84df
+Size: 930310
+SHA256: c7e9fb9a2c5f51665a8cde3bb74f37eb2d242b3436474f04493fbab264c8f679
+SHA1: ebc3af2ddba7d70fb248580c339bc2d8f91ef9ad
+MD5sum: 6bf0129c6d2c3e3b1e4d98d3a9ef03e9
 Description: Tools for use with GStreamer
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -113,10 +113,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: libs
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-0_1.6.1-1_amd64.deb
-Size: 1810514
-SHA256: 4ab230e15df5a8fb9da13a76d231118b224b3a25cc22831ebbb86e066b5c787a
-SHA1: 6da7332d1789f62325e90ce2ef65b5a5758d3c9d
-MD5sum: 3040688fee46763a075d08164066918a
+Size: 1810642
+SHA256: 276e6373b4ac61f9b1172e628c305f5cb6e4352bf55218b3649d6dc0600a7806
+SHA1: 818963e7727fce40d647a6f02a2d14bc7f92c56c
+MD5sum: a356b8e61da4c330410086f2675458ad
 Description: Core GStreamer libraries and elements
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -139,10 +139,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: extra
 Section: debug
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-0-dbg_1.6.1-1_amd64.deb
-Size: 2721726
-SHA256: 749a689a7776bdc6412e37842d70f8b6ee8d0d707da0cbad61f509fe14c81348
-SHA1: 2ce6de29b7cf77ece404856ac7d5df749f27e9a8
-MD5sum: e76847479e2ce714c8226a11fef2def1
+Size: 2721502
+SHA256: b51e26718c1e2a702e31b3483d0ada2d63955839f825b7606e5c237418c29e90
+SHA1: 6500beb1caa3ee13a9ac14a52ccea7deab8888db
+MD5sum: 2e01a8792633558e9483451569a64ec3
 Description: Core GStreamer libraries and elements
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -169,10 +169,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: libdevel
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-dev_1.6.1-1_amd64.deb
-Size: 1260216
-SHA256: d186cf3499713a0971d7ea5efb6eb5f10cf3850bb508dac5da2303d28eec0e2f
-SHA1: 25881edd2b95117c3c1876533610fea55251910f
-MD5sum: 57eaf78516ce1144034ba71b784f2573
+Size: 1260268
+SHA256: bbb76d81ed803a59c4c109522ab871b0eaf3a099c1c0bc20f9782579437a846d
+SHA1: a488d8a5104b87ffdca17e01b11368527dbe92d7
+MD5sum: 28559dae94fa78641224a1a31fe8688e
 Description: GStreamer core development files
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
