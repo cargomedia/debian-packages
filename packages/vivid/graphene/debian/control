@@ -1,0 +1,26 @@
+Source: graphene
+Section: libs
+Priority: extra
+Maintainer: Cargomedia <tech@cargomedia.com>
+Build-Depends: autoconf (>= 2.69),
+               automake (>= 1.14),
+               autopoint (>= 0.17),
+               autotools-dev,
+               cdbs (>= 0.4.93),
+               debhelper (>= 9),
+               pkg-config,
+               libtool,
+               automake
+Standards-Version: 1.2.10
+Vcs-Git: git://github.com/ebassi/graphene.git
+Vcs-Browser: http://github.com/ebassi/graphene
+Homepage: http://github.com/ebassi/graphene
+
+Package: graphene
+Architecture: any
+Section: libs
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Homepage: http://github.com/ebassi/graphene
+Description: A thin layer of types for graphic libraries
+
