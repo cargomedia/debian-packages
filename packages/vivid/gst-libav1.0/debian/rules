@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+
+build:
+	dh build --before configure
+	./autogen.sh
+	./configure --prefix=/usr
+	make
+	make install
+	dh build --after build
+
+clean:
+	dh clean
+
+binary-arch:
+	dh binary-arch
+
+binary-indep:
+	dh binary-indep
+
+binary: build binary-arch binary-indep
