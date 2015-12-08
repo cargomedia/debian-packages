@@ -4,8 +4,8 @@ build:
 	dh build --before configure
 	./autogen.sh
 	./configure --prefix=/usr
-	make
-	make install
+	$(MAKE)
+	$(MAKE) DESTDIR=$(CURDIR)/debian/gstreamer1.0-libav install
 	dh build --after build
 
 clean:
