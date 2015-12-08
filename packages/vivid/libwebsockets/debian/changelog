@@ -1,0 +1,5 @@
+libwebsockets (1.2.2-1) unstable; urgency=low
+
+  * Initial release (closes: #697671).
+
+ -- Peter Pentchev <roam@ringlet.net>  Thu, 28 Mar 2013 19:10:28 +0200
