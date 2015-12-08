@@ -1,1 +1,1 @@
-usr/lib/*/*.so.*
+debian/gstreamer1.0-libav/usr/lib/*/*.so
