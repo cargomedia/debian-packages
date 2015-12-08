@@ -1,6 +1,6 @@
 #!/bin/sh
 
-test_description="Basic gstreamer installation verification"
+test_description="Basic graphene installation verification"
 
 . ./sharness.sh
 
