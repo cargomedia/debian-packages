@@ -19,11 +19,9 @@ for i in \
     audiovisualizers \
     autoconvert \
     bayer \
-    camerabin2 \
     coloreffects \
     compositor \
     dataurisrc \
-    debugutils \
     dvbsuboverlay \
     dvdspu \
     festival \
@@ -40,15 +38,12 @@ for i in \
     ivtc \
     jp2kdecimator \
     jpegformat \
-    librfb \
     liveadder \
     midi \
-    mpegdemux \
     mpegpsmux \
     mpegtsdemux \
     mpegtsmux \
     mxf \
-    onvif \
     pcapparse \
     pnm \
     rawparse \
@@ -56,41 +51,29 @@ for i in \
     rtp \
     sdp \
     segmentclip \
-    siren \
     smooth \
     speed \
     stereo \
     subenc \
-    videofilters \
-    videoparsers \
     videosignal \
     vmnc \
-    y4m \
     yadif \
     assrender \
 	bs2b \
 	bz2 \
 	chromaprint \
 	curl \
-	dash \
 	decklink \
-	dfbvideosink  \
 	dtls \
 	dtsdec \
 	dvb \
 	faad \
 	fbdevsink \
 	flite \
-	fluidsynth \
-	gl \
-	gme \
 	gsmenc gsmdec \
-	gtk \
-	hls \
 	kate \
 	ladspa \
 	libde265 \
-	libmms \
 	mimic \
 	modplug \
 	mpeg2enc \
@@ -107,7 +90,7 @@ for i in \
 	rtmp \
 	sbc \
 	schro \
-	sfdec sfenc \
+	sfdec \
 	shm \
 	smoothstreaming \
 	soundtouch \
@@ -115,9 +98,6 @@ for i in \
 	srtp \
 	uvch264 \
 	vcdsrc \
-	vo-aacenc \
-	vo-amrwbenc \
-	wayland  \
 	webp  \
 	wildmidi \
 	x265 \
