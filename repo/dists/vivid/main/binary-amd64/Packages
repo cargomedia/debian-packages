@@ -1,3 +1,36 @@
+Package: gir1.2-gst-plugins-bad-1.0
+Source: gst-plugins-bad1.0
+Version: 1.6.1-1ubuntu1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 204
+Depends: gir1.2-gstreamer-1.0, libgstreamer-plugins-bad1.0-0 (<< 1.6.2), libgstreamer-plugins-bad1.0-0 (>= 1.6.1)
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
+Priority: extra
+Section: introspection
+Filename: pool/main/g/gst-plugins-bad1.0/gir1.2-gst-plugins-bad-1.0_1.6.1-1ubuntu1_amd64.deb
+Size: 64582
+SHA256: b9e17f02bdbb33c2fdd8b0a348efda224dac93a2512d22b176b5a01c9d8e64d5
+SHA1: 02b2e7e641e15aaa8499e6223bf9a11b4fd0cbdf
+MD5sum: c995b3468ae65923ef49f4882c54da3a
+Description: GObject introspection data for the GStreamer libraries from the "bad" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared
+ to the rest. They might be close to being good quality, but they're missing
+ something - be it a good code review, some documentation, a set of tests, a
+ real live maintainer, or some actual wide use.
+ .
+ This package contains introspection data for the GStreamer libraries from
+ the "bad" set. It can be used by packages using the GIRepository format to
+ generate dynamic bindings.
+Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+
 Package: gir1.2-gstreamer-1.0
 Source: gstreamer1.0
 Version: 1.6.1-1
@@ -9,10 +42,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: introspection
 Filename: pool/main/g/gstreamer1.0/gir1.2-gstreamer-1.0_1.6.1-1_amd64.deb
-Size: 959946
-SHA256: b9195c37cfa42fd50120a795d5ecb24c5845ab4fa089d65174d986ff9327f02d
-SHA1: d9058efab4226b2632d10a1e55bdc57886e7b94e
-MD5sum: 5ab302d358cf8d5adeae835124e4587f
+Size: 959918
+SHA256: a4577ac82dee429bed17ed978ac27d5dce2ad2480fbf2a0dc3b00e98649d5a48
+SHA1: eeefd9787f53d0fb538ce07720b4f627588382d1
+MD5sum: 3e97b612a76914173caaea9d906e584d
 Description: Description: GObject introspection data for the GStreamer library
  This package contains introspection data for the GStreamer streaming media
  framework.
@@ -39,10 +72,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: doc
 Filename: pool/main/g/gstreamer1.0/gstreamer1.0-doc_1.6.1-1_all.deb
-Size: 4464590
-SHA256: c90798c28f41d0c7907ace22586ae0ffbaca61f81776b1daba6fc2420bbd95ef
-SHA1: a78643748b3d25de4e2d19d11711263bfd5e456e
-MD5sum: 2d884a5fcda10ae5728336f3a6b1f13b
+Size: 4464306
+SHA256: 283ec156cb8685642aeb540880b4239fee685850f14c7ae8b0f35b2517733090
+SHA1: 9ba47bae6f0fec782ba95cc4ea8463a72a39fe68
+MD5sum: 37f55035223529adb422f2f75f82ddc1
 Description: GStreamer core documentation and manuals
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -57,6 +90,186 @@ Description: GStreamer core documentation and manuals
   * the GStreamer Plugin Writers Guide
   * Various API docs
 
+Package: gstreamer1.0-plugins-bad
+Source: gst-plugins-bad1.0
+Version: 1.6.1-1ubuntu1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 5424
+Pre-Depends: multiarch-support
+Depends: graphene, libass5 (>= 0.10.2), libbs2b0, libbz2-1.0, libc6 (>= 2.15), libcairo2 (>= 1.2.4), libchromaprint0 (>= 0.2), libcurl3-gnutls (>= 7.16.2), libdca0, libde265-0 (>= 0.8), libdvdnav4 (>= 4.1.3), libdvdread4 (>= 4.1.3), libflite1 (>= 1.4-release-9~), libfluidsynth1, libgcc1 (>= 1:4.1.1), libgl1-mesa-glx | libgl1, libglib2.0-0 (>= 2.37.3), libgme0 (>= 0.5.5), libgsm1 (>= 1.0.13), libgstreamer-plugins-bad1.0-0 (= 1.6.1-1ubuntu1), libgstreamer-plugins-base1.0-0 (>= 1.6.0), libgstreamer-plugins-good1.0-0, libgstreamer1.0-0 (>= 1.6.0), libgtk-3-0 (>= 3.0.0), libgudev-1.0-0 (>= 146), libilmbase6 (>= 1.0.1), libjpeg8 (>= 8c), libkate1 (>= 0.4.1), libmimic0, libmjpegutils-2.1-0, libmms0 (>= 0.4), libmodplug1, libmpeg2encpp-2.1-0, libmpg123-0 (>= 1.6.2), libmplex2-2.1-0, libnettle4, libofa0 (>= 0.9.3), libopenal1 (>= 1.14), libopencv-calib3d2.4, libopencv-contrib2.4, libopencv-core2.4, libopencv-highgui2.4, libopencv-imgproc2.4, libopencv-legacy2.4, libopencv-objdetect2.4, libopencv-video2.4, libopenexr6 (>= 1.6.1), libopenjpeg5 (>= 1.3+dfsg), libopus0 (>= 1.0.3), liborc-0.4-0 (>= 1:0.4.23), libpng12-0 (>= 1.2.13-4), librsvg2-2 (>= 2.36), librtmp1 (>= 2.3), libsbc1, libschroedinger-1.0-0 (>= 1.0.9), libsndfile1 (>= 1.0.20), libsoundtouch0 (>= 1.8.0), libspandsp2 (>= 0.0.6~pre18), libssl1.0.0 (>= 1.0.1), libstdc++6 (>= 4.9), libusb-1.0-0 (>= 2:1.0.8), libvo-aacenc0, libvo-amrwbenc0, libwayland-client0 (>= 1.3.92), libwebp5, libwildmidi1 (>= 0.2.3), libx11-6, libx265-43 (>= 1.5), libxml2 (>= 2.9.0), libzbar0 (>= 0.10), gstreamer1.0-plugins-base, gstreamer1.0-plugins-bad-videoparsers (= 1.6.1-1ubuntu1), gstreamer1.0-plugins-bad-faad (= 1.6.1-1ubuntu1)
+Suggests: frei0r-plugins
+Breaks: gstreamer1.0-plugins-base (<< 0.11.94), gstreamer1.0-plugins-good (<< 1.1.2)
+Replaces: gstreamer1.0-plugins-base (<< 0.11.94), gstreamer1.0-plugins-good (<< 1.1.2)
+Provides: gstreamer1.0-audiosink, gstreamer1.0-audiosource, gstreamer1.0-videosink, gstreamer1.0-videosource, gstreamer1.0-visualization
+Multi-Arch: same
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
+Priority: extra
+Section: libs
+Filename: pool/main/g/gst-plugins-bad1.0/gstreamer1.0-plugins-bad_1.6.1-1ubuntu1_amd64.deb
+Size: 1438544
+SHA256: 152b5ba87d41b3cb9e211cab164ecd571961ce7b39bb2e6d3da5d09005784512
+SHA1: b4598d22ad48331a9ed2bef79e520a15f7e052d4
+MD5sum: 86bd792b8395a66f319bb7680b4a07b8
+Description: GStreamer plugins from the "bad" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared
+ to the rest. They might be close to being good quality, but they're missing
+ something - be it a good code review, some documentation, a set of tests, a
+ real live maintainer, or some actual wide use.
+Gstreamer-Decoders: application/dash+xml; application/mxf; application/vnd.ms-sstr+xml; application/x-hls; application/x-rtp, media=(string)audio, payload=(int)[ 96, 127 ], encoding-name=(string){ OPUS, X-GST-OPUS-DRAFT-SPITTKA-00 }; application/x-rtp, media=(string)video, encoding-name=(string)H265; application/x-yuv4mpeg, y4mversion=(int)2; audio/midi; audio/mpeg, mpegversion=(int)1, layer=(int)[ 1, 3 ], parsed=(boolean)true; audio/ms-gsm; audio/riff-midi; audio/x-adpcm, layout=(string){ microsoft, dvi }; audio/x-aiff; audio/x-ay; audio/x-dts; audio/x-gbs; audio/x-gsm; audio/x-gym; audio/x-hes; audio/x-ircam; audio/x-it; audio/x-kss; audio/x-midi-event; audio/x-mod; audio/x-nist; audio/x-nsf; audio/x-opus; audio/x-paris; audio/x-private1-dts; audio/x-rf64; audio/x-s3m; audio/x-sap; audio/x-sbc, parsed=(boolean)true; audio/x-sds; audio/x-siren, dct-length=(int)320; audio/x-spc; audio/x-stm; audio/x-svx; audio/x-vgm; audio/x-voc; audio/x-w64; audio/x-xi; audio/x-xm; image/jp2; image/svg; image/svg+xml; image/webp; image/x-exr; image/x-j2c, colorspace=(string){ sRGB, sYUV, GRAY }; image/x-jpc, colorspace=(string){ sRGB, sYUV, GRAY }; image/x-portable-anymap; image/x-portable-bitmap; image/x-portable-graymap; image/x-portable-pixmap; subtitle/x-kate; video/mpeg, mpegversion=(int){ 1, 2 }, systemstream=(boolean)true; video/mpegts, systemstream=(boolean)true; video/x-cdxa; video/x-dirac; video/x-h265, stream-format=(string){ hvc1, hev1, byte-stream }, alignment=(string){ au, nal }; video/x-ivf; video/x-vmnc, version=(int)1
+Gstreamer-Elements: accurip, adpcmdec, adpcmenc, aiffmux, aiffparse, asfmux, asfparse, assrender, audiochannelmix, audiointerleave, audiomixer, audioparse, audiosegmentclip, autoconvert, autovideoconvert, bayer2rgb, bpmdetect, bs2b, bulge, burn, bz2dec, bz2enc, checksumsink, chopmydata, chromahold, chromaprint, chromium, circle, coloreffects, combdetect, compare, compositor, curlfilesink, curlftpsink, curlhttpsink, curlsmtpsink, cvdilate, cvequalizehist, cverode, cvlaplace, cvsmooth, cvsobel, dashdemux, dataurisrc, debugspy, decklinkaudiosink, decklinkaudiosrc, decklinkvideosink, decklinkvideosrc, diffuse, dilate, disparity, dodge, dtlsdec, dtlsenc, dtlssrtpdec, dtlssrtpdemux, dtlssrtpenc, dtmfdetect, dtsdec, dvbbasebin, dvbsrc, dvbsuboverlay, dvdspu, edgedetect, errorignore, exclusion, faceblur, facedetect, fbdevsink, festival, fieldanalysis, fisheye, flitetestsrc, fluiddec, fpsdisplaysink, freeverb, gaussianblur, gdpdepay, gdppay, glcolorconvert, glcolorscale, gldeinterlace, gldifferencematte, gldownload, gleffects, gleffects_blur, gleffects_bulge, gleffects_fisheye, gleffects_glow, gleffects_heat, gleffects_identity, gleffects_laplacian, gleffects_lumaxpro, gleffects_mirror, gleffects_sepia, gleffects_sin, gleffects_sobel, gleffects_square, gleffects_squeeze, gleffects_stretch, gleffects_tunnel, gleffects_twirl, gleffects_xpro, gleffects_xray, glfilterapp, glfilterbin, glfiltercube, glfilterglass, glimagesink, glimagesinkelement, glmixerbin, glmosaic, gloverlay, glshader, glsinkbin, glsrcbin, glstereomix, glstereosplit, gltestsrc, gltransformation, glupload, glvideomixer, glvideomixerelement, glviewconvert, gmedec, grabcut, gsmdec, gsmenc, gtksink, handdetect, hlsdemux, hlssink, id3mux, interaudiosink, interaudiosrc, interlace, intersubsink, intersubsrc, intervideosink, intervideosrc, irtspparse, ivfparse, ivtc, jp2kdecimator, kaleidoscope, katedec, kateenc, kateparse, katetag, ladspa-amp-so-amp-mono, ladspa-amp-so-amp-stereo, ladspa-delay-so-delay-5s, ladspa-filter-so-hpf, ladspa-filter-so-lpf, ladspa-sine-so-sine-faaa, ladspa-sine-so-sine-faac, ladspa-sine-so-sine-fcaa, ladspasrc-noise-so-noise-white, ladspasrc-sine-so-sine-fcac, libde265dec, liveadder, marble, midiparse, mimdec, mimenc, mirror, mmssrc, modplug, motioncells, mpeg2enc, mpegpsdemux, mpegpsmux, mpegtsmux, mpg123audiodec, mplex, mssdemux, mxfdemux, ofa, openalsink, openalsrc, opencvtextoverlay, openexrdec, openjpegdec, openjpegenc, opusdec, opusenc, opusparse, pcapparse, perspective, pinch, pitch, pnmdec, pnmenc, pyramidsegment, removesilence, retinex, rfbsrc, rgb2bayer, rotate, rsndvdbin, rsvgdec, rsvgoverlay, rtmpsink, rtmpsrc, rtpasfpay, rtph265depay, rtph265pay, rtponvifparse, rtponviftimestamp, rtpopusdepay, rtpopuspay, sbcdec, sbcenc, scenechange, schrodec, schroenc, sdpdemux, segmentation, sfdec, shmsink, shmsrc, simplevideomark, simplevideomarkdetect, sirendec, sirenenc, skindetect, smooth, solarize, spacescope, spanplc, spectrascope, speed, sphere, square, srtenc, srtpdec, srtpenc, stereo, stretch, synaescope, templatematch, tsdemux, tsparse, tunnel, twirl, uvch264mjpgdemux, uvch264src, vcdsrc, videoanalyse, videodiff, videoparse, videosegmentclip, vmncdec, voaacenc, voamrwbenc, watchdog, waterripple, wavescope, waylandsink, webpdec, webpenc, webvttenc, wildmidi, x265enc, y4mdec, yadif, zbar, zebrastripe
+Gstreamer-Encoders: application/x-bzip; application/x-dtls; application/x-gdp; application/x-kate; application/x-rtp, media=(string)audio, payload=(int)[ 96, 127 ], encoding-params=(string)2, encoding-name=(string){ OPUS, X-GST-OPUS-DRAFT-SPITTKA-00 }; application/x-rtp, media=(string)video, payload=(int)[ 96, 127 ], encoding-name=(string)H265; application/x-rtp, media=(string){ audio, video, application }, encoding-name=(string)X-ASF-PF; application/x-subtitle; audio/AMR-WB; audio/mpeg, mpegversion=(int)4, stream-format=(string){ adts, raw }, base-profile=(string)lc; audio/x-adpcm, layout=(string)dvi; audio/x-aiff; audio/x-gsm; audio/x-opus; audio/x-sbc, channel-mode=(string){ mono, dual, stereo, joint }, blocks=(int){ 4, 8, 12, 16 }, subbands=(int){ 4, 8 }, allocation-method=(string){ snr, loudness }, bitpool=(int)[ 2, 64 ]; audio/x-siren, dct-length=(int)320; image/jp2; image/webp; image/x-j2c, num-components=(int)[ 1, 4 ], colorspace=(string){ sRGB, sYUV, GRAY }; image/x-jpc, num-components=(int)[ 1, 4 ], colorspace=(string){ sRGB, sYUV, GRAY }; image/x-portable-anymap; image/x-portable-bitmap; image/x-portable-graymap; image/x-portable-pixmap; subtitle/x-kate; text/vtt; video/mpeg, systemstream=(boolean)false, mpegversion=(int){ 1, 2 }; video/mpeg, systemstream=(boolean)true; video/mpegts, systemstream=(boolean)true, packetsize=(int){ 188, 192 }; video/x-dirac; video/x-h265, stream-format=(string)byte-stream, alignment=(string)au, profile=(string){ main }; video/x-mimic; video/x-mp4-part; video/x-ms-asf, parsed=(boolean)true; video/x-qt-part
+Gstreamer-Uri-Sinks: rtmfp, rtmp, rtmpe, rtmps, rtmpt, rtmpte, rtmpts
+Gstreamer-Uri-Sources: data, dvb, dvd, mms, mmsh, mmst, mmsu, rtmfp, rtmp, rtmpe, rtmps, rtmpt, rtmpte, rtmpts, vcd
+Gstreamer-Version: 1.6
+Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+
+Package: gstreamer1.0-plugins-bad-dbg
+Source: gst-plugins-bad1.0
+Version: 1.6.1-1ubuntu1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 7868
+Depends: gstreamer1.0-plugins-bad (= 1.6.1-1ubuntu1)
+Breaks: gstreamer1.0-plugins-base-dbg (<< 0.11.94), gstreamer1.0-plugins-good (<< 1.1.2)
+Replaces: gstreamer1.0-plugins-base-dbg (<< 0.11.94), gstreamer1.0-plugins-good (<< 1.1.2)
+Multi-Arch: same
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
+Priority: extra
+Section: debug
+Filename: pool/main/g/gst-plugins-bad1.0/gstreamer1.0-plugins-bad-dbg_1.6.1-1ubuntu1_amd64.deb
+Size: 6398026
+SHA256: 71e420c1152938cb020c0698019a94a45786b263427c69d07883a48628d2b3ce
+SHA1: f45cf99e6615fddb426af735fbde68554f1115f2
+MD5sum: 7ad3c1d75866203aa519d83a532bfe55
+Description: GStreamer plugins from the "bad" set (debug symbols)
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ This package contains unstripped shared libraries. It is provided primarily
+ to provide a backtrace with names in a debugger, this makes it somewhat
+ easier to interpret core dumps. The libraries are installed in
+ /usr/lib/debug and are automatically used by gdb.
+Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+
+Package: gstreamer1.0-plugins-bad-doc
+Source: gst-plugins-bad1.0
+Version: 1.6.1-1ubuntu1
+Architecture: all
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 3517
+Depends: gstreamer1.0-doc, gstreamer1.0-plugins-base-doc
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
+Priority: extra
+Section: doc
+Filename: pool/main/g/gst-plugins-bad1.0/gstreamer1.0-plugins-bad-doc_1.6.1-1ubuntu1_all.deb
+Size: 245146
+SHA256: 6055d7906a3129fbbe7d43699995974db8f9132be7a43389f97ac9e6a9c070a1
+SHA1: 9de38b1400c5a010a2e0dbd191b2bd4bd0e634a5
+MD5sum: c6948133cd58158924969a39c931f6f8
+Description: GStreamer documentation for plugins from the "bad" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared
+ to the rest. They might be close to being good quality, but they're missing
+ something - be it a good code review, some documentation, a set of tests, a
+ real live maintainer, or some actual wide use.
+ .
+ This package contains the documentation for plugins from the "bad" set.
+Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+
+Package: gstreamer1.0-plugins-bad-faad
+Source: gst-plugins-bad1.0
+Version: 1.6.1-1ubuntu1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 121
+Pre-Depends: multiarch-support
+Depends: libc6 (>= 2.14), libfaad2 (>= 2.7), libglib2.0-0 (>= 2.37.3), libgstreamer-plugins-base1.0-0 (>= 1.6.0), libgstreamer1.0-0 (>= 1.0.0), gstreamer1.0-plugins-base, libgstreamer-plugins-bad1.0-0 (= 1.6.1-1ubuntu1)
+Breaks: gstreamer1.0-plugins-bad (<< 1.2.3-0ubuntu2)
+Replaces: gstreamer1.0-plugins-bad (<< 1.2.3-0ubuntu2)
+Multi-Arch: same
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
+Priority: extra
+Section: libs
+Filename: pool/main/g/gst-plugins-bad1.0/gstreamer1.0-plugins-bad-faad_1.6.1-1ubuntu1_amd64.deb
+Size: 47288
+SHA256: e26f9d96cc49c8c68df2d15b89f900f46f1c2cf1b3e66c8531ebcb85cca82bb9
+SHA1: 27cc7d518b5e711017132e5ec645eda1f4fa23fa
+MD5sum: 2b8016c06fdd02192c467827dd2359b9
+Description: GStreamer faad plugin from the "bad" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared
+ to the rest. They might be close to being good quality, but they're missing
+ something - be it a good code review, some documentation, a set of tests, a
+ real live maintainer, or some actual wide use.
+ .
+ This package contains the "faad" plugin from the "bad" set.
+Gstreamer-Decoders: audio/mpeg, mpegversion=(int)4, stream-format=(string){ raw, adts }; audio/mpeg, mpegversion=(int)2
+Gstreamer-Elements: faad
+Gstreamer-Version: 1.6
+Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+
+Package: gstreamer1.0-plugins-bad-videoparsers
+Source: gst-plugins-bad1.0
+Version: 1.6.1-1ubuntu1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 292
+Pre-Depends: multiarch-support
+Depends: libc6 (>= 2.14), libglib2.0-0 (>= 2.37.3), libgstreamer-plugins-bad1.0-0 (= 1.6.1-1ubuntu1), libgstreamer-plugins-base1.0-0 (>= 1.6.0), libgstreamer1.0-0 (>= 1.6.0), gstreamer1.0-plugins-base
+Breaks: gstreamer1.0-plugins-bad (<< 1.2.3-0ubuntu2)
+Replaces: gstreamer1.0-plugins-bad (<< 1.2.3-0ubuntu2)
+Multi-Arch: same
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
+Priority: extra
+Section: libs
+Filename: pool/main/g/gst-plugins-bad1.0/gstreamer1.0-plugins-bad-videoparsers_1.6.1-1ubuntu1_amd64.deb
+Size: 109792
+SHA256: e10a3dcd894efe48e44d4247253d4368f7a8c7eee6ebba4234c388ca8045f147
+SHA1: e218762896aaadb27908b839a1c80a7515031a8f
+MD5sum: 9794a4e4ea328de750b40738c1fe8364
+Description: GStreamer videoparsers plugin from the "bad" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared
+ to the rest. They might be close to being good quality, but they're missing
+ something - be it a good code review, some documentation, a set of tests, a
+ real live maintainer, or some actual wide use.
+ .
+ This package contains the "video parsers" plugin from the "bad" set.
+Gstreamer-Decoders: image/png; video/mpeg, mpegversion=(int)4, systemstream=(boolean)false; video/mpeg, mpegversion=(int)[ 1, 2 ], systemstream=(boolean)false; video/x-divx, divxversion=(int)[ 4, 5 ]; video/x-h263, variant=(string)itu; video/x-h264; video/x-h265
+Gstreamer-Elements: diracparse, h263parse, h264parse, h265parse, mpeg4videoparse, mpegvideoparse, pngparse, vc1parse
+Gstreamer-Version: 1.6
+Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+
 Package: gstreamer1.0-tools
 Source: gstreamer1.0
 Version: 1.6.1-1
@@ -69,10 +282,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: utils
 Filename: pool/main/g/gstreamer1.0/gstreamer1.0-tools_1.6.1-1_amd64.deb
-Size: 930324
-SHA256: 5338edd7d1b9c19513eb8e1191ccac5b063a8d70ff158ce9fbd4caa1ed5615b5
-SHA1: 48b41a85f75c9e9c86639848e1af39aa68d3b8b6
-MD5sum: 616634483caa6c8ff7113583f28d84df
+Size: 930310
+SHA256: c7e9fb9a2c5f51665a8cde3bb74f37eb2d242b3436474f04493fbab264c8f679
+SHA1: ebc3af2ddba7d70fb248580c339bc2d8f91ef9ad
+MD5sum: 6bf0129c6d2c3e3b1e4d98d3a9ef03e9
 Description: Tools for use with GStreamer
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -82,6 +295,72 @@ Description: Tools for use with GStreamer
  installing new plug-ins.
  .
  This package contains versioned command-line tools for GStreamer.
+
+Package: libgstreamer-plugins-bad1.0-0
+Source: gst-plugins-bad1.0
+Version: 1.6.1-1ubuntu1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 1104
+Pre-Depends: multiarch-support
+Depends: libc6 (>= 2.14), libegl1-mesa (>= 7.8.1) | libegl1-x11, libgl1-mesa-glx | libgl1, libglib2.0-0 (>= 2.37.3), libgstreamer-plugins-base1.0-0 (>= 1.6.0), libgstreamer1.0-0 (>= 1.6.0), libwayland-client0 (>= 1.3.92), libwayland-egl1-mesa (>= 10.0.2) | libwayland-egl1, libx11-6
+Multi-Arch: same
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
+Priority: extra
+Section: libs
+Filename: pool/main/g/gst-plugins-bad1.0/libgstreamer-plugins-bad1.0-0_1.6.1-1ubuntu1_amd64.deb
+Size: 357986
+SHA256: b7fdf7d911485f187ad9f42cb9aa988df4cb25af5194ebf3844f9e0111c8318e
+SHA1: 71164e71fb71f63c68c0a5fc7f6354feaddfc116
+MD5sum: 10e7fef70ea7f8f4ee100145fced3912
+Description: GStreamer development files for libraries from the "bad" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared
+ to the rest. They might be close to being good quality, but they're missing
+ something - be it a good code review, some documentation, a set of tests, a
+ real live maintainer, or some actual wide use.
+ .
+ This package contains shared GStreamer libraries from the "bad" set. The API
+ is not guaranteed to be stable.
+Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+
+Package: libgstreamer-plugins-bad1.0-dev
+Source: gst-plugins-bad1.0
+Version: 1.6.1-1ubuntu1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 1188
+Depends: libgstreamer-plugins-bad1.0-0 (= 1.6.1-1ubuntu1), libgstreamer1.0-dev, libgstreamer-plugins-base1.0-dev, libgstreamer-plugins-good1.0-dev, gir1.2-gst-plugins-bad-1.0 (= 1.6.1-1ubuntu1)
+Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
+Priority: extra
+Section: libdevel
+Filename: pool/main/g/gst-plugins-bad1.0/libgstreamer-plugins-bad1.0-dev_1.6.1-1ubuntu1_amd64.deb
+Size: 141590
+SHA256: 285e9f4586375f4020aba40f448f905d17532fcc5363de5d07bc3c702c0770b3
+SHA1: 3c3a63e4fe132609ce208d3be573ad5105416e45
+MD5sum: ae589d00e249068f35a2e4e3202a6f7f
+Description: GStreamer development files for libraries from the "bad" set
+ GStreamer is a streaming media framework, based on graphs of filters
+ which operate on media data.  Applications using this library can do
+ anything from real-time sound processing to playing videos, and just
+ about anything else media-related.  Its plugin-based architecture means
+ that new data types or processing capabilities can be added simply by
+ installing new plug-ins.
+ .
+ GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared
+ to the rest. They might be close to being good quality, but they're missing
+ something - be it a good code review, some documentation, a set of tests, a
+ real live maintainer, or some actual wide use.
+ .
+ This package contains development files for GStreamer libraries from the
+ "bad" set. The API is not guaranteed to be stable.
+Original-Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
 
 Package: libgstreamer1.0-0
 Source: gstreamer1.0
@@ -97,10 +376,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: libs
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-0_1.6.1-1_amd64.deb
-Size: 1810514
-SHA256: 4ab230e15df5a8fb9da13a76d231118b224b3a25cc22831ebbb86e066b5c787a
-SHA1: 6da7332d1789f62325e90ce2ef65b5a5758d3c9d
-MD5sum: 3040688fee46763a075d08164066918a
+Size: 1810642
+SHA256: 276e6373b4ac61f9b1172e628c305f5cb6e4352bf55218b3649d6dc0600a7806
+SHA1: 818963e7727fce40d647a6f02a2d14bc7f92c56c
+MD5sum: a356b8e61da4c330410086f2675458ad
 Description: Core GStreamer libraries and elements
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -123,10 +402,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: extra
 Section: debug
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-0-dbg_1.6.1-1_amd64.deb
-Size: 2721726
-SHA256: 749a689a7776bdc6412e37842d70f8b6ee8d0d707da0cbad61f509fe14c81348
-SHA1: 2ce6de29b7cf77ece404856ac7d5df749f27e9a8
-MD5sum: e76847479e2ce714c8226a11fef2def1
+Size: 2721502
+SHA256: b51e26718c1e2a702e31b3483d0ada2d63955839f825b7606e5c237418c29e90
+SHA1: 6500beb1caa3ee13a9ac14a52ccea7deab8888db
+MD5sum: 2e01a8792633558e9483451569a64ec3
 Description: Core GStreamer libraries and elements
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
@@ -153,10 +432,10 @@ Homepage: http://gstreamer.freedesktop.org
 Priority: optional
 Section: libdevel
 Filename: pool/main/g/gstreamer1.0/libgstreamer1.0-dev_1.6.1-1_amd64.deb
-Size: 1260216
-SHA256: d186cf3499713a0971d7ea5efb6eb5f10cf3850bb508dac5da2303d28eec0e2f
-SHA1: 25881edd2b95117c3c1876533610fea55251910f
-MD5sum: 57eaf78516ce1144034ba71b784f2573
+Size: 1260268
+SHA256: bbb76d81ed803a59c4c109522ab871b0eaf3a099c1c0bc20f9782579437a846d
+SHA1: a488d8a5104b87ffdca17e01b11368527dbe92d7
+MD5sum: 28559dae94fa78641224a1a31fe8688e
 Description: GStreamer core development files
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
