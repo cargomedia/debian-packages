@@ -60,6 +60,22 @@ Description: Description: GObject introspection data for the GStreamer library
  It can be used by packages using the GIRepository format to generate
  dynamic bindings.
 
+Package: graphene
+Version: 1.2.10-1
+Architecture: amd64
+Maintainer: Cargomedia <tech@cargomedia.com>
+Installed-Size: 644
+Depends: libc6 (>= 2.15), libglib2.0-0 (>= 2.14.0)
+Homepage: http://github.com/ebassi/graphene
+Priority: extra
+Section: libs
+Filename: pool/main/g/graphene/graphene_1.2.10-1_amd64.deb
+Size: 72772
+SHA256: 7427590b5a3ed37b9df44c70f86e6b62ddc22d9611c89cb6124ed41bd2753d35
+SHA1: 09b2e7ce4f9c6e44b9c37a15ad35eeff23a7bf95
+MD5sum: 064efadd81b981bd895ef1128faeabf8
+Description: A thin layer of types for graphic libraries
+
 Package: gstreamer1.0-doc
 Source: gstreamer1.0
 Version: 1.6.1-1
@@ -446,4 +462,128 @@ Description: GStreamer core development files
  .
  This package contains development files for the core library and
  elements.
+
+Package: libsrtp
+Version: 1.5.3
+Architecture: amd64
+Maintainer: Cargomedia <tech@cargomedia.com>
+Installed-Size: 382
+Homepage: https://github.com/cisco/libsrtp
+Priority: extra
+Section: libs
+Filename: pool/main/libs/libsrtp/libsrtp_1.5.3_amd64.deb
+Size: 84504
+SHA256: 6e2618127844b2f0b4a38742d7f49f31bf571efef28c53bb389fbc123a0aead9
+SHA1: ca3e08aeede5088f8d13fb0bd712cc9f71bd59c7
+MD5sum: 4c7d187dbab1fe328eb1b7edc26b1c9f
+Description: Library for SRTP (Secure Realtime Transport Protocol)
+
+Package: libwebsockets-dev
+Source: libwebsockets
+Version: 1.2.2-1
+Architecture: amd64
+Maintainer: Peter Pentchev <roam@ringlet.net>
+Installed-Size: 295
+Depends: libwebsockets3 (= 1.2.2-1)
+Multi-Arch: same
+Homepage: http://www.libwebsockets.org/
+Priority: optional
+Section: libdevel
+Filename: pool/main/libw/libwebsockets/libwebsockets-dev_1.2.2-1_amd64.deb
+Size: 74008
+SHA256: 93c33c82cb2933925a4422cf1012a695fab33254078a35d68ed6d3c83d488da0
+SHA1: 738bda200b866518014277357f663b511499f7ea
+MD5sum: adf2aa1620e28f024df9c85e679d16c9
+Description: lightweight C websockets library - development files
+ Libwebsockets is a lightweight pure C library for both websockets
+ clients and servers built to use minimal CPU and memory resources
+ and provide fast throughput in both directions.
+ .
+ This package contains the header files needed for developing programs
+ using libwebsockets and a static library.
+
+Package: libwebsockets-test-server
+Source: libwebsockets
+Version: 1.2.2-1
+Architecture: amd64
+Maintainer: Peter Pentchev <roam@ringlet.net>
+Installed-Size: 3073
+Depends: libwebsockets3 (= 1.2.2-1), libc6 (>= 2.14), libssl1.0.0 (>= 1.0.0), zlib1g (>= 1:1.1.4)
+Multi-Arch: foreign
+Homepage: http://www.libwebsockets.org/
+Priority: optional
+Section: utils
+Filename: pool/main/libw/libwebsockets/libwebsockets-test-server_1.2.2-1_amd64.deb
+Size: 2569202
+SHA256: 3ac286c0f3cb5bad8b27736d8c91dce7a2882695840a836fa832dac2c38abbb3
+SHA1: 6c0a5100c751ceb4893886c70b23c043b3948e28
+MD5sum: c6f25b921bebaefb0518560bdb21a50c
+Description: lightweight C websockets library - test servers
+ Libwebsockets is a lightweight pure C library for both websockets
+ clients and servers built to use minimal CPU and memory resources
+ and provide fast throughput in both directions.
+ .
+ This package contains several demonstration test servers.
+
+Package: libwebsockets3
+Source: libwebsockets
+Version: 1.2.2-1
+Architecture: amd64
+Maintainer: Peter Pentchev <roam@ringlet.net>
+Installed-Size: 114
+Depends: libc6 (>= 2.14), libssl1.0.0 (>= 1.0.0), zlib1g (>= 1:1.1.4)
+Multi-Arch: same
+Homepage: http://www.libwebsockets.org/
+Priority: optional
+Section: libs
+Filename: pool/main/libw/libwebsockets/libwebsockets3_1.2.2-1_amd64.deb
+Size: 44742
+SHA256: 33c2e0cd16fc90bfde0de61d3549caa79afb9cd37645424d57aa6f7ce804edd7
+SHA1: df0373f14acee3a35e46a9300ccda5503e3d4d4d
+MD5sum: 5ed76cd35c56e797a594b18020929009
+Description: lightweight C websockets library
+ Libwebsockets is a lightweight pure C library for both websockets
+ clients and servers built to use minimal CPU and memory resources
+ and provide fast throughput in both directions.
+ .
+ This package contains the shared library.
+
+Package: libwebsockets3-dbg
+Source: libwebsockets
+Version: 1.2.2-1
+Architecture: amd64
+Maintainer: Peter Pentchev <roam@ringlet.net>
+Installed-Size: 14
+Depends: libwebsockets3 (= 1.2.2-1)
+Multi-Arch: same
+Homepage: http://www.libwebsockets.org/
+Priority: extra
+Section: debug
+Filename: pool/main/libw/libwebsockets/libwebsockets3-dbg_1.2.2-1_amd64.deb
+Size: 4346
+SHA256: 2275988f389de7edc2e1be35381b0284d5a21d7449af1776fe4f4b31ec1f5391
+SHA1: 332799c9295d6403dd0107b4aff560f42a071610
+MD5sum: d448d6c755322de48bbebab01710433b
+Description: lightweight C websockets library - debug symbols
+ Libwebsockets is a lightweight pure C library for both websockets
+ clients and servers built to use minimal CPU and memory resources
+ and provide fast throughput in both directions.
+ .
+ This package contains the debugging symbols for the library.
+
+Package: usrsctp
+Version: 49335e1-git
+Architecture: amd64
+Maintainer: Cargomedia <tech@cargomedia.com>
+Installed-Size: 1908
+Depends: libc6 (>= 2.14)
+Homepage: http://sctp.fh-muenster.de/sctp-user-land-stack.html
+Priority: extra
+Section: libs
+Filename: pool/main/u/usrsctp/usrsctp_49335e1-git_amd64.deb
+Size: 299002
+SHA256: 0a6c290151f61b42d256387af274320d5d555e930974193112a96cdb89dc630f
+SHA1: 65d188c044fcd387d80a238c06c7857d2cab7d8b
+MD5sum: 4934ea3fef1b1b3d05551c7166c51a24
+Description: This is a userland SCTP stack supporting FreeBSD, Linux, Mac OS X and Windows
 
