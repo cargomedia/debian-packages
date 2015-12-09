@@ -1,0 +1,28 @@
+Source: gst-entrans
+Section: net
+Priority: extra
+Maintainer: Cargomedia <tech@cargomedia.com>
+Build-Depends: autoconf (>= 2.69),
+               automake (>= 1.14),
+               autopoint (>= 0.17),
+               autotools-dev,
+               cdbs (>= 0.4.93),
+               debhelper (>= 9),
+               pkg-config,
+               libtool,
+               automake,
+               libgstreamer1.0-dev
+Standards-Version: 1.0.3
+Vcs-Git: git://git.code.sf.net/p/gentrans/code
+Homepage: http://gentrans.sourceforge.net/
+
+Package: gst-entrans
+Architecture: any
+Section: doc
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Homepage: http://gentrans.sourceforge.net/
+Description: GEntrans is a software package providing a collection of plug-ins and tools
+    for the GStreamer multimedia framework specifically geared towards transcoding and
+    recording purposes.
+
