@@ -1,0 +1,13 @@
+Index: gst-entrans/configure.ac
+===================================================================
+--- gst-entrans.orig/configure.ac
++++ gst-entrans/configure.ac
+@@ -189,7 +189,7 @@ AC_SUBST(GSTPB_BASE_CFLAGS)
+ AC_SUBST(GSTPB_BASE_LIBS)
+ 
+ dnl set the plugindir where plugins should be installed
+-plugindir="\$(libdir)/gstreamer-$GST_MAJORMINOR"
++plugindir="\$(libdir)"
+ AC_SUBST(plugindir)
+ 
+ dnl set proper LDFLAGS for plugins
