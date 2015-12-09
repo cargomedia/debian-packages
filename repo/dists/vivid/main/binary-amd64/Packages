@@ -73,6 +73,33 @@ Description: GStreamer core documentation and manuals
   * the GStreamer Plugin Writers Guide
   * Various API docs
 
+Package: gstreamer1.0-libav
+Source: gst-libav1.0
+Version: 1.6.1-1
+Architecture: amd64
+Maintainer: Maintainers of GStreamer packages <pkg-gstreamer-maintainers@lists.alioth.debian.org>
+Installed-Size: 13153
+Depends: libbz2-1.0, libc6 (>= 2.17), libglib2.0-0 (>= 2.37.3), libgstreamer-plugins-base1.0-0 (>= 1.6.0), libgstreamer1.0-0 (>= 1.6.0), liblzma5 (>= 5.1.1alpha+20120614), zlib1g (>= 1:1.2.0)
+Multi-Arch: same
+Homepage: http://gstreamer.freedesktop.org/modules/gst-libav.html
+Priority: optional
+Section: libs
+Filename: pool/main/g/gst-libav1.0/gstreamer1.0-libav_1.6.1-1_amd64.deb
+Size: 4707832
+SHA256: 6c5fb72dbe494f2c9163d9471e15e5906103ea6db15f2a943db97dd58102a35f
+SHA1: 8387d43b83580493035d3abe11afae5f5fd3e01d
+MD5sum: 1b699ee9cca3b9944aaf8f9038b66078
+Description: libav plugin for GStreamer
+ This GStreamer plugin supports a large number of audio and video compression
+ formats through the use of the libav library.  The plugin contains GStreamer
+ elements for encoding 40+ formats (MPEG, DivX, MPEG4, AC3, DV, ...), decoding
+ elements for decoding 90+ formats (AVI, MPEG, OGG, Matroska, ASF, ...),
+ demuxing 30+ formats and colorspace conversion.
+ .
+ http://www.libav.org/
+ http://gstreamer.freedesktop.org/
+ http://gstreamer.freedesktop.org/modules/gst-libav.html
+
 Package: gstreamer1.0-tools
 Source: gstreamer1.0
 Version: 1.6.1-1

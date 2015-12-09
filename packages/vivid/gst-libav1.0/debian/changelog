@@ -1,0 +1,6 @@
+gst-libav1.0 (1.6.1-1) unstable; urgency=medium
+
+  * New eccentric package from source (Works for us™). Your mileage will vary
+    http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.6.1.tar.xz
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 07 Dec 2015 15:03:14 +0200
