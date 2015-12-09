@@ -2,7 +2,7 @@
 Hash: SHA1
 
 Codename: vivid
-Date: Wed, 09 Dec 2015 14:48:54 UTC
+Date: Wed, 09 Dec 2015 15:20:42 UTC
 Architectures: amd64
 Components: main
 MD5Sum:
@@ -20,11 +20,11 @@ SHA256:
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQEcBAEBAgAGBQJWaD9WAAoJEDNy6zNKRc2LotgH+gOAR8SWJkJ4cQVnJcDwJ6e+
-zPRUtMhwaZXf93BzdYL/+czqSQoZFBjqHhmznC8Y8Vko9jH1qIPQ+iJpzcDHXFkk
-xtaCWjRd3GpxHseZOyBwtfMDbwrBfuVYFn7iFijj13Rlp/zW2cuygpZQyNVYc06r
-8x0r90P3ZQD7QofuJLuKB6JeqMm9111ooeFMEDE5KNx2+Zl0FBZYLVXT0FRRapzT
-8qyPaBpu8/sXslJCn16Af3zd7yjCpKpEHsflfdMCBPwrZQQMfe9zku+QMktDUfMF
-dVkc4l3TLFCYi/RqsMKh1N31Q5MWLjGRkApKQaVSlasjvIALJiNsk1hz6wY3AgA=
-=kjBR
+iQEcBAEBAgAGBQJWaEbKAAoJEDNy6zNKRc2LhUMH/0aGQMCBuelsGpZvWPkhXUvf
+OAd7zyFPH6EnYFhHCWQN/+k49I6ZuIDbFfAK2kRS/UlMmHBhqgDsOt+9NZ/0/zcp
+MBnK+bD9vO15rqckyfCFLF9lD/ZudvjPKZOrqqfjfsUNMcA6BeXvoNQzrqMs1+bp
+lwQuVVdY/tC15Vd37mTNFIr4ymnTv3Xjv1/2naZiIaPfkIoM/EoJHW7V7/Pv/3/c
+Zq2EPgUSH5qlgIgiPx2tfbwac3ynNQ6LhbiEISjpE6SxW+MVrXPgsHvMmbSKtMv7
+8p0+2dNHiH4d+7QtBCBQ5PHNpBJqafgj9KweD0B0vP9XgxadBlnSw9oS+io/a7w=
+=k++b
 -----END PGP SIGNATURE-----

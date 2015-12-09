@@ -1,0 +1,37 @@
+From aefc177ca791ebba8acc048cb8526ef3277f6eca Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Sebastian=20Dr=C3=B6ge?= <sebastian@centricular.com>
+Date: Fri, 25 Sep 2015 23:22:02 +0200
+Subject: [PATCH] Make sure to link gme plugin with -lz
+
+---
+ configure.ac | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index aba2ec0..b5ef3a5 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2843,9 +2843,11 @@ AG_GST_CHECK_FEATURE(SPC, [spc decoder], spc, [
+ dnl *** gme ***
+ translit(dnm, m, l) AM_CONDITIONAL(USE_GME, true)
+ AG_GST_CHECK_FEATURE(GME, [gme decoder], gme, [
++  old_LIBS="$LIBS"
++  LIBS="$LIBS -lz"
+   AC_CHECK_HEADER(gme/gme.h, [
+     AC_CHECK_LIB(gme, gme_new_emu, [
+-      GME_LIBS="-lgme"
++      GME_LIBS="-lgme -lz"
+       AC_SUBST(GME_LIBS)
+       HAVE_GME=yes
+     ], [
+@@ -2860,6 +2862,7 @@ AG_GST_CHECK_FEATURE(GME, [gme decoder], gme, [
+       AC_DEFINE(HAVE_LIBGME_ACCURACY, 1, [Define if gme 0.5.6 or newer is available])
+       ])
+   fi
++  LIBS="$old_LIBS"
+ ])
+ 
+ dnl *** XVID ***
+-- 
+2.5.3
+
