@@ -49,15 +49,3 @@ if (test -e "${PATH_TEST}"); then
   echo "Now executing tests..."
   "${PATH_TEST}"
 fi
-
-eval $(gpg-agent --daemon)
-
-PKG_LIST=$(perl -lne '/^Package: (.+)$/ && print $1' "${DIR_PACKAGE}/debian/control")
-for PKG in ${PKG_LIST}; do
-  echo
-  echo "Adding ${PKG} to repo..."
-  if (reprepro -b "${DIR}/repo" list "${CODENAME}" "${PKG}" | grep -q "${PKG}"); then
-    reprepro -b "${DIR}/repo" remove "${CODENAME}" "${PKG}"
-  fi
-  reprepro -b "${DIR}/repo" includedeb "${CODENAME}" "${DIR_PACKAGE}/pkg/${PKG}_"*.deb
-done
