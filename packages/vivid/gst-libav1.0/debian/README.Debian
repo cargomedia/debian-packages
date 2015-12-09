@@ -1,0 +1,10 @@
+gst-libav for Debian
+---------------------
+This package contains the GStreamer libav plugin.
+
+More information can be found at:
+
+http://gstreamer.freedesktop.org/
+http://gstreamer.freedesktop.org/modules/gst-libav.html
+
+David I. Lehn <dlehn@debian.org>  Wed, 16 Jun 2004 22:54:22 -0400
