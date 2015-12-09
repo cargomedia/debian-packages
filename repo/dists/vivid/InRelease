@@ -2,29 +2,29 @@
 Hash: SHA1
 
 Codename: vivid
-Date: Wed, 09 Dec 2015 11:24:14 UTC
+Date: Wed, 09 Dec 2015 14:47:14 UTC
 Architectures: amd64
 Components: main
 MD5Sum:
- 6c8e11f7c7b03819bc45fbab79ead03d 13672 main/binary-amd64/Packages
- 785349016b941ce43ded28f3e0e76fb5 3704 main/binary-amd64/Packages.gz
+ 12f7bee404925bd1e6b70bb087208461 80374 main/binary-amd64/Packages
+ 6986b675d86c7f94d43d8b88114fc4e5 16556 main/binary-amd64/Packages.gz
  063287201b2354699acfe229a752201d 36 main/binary-amd64/Release
 SHA1:
- 3f73fc6f7e0ae1dd1d337de12276aba19d257fb8 13672 main/binary-amd64/Packages
- a418f21d308e1092721dcc870a3b98c606729b55 3704 main/binary-amd64/Packages.gz
+ 7bd89037fac87b58e4f944b4a1f93848b643904c 80374 main/binary-amd64/Packages
+ e93c7745dbf8b0d69d878f44efeaaed819afbeab 16556 main/binary-amd64/Packages.gz
  f9082edea14092794f38390390e06abf8a922f7d 36 main/binary-amd64/Release
 SHA256:
- aa63dc2ee709e8e4a049cc0ae23ff3209c2288bac71d4795a71afc0f6d0f80eb 13672 main/binary-amd64/Packages
- 4d070454cb6a76aac036a754657b094cf290b38d4e5bd39afda218e8258ea659 3704 main/binary-amd64/Packages.gz
+ 76265831acb738eb6addccdf29bdbfcf076a7914bec6c8ced912e2a22e87456a 80374 main/binary-amd64/Packages
+ 14db7557bbdaf1333e8524f80b12f33aedc9dc376328792a6b36a575416a471f 16556 main/binary-amd64/Packages.gz
  f4aafa353a338baedf9e98523c13d7ffeda979ec3cf745f9fad977dd770595c8 36 main/binary-amd64/Release
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQEcBAEBAgAGBQJWaA9eAAoJEDNy6zNKRc2LVSwH/17iZaM1Df2JeHrIBjVZ2VAf
-O6djd5Ptg/KvuGwsRV5UOVm+EDMQB6fgbvvfC85jM+YUajtaDinlXT3i6hTGUPJZ
-MQYlWXcqu5ObmHu/xvKz9T+iTZtBa7PJzAisHHVV9/R4Ij3dQDyhhBRkJFY/QS+T
-k60Ss4YddMYe2WSehaH5VJDhwIrB3yN5+TGivyf+GCZSGISp49VJTWd7M95v9DHl
-HfgZOv2pUFAzSVPw55Fy85zOBfR8Is5/pJwk/L0VtAjcLdMzR0FAgFWUmCEWwswl
-tUFAXvlEQXIGt9ME8i2D0aihTSW7AxpYYkB6IRak2xPIFgNR3Wixbt0/63JCY8I=
-=yBWa
+iQEcBAEBAgAGBQJWaD7yAAoJEDNy6zNKRc2L1kAH/jcCyfJPZhX5ZfFynJkMNjdJ
+6zuy6gbC0nFCXMURzr9GDq5IxM4ZZP5o5JWITQpfmG54zFgd/LS9ZPZqWu+oGcHb
+I4NhWbidIFGS6St3htIcO/GgIA1nOBwvGiVzXMKyfCj9HunRrxNoJ4aY8W19TlgI
+oL0LLiT5wS+pIUg2Bmnhqrw4Z25EI1NvVBMfgBFPJLFoYXaWo74mU4pYMuuDZE6H
+38giNedn2R67DIkIU7/wT0x3sQPTxpeRsiGrU+8IINn9uZ/gpT/CPv0v2XWAwoo0
+0VPrG4/VqZSR6J7D5QPmClklacU2RanW2gtlZnJEN40XbDokaEBTKUdZ9exiX4A=
+=atoD
 -----END PGP SIGNATURE-----
