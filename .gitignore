@@ -1,3 +1,5 @@
 /.idea/
 /.vagrant/
 /keys/
+/packages/*/*/debian/tests/test-results
+/repo
