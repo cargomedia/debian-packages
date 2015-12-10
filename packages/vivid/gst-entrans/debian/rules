@@ -9,12 +9,19 @@
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 
+DEB_CONFIGURE_EXTRA_FLAGS += \
+	--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
+	--disable-examples \
+	--enable-DEBUG \
+	--enable-debug
+
 ## Clear variables that may confound our build of sub-projects; also
 ## note that it is necessary to use overlay_vars relative to .. as
 ## the generate command EXECUTES in rel/
 build:
 	unset CC CFLAGS CPPFLAGS LDFLAGS CXX CXXFLAGS \
-		&& sh autogen.sh && ./configure --prefix=/usr && make
+		&& sh autogen.sh && ./configure --prefix=/usr \
+		--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH)  && make
 	touch build
 
 clean:

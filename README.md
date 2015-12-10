@@ -83,9 +83,9 @@ Start up the box:
 vagrant up <codename>
 ```
 
-Log into the box as `root`:
+Log into the box:
 ```
-vagrant ssh <codename> -c 'sudo su'
+vagrant ssh <codename>
 ```
 
 Build and test a package:
