@@ -58,5 +58,8 @@ done
 if (check && checkpool); then
     test -e ~/.s3cfg || s3cmd --configure
     s3cmd --verbose --acl-public --delete-removed --cf-invalidate sync "${DIR}/repo/" s3://cargomedia-debian-packages/
+else
+    echo "Error: Pool inconsistencies detected, NO package is pushed to S3!"
+    exit 1
 fi
 
