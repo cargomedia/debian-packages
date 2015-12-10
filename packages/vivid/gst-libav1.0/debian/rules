@@ -14,7 +14,8 @@ export DH_VERBOSE=1
 ## the generate command EXECUTES in rel/
 configure-stamp:
 	unset CC CFLAGS CPPFLAGS LDFLAGS CXX CXXFLAGS \
-		&& sh autogen.sh && ./configure --prefix=/usr
+		&& sh autogen.sh && ./configure --prefix=/usr \
+		--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH)
 	touch configure-stamp
 
 build-stamp: configure-stamp

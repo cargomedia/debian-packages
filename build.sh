@@ -4,6 +4,15 @@ DIR="$(cd "$(dirname "${0}")" && pwd)"
 
 usage() { echo "Usage: ${0} -c <codename> -p <package>" 1>&2; exit 1; }
 
+exitIfRoot() {
+  if [ "$(id -u)" -eq "0" ]; then
+      echo "Don't execute this script as root user!"
+      exit 1
+  fi
+}
+
+exitIfRoot
+
 while getopts "c:p:" o; do
     case "${o}" in
         c)
@@ -29,10 +38,11 @@ fi
 DIR_PACKAGE="${DIR}/packages/${CODENAME}/${PACKAGE}"
 
 cd "${DIR_PACKAGE}"
+
 rm -rf tmp/ && mkdir tmp/ && cd tmp/
 . "${DIR_PACKAGE}/setup.sh"
 cp -r "${DIR_PACKAGE}/debian" ./debian
-mk-build-deps --install --remove debian/control
+sudo mk-build-deps --install --remove debian/control
 dpkg-buildpackage -us -uc
 
 cd "${DIR_PACKAGE}"
@@ -40,8 +50,8 @@ rm -rf pkg/ && mkdir pkg/
 mv tmp/*.deb pkg/
 rm -rf tmp/
 
-if ! $(dpkg -i "${DIR_PACKAGE}/pkg/"*.deb); then
-    apt-get install -f
+if ! $(sudo dpkg -i "${DIR_PACKAGE}/pkg/"*.deb); then
+    sudo apt-get install -f
 fi
 
 PATH_TEST="${DIR_PACKAGE}/debian/tests/run-tests"

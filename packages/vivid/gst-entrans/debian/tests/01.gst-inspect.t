@@ -5,6 +5,6 @@ test_description="Basic gst-entrans installation verification"
 . ./sharness.sh
 
 test_expect_success "libgstentrans is installed" "
-  ldconfig -p | grep libgstentrans
+  gst-inspect-1.0 | grep entrans
 "
 test_done
