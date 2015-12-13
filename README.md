@@ -37,6 +37,10 @@ Available packages
  - Version: 20.00.00.00
  - Packages: sas2ircu
 
+**hpacucli**
+ - Version: 9.40.12.0
+ - Packages: hpacucli
+
 **mysql-proxy**
  - Version: 0.8.4
  - Packages: mysql-proxy
@@ -85,6 +89,10 @@ Available packages
 **sas2ircu**
  - Version: 20.00.00.00
  - Packages: sas2ircu
+
+**hpacucli**
+ - Version: 9.40.12.0
+ - Packages: hpacucli
 
 Development
 -----------
