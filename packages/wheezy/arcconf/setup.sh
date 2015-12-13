@@ -1,6 +1,7 @@
 #!/bin/sh
 
-wget "http://download.adaptec.com/raid/storage_manager/arcconf_v1_5_20942.zip"
-mkdir arcconf
-unzip -d arcconf arcconf_v1_5_20942.zip
-cd arcconf
+VERSION="2.00.21811"
+wget "http://download.adaptec.com/raid/storage_manager/arcconf_v$(echo ${VERSION} | tr '.' '_').zip"
+mkdir ${PACKAGE}-${VERSION}
+unzip -d ${PACKAGE}-${VERSION} arcconf_*.zip
+cd ${PACKAGE}-${VERSION}

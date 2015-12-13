@@ -26,9 +26,8 @@ Available packages
  - Debianization via: https://github.com/ssm/pkg-gearmand/
 
 **arcconf**
- - Version: 1.5.20942
+ - Version: 2.00.21811
  - Packages: arcconf
- - Debianization via: https://github.com/eLvErDe/hwraid/pull/4
 
 **mysql-proxy**
  - Version: 0.8.4
@@ -90,19 +89,21 @@ gpg --export-secret-key -a 'Cargo Media' > /vagrant/keys/private.key
 ```
 
 #### Building a package
-Start up the box:
+Start up the box and log in:
 ```
 vagrant up <codename>
-```
-
-Log into the box:
-```
 vagrant ssh <codename>
 ```
 
 Build and test a package:
 ```
 /vagrant/build.sh -c <codename> -p <package>
+```
+
+Bump version of a package:
+```
+cd /vagrant/packages/<codename>/<package>
+dch -U
 ```
 
 Build the repo and upload to S3:

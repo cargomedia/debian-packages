@@ -2,4 +2,4 @@
 
 cd "$(dirname $0)"
 
-prove -v *.t
+./*.t
