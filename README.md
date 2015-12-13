@@ -24,40 +24,49 @@ Available packages
  - Version: 1.1.12 (unstable)
  - Packages: libgearman7, libgearman-dev, libgearman7-dbg, libgearman-doc, gearman-job-server, gearman-tools, gearman
  - Debianization via: https://github.com/ssm/pkg-gearmand/
+
 **arcconf**
  - Version: 1.5.20942
  - Packages: arcconf
  - Debianization via: https://github.com/eLvErDe/hwraid/pull/4
+
 **mysql-proxy**
  - Version: 0.8.4
  - Packages: mysql-proxy
  - Debianization via: https://packages.debian.org/wheezy/mysql-proxy
 
 #### vivid
+
 **gstreamer**
  - Version: 1.6.1
  - Packages: gir1.2-gstreamer-1.0, gstreamer1.0-doc, gstreamer1.0-tools, libgstreamer1.0-0, libgstreamer1.0-0-dbg, libgstreamer1.0-dev
  - Debianization via: http://packages.ubuntu.com/source/xenial/gstreamer1.0
+
 **orc**
  - Version: 0.4.24
  - Packages: liborc-0.4-0-dbg_0.4.24 liborc-0.4-dev_0.4.24 liborc-0.4-0_0.4.24 liborc-0.4-doc_0.4.24
  - Debianization via: http://packages.ubuntu.com/source/xenial/orc
+
 **gst-plugins-base**
  - Version: 1.6.1
  - Packages: gir1.2-gst-plugins-base-1.0_1.6.1 gstreamer1.0-alsa_1.6.1 gstreamer1.0-plugins-base-apps_1.6.1 gstreamer1.0-plugins-base-dbg_1.6.1 gstreamer1.0-plugins-base-doc_1.6.1 gstreamer1.0-plugins-base_1.6.1 gstreamer1.0-x_1.6.1 libgstreamer-plugins-base1.0-0_1.6.1 libgstreamer-plugins-base1.0-dev_1.6.1
  - Debianization via: http://packages.ubuntu.com/xenial/libgstreamer-plugins-base1.0-dev
+
 **gst-plugins-ugly**
  - Version: 1.6.1
  - Packages: gstreamer1.0-plugins-ugly-amr_1.6.1 gstreamer1.0-plugins-ugly-dbg_1.6.1 gstreamer1.0-plugins-ugly-doc_1.6.1 gstreamer1.0-plugins-ugly_1.6.1
  - Debianization via: http://packages.ubuntu.com/source/xenial/gst-plugins-ugly1.0
+
 **gst-plugins-good**
  - Version: 1.6.1
  - Packages: gstreamer1.0-plugins-good-dbg_1.6.1 gstreamer1.0-plugins-good-doc_1.6.1 gstreamer1.0-plugins-good_1.6.1 gstreamer1.0-pulseaudio_1.6.1 libgstreamer-plugins-good1.0-0_1.6.1 libgstreamer-plugins-good1.0-dev_1.6.1
  - Debianization via: http://packages.ubuntu.com/source/xenial/gst-plugins-good1.0
+
 **gstreamer1.0-libav**
  - Version: 1.6.1
  - Packages: gstreamer1.0-libav_1.6.1-1_amd64, gstreamer1.0-libav-dbg_1.6.1-1_amd64
  - Built from http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-2.8.3.tar.xz
+
 **arcconf**
  - Version: 2.00.21811
  - Packages: arcconf
