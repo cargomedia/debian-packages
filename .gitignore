@@ -1,5 +1,6 @@
 /.idea/
 /.vagrant/
+/.s3cfg
 /keys/
 /packages/*/*/debian/tests/test-results
 /repo
