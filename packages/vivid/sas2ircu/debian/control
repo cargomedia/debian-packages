@@ -1,0 +1,12 @@
+Source: sas2ircu-64bit
+Section: admin
+Priority: optional
+Maintainer: Cargo Media <tech@cargomedia.ch>
+Build-Depends: debhelper (>= 5), dh-exec
+Standards-Version: 3.9.4
+Homepage: http://www.avagotech.com/support/download-search
+
+Package: sas2ircu
+Architecture: amd64
+Depends: ${misc:Depends}
+Description: SAS2IRCU

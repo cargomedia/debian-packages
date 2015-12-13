@@ -33,6 +33,10 @@ Available packages
  - Version: 1.17.08
  - Packages: storcli
 
+**sas2ircu**
+ - Version: 20.00.00.00
+ - Packages: sas2ircu
+
 **mysql-proxy**
  - Version: 0.8.4
  - Packages: mysql-proxy
@@ -77,6 +81,10 @@ Available packages
 **storcli**
  - Version: 1.17.08
  - Packages: storcli
+
+**sas2ircu**
+ - Version: 20.00.00.00
+ - Packages: sas2ircu
 
 Development
 -----------
