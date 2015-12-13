@@ -58,6 +58,9 @@ Available packages
  - Version: 1.6.1
  - Packages: gstreamer1.0-libav_1.6.1-1_amd64, gstreamer1.0-libav-dbg_1.6.1-1_amd64
  - Built from http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-2.8.3.tar.xz
+**arcconf**
+ - Version: 2.00.21811
+ - Packages: arcconf
 
 Development
 -----------
