@@ -104,3 +104,8 @@ Build and test a package:
 ```
 /vagrant/build.sh -c <codename> -p <package>
 ```
+
+Build the repo and upload to S3:
+```
+sudo /vagrant/sync.sh
+```
