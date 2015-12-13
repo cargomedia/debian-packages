@@ -29,6 +29,10 @@ Available packages
  - Version: 2.00.21811
  - Packages: arcconf
 
+**storcli**
+ - Version: 1.17.08
+ - Packages: storcli
+
 **mysql-proxy**
  - Version: 0.8.4
  - Packages: mysql-proxy
@@ -70,6 +74,10 @@ Available packages
  - Version: 2.00.21811
  - Packages: arcconf
 
+**storcli**
+ - Version: 1.17.08
+ - Packages: storcli
+
 Development
 -----------
 For signing the repo, the vagrant-provisioner will look for keys in `keys/{private,public}.key`.
@@ -108,5 +116,6 @@ dch -U
 
 Build the repo and upload to S3:
 ```
-sudo /vagrant/sync.sh
+sudo su
+/vagrant/sync.sh
 ```
