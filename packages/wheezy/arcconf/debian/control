@@ -1,10 +1,10 @@
 Source: arcconf-64bit
 Section: admin
 Priority: optional
-Maintainer: Adam Cécile (Le_Vert) <gandalf@le-vert.net>
-Build-Depends: debhelper (>= 5), libwrap0, libstdc++5, quilt
-Homepage: http://www.adaptec.com/en-US/support/raid/sas_raid/SAS-5805Z/
-Standards-Version: 3.9.3
+Maintainer: Cargo Media <tech@cargomedia.ch>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.9.4
+Homepage: http://www.adaptec.com/en-us/speed/raid/storage_manager/arcconf_v2_00_21811_zip.php
 
 Package: arcconf
 Architecture: amd64
@@ -23,13 +23,20 @@ Description: Adaptec ARCCONF command line tool
  Adaptec RAID 6805TQ
  Adaptec RAID 7805
  Adaptec RAID 7805Q
- Adaptec RAID 78165
- Adaptec RAID 71605E
  Adaptec RAID 71605
+ Adaptec RAID 71605E
  Adaptec RAID 71605Q
  Adaptec RAID 71685
  Adaptec RAID 72405
+ Adaptec RAID 78165
+ Adaptec RAID 8405
  Adaptec RAID 8805
  Adaptec RAID 8885
  Adaptec RAID 8885Q
+ Adaptec RAID 81605Z
  Adaptec RAID 81605ZQ
+ PMC Adaptec HBA 1000-8e
+ PMC Adaptec HBA 1000-8i
+ PMC Adaptec HBA 1000-8i8e
+ PMC Adaptec HBA 1000-16e
+ PMC Adaptec HBA 1000-16i

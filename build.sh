@@ -50,7 +50,7 @@ rm -rf pkg/ && mkdir pkg/
 mv tmp/*.deb pkg/
 rm -rf tmp/
 
-if ! $(sudo dpkg -i "${DIR_PACKAGE}/pkg/"*.deb); then
+if ! (sudo dpkg -i "${DIR_PACKAGE}/pkg/"*.deb); then
     sudo apt-get install -f
 fi
 
