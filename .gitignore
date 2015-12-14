@@ -4,3 +4,7 @@
 /keys/
 /packages/*/*/debian/tests/test-results
 /repo
+/puppet/modules/*
+/puppet/Puppetfile.lock
+/puppet/.librarian
+/puppet/.tmp
