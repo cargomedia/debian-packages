@@ -26,7 +26,7 @@ Vagrant.configure('2') do |config|
   ].join(' && ')
 
   config.vm.define 'wheezy' do |wheezy|
-    wheezy.vm.box = 'cargomedia/debian-7-amd64-plain'
+    wheezy.vm.box = 'cargomedia/debian-7-amd64-default'
   end
 
   config.vm.define 'vivid' do |vivid|
