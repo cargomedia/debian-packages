@@ -3,10 +3,10 @@ import re
 from string import Template
 
 content = ""
-for codename in os.listdir('packages'):
+for codename in sorted(os.listdir('packages')):
     content += "#### %s\n\n" % codename
     subdir1 = os.path.join('packages', codename)
-    for pkg in os.listdir(subdir1):
+    for pkg in sorted(os.listdir(subdir1)):
         try:
             content += "**%s**\n" % pkg
             subdir2 = os.path.join(subdir1, pkg)
@@ -20,7 +20,7 @@ for codename in os.listdir('packages'):
                     content += " - Version: %s\n" % version
             subdir3 = os.path.join(subdir2, 'pkg')
             content += " - Packages: "
-            for deb in os.listdir(subdir3):
+            for deb in sorted(os.listdir(subdir3)):
                 deb = deb.split(sep)[0]
                 content += "%s, " % deb
             content = content[:-2]
