@@ -1,0 +1,65 @@
+debian-packages
+===============
+Custom DEB packages for the following codenames:
+- **wheezy**: Debian 7
+- **vivid**: Ubuntu 15.04
+
+Installing the packages
+-----------------------
+Install signing key:
+```
+wget -O - http://debian-packages.cargomedia.ch/conf/signing.key | apt-key add -
+```
+
+Add to your `sources.list`:
+```
+deb http://debian-packages.cargomedia.ch <codename> main
+```
+
+Available packages
+------------------
+
+$packages
+
+
+Development
+-----------
+For signing the repo, the vagrant-provisioner will look for keys in `keys/{private,public}.key`.
+Alternatively you might want to create new keys:
+
+#### Creating a signing key
+Create key:
+```
+gpg --gen-key
+```
+
+Export private and public key:
+```
+mkdir -p /vagrant/keys/
+gpg --export -a 'Cargo Media' > /vagrant/keys/public.key
+gpg --export-secret-key -a 'Cargo Media' > /vagrant/keys/private.key
+```
+
+#### Building a package
+Start up the box and log in:
+```
+vagrant up <codename>
+vagrant ssh <codename>
+```
+
+Build and test a package:
+```
+/vagrant/build.sh -c <codename> -p <package>
+```
+
+Bump version of a package:
+```
+cd /vagrant/packages/<codename>/<package>
+dch -U
+```
+
+Build the repo and upload to S3:
+```
+sudo su
+/vagrant/sync.sh
+```

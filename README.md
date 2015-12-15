@@ -18,81 +18,131 @@ deb http://debian-packages.cargomedia.ch <codename> main
 
 Available packages
 ------------------
-#### wheezy
-
-**gearmand**
- - Version: 1.1.12 (unstable)
- - Packages: libgearman7, libgearman-dev, libgearman7-dbg, libgearman-doc, gearman-job-server, gearman-tools, gearman
- - Debianization via: https://github.com/ssm/pkg-gearmand/
-
-**arcconf**
- - Version: 2.00.21811
- - Packages: arcconf
-
-**storcli**
- - Version: 1.17.08
- - Packages: storcli
-
-**sas2ircu**
- - Version: 20.00.00.00
- - Packages: sas2ircu
-
-**hpacucli**
- - Version: 9.40.12.0
- - Packages: hpacucli
-
-**mysql-proxy**
- - Version: 0.8.4
- - Packages: mysql-proxy
- - Debianization via: https://packages.debian.org/wheezy/mysql-proxy
 
 #### vivid
 
-**gstreamer**
- - Version: 1.6.1
- - Packages: gir1.2-gstreamer-1.0, gstreamer1.0-doc, gstreamer1.0-tools, libgstreamer1.0-0, libgstreamer1.0-0-dbg, libgstreamer1.0-dev
- - Debianization via: http://packages.ubuntu.com/source/xenial/gstreamer1.0
+**gst-plugins-good1.0**
+ - Version: 1.6.1-1ubuntu1
+ - Packages: gstreamer1.0-plugins-good-dbg, libgstreamer-plugins-good1.0-dev, gstreamer1.0-pulseaudio, gstreamer1.0-plugins-good, gstreamer1.0-plugins-good-doc, libgstreamer-plugins-good1.0-0
 
-**orc**
- - Version: 0.4.24
- - Packages: liborc-0.4-0-dbg_0.4.24 liborc-0.4-dev_0.4.24 liborc-0.4-0_0.4.24 liborc-0.4-doc_0.4.24
- - Debianization via: http://packages.ubuntu.com/source/xenial/orc
-
-**gst-plugins-base**
- - Version: 1.6.1
- - Packages: gir1.2-gst-plugins-base-1.0_1.6.1 gstreamer1.0-alsa_1.6.1 gstreamer1.0-plugins-base-apps_1.6.1 gstreamer1.0-plugins-base-dbg_1.6.1 gstreamer1.0-plugins-base-doc_1.6.1 gstreamer1.0-plugins-base_1.6.1 gstreamer1.0-x_1.6.1 libgstreamer-plugins-base1.0-0_1.6.1 libgstreamer-plugins-base1.0-dev_1.6.1
- - Debianization via: http://packages.ubuntu.com/xenial/libgstreamer-plugins-base1.0-dev
-
-**gst-plugins-ugly**
- - Version: 1.6.1
- - Packages: gstreamer1.0-plugins-ugly-amr_1.6.1 gstreamer1.0-plugins-ugly-dbg_1.6.1 gstreamer1.0-plugins-ugly-doc_1.6.1 gstreamer1.0-plugins-ugly_1.6.1
- - Debianization via: http://packages.ubuntu.com/source/xenial/gst-plugins-ugly1.0
-
-**gst-plugins-good**
- - Version: 1.6.1
- - Packages: gstreamer1.0-plugins-good-dbg_1.6.1 gstreamer1.0-plugins-good-doc_1.6.1 gstreamer1.0-plugins-good_1.6.1 gstreamer1.0-pulseaudio_1.6.1 libgstreamer-plugins-good1.0-0_1.6.1 libgstreamer-plugins-good1.0-dev_1.6.1
- - Debianization via: http://packages.ubuntu.com/source/xenial/gst-plugins-good1.0
-
-**gstreamer1.0-libav**
- - Version: 1.6.1
- - Packages: gstreamer1.0-libav_1.6.1-1_amd64, gstreamer1.0-libav-dbg_1.6.1-1_amd64
- - Built from http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-2.8.3.tar.xz
+**graphene**
+ - Version: 1.2.10-1
+ - Packages: graphene
 
 **arcconf**
- - Version: 2.00.21811
+ - Version: 2.00.21811-vivid1
  - Packages: arcconf
 
-**storcli**
- - Version: 1.17.08
- - Packages: storcli
+**gst-plugins-ugly1.0**
+ - Version: 1.6.1-1ubuntu1
+ - Packages: gstreamer1.0-plugins-ugly-dbg, gstreamer1.0-plugins-ugly, gstreamer1.0-plugins-ugly-doc, gstreamer1.0-plugins-ugly-amr
+
+**janus**
+ - Version: 0.0.9-1
+ - Packages: janus
+
+**libsrtp**
+ - Version: 1.5.3
+ - Packages: libsrtp
+
+**janus-gateway-rtpbroadcast**
+ - Version: 0.0.1-1
+ - Packages: janus-gateway-rtpbroadcast
+
+**usrsctp**
+ - Version: 49335e1-git
+ - Packages: usrsctp
+
+**gst-plugins-bad1.0**
+ - Version: 1.6.1-1ubuntu1
+ - Packages: gstreamer1.0-plugins-bad-faad, libgstreamer-plugins-bad1.0-dev, libgstreamer-plugins-bad1.0-0, gstreamer1.0-plugins-bad-dbg, gir1.2-gst-plugins-bad-1.0, gstreamer1.0-plugins-bad-videoparsers, gstreamer1.0-plugins-bad-doc, gstreamer1.0-plugins-bad
+
+**janus-gateway-audioroom**
+**gstreamer1.0**
+ - Version: 1.6.1-1
+ - Packages: libgstreamer1.0-dev, libgstreamer1.0-0, gstreamer1.0-tools, gstreamer1.0-doc, gir1.2-gstreamer-1.0, libgstreamer1.0-0-dbg
+
+**gst-libav1.0**
+ - Version: 1.6.1-1
+ - Packages: gstreamer1.0-libav
+
+**gst-entrans**
+ - Version: 1.0.3-1
+ - Packages: gst-entrans
 
 **sas2ircu**
- - Version: 20.00.00.00
+ - Version: 20.00.00.00-vivid1
  - Packages: sas2ircu
 
+**gst-plugins-base1.0**
+ - Version: 1.6.1-1ubuntu1
+ - Packages: gstreamer1.0-plugins-base-apps, gstreamer1.0-plugins-base, libgstreamer-plugins-base1.0-dev, gstreamer1.0-x, gir1.2-gst-plugins-base-1.0, gstreamer1.0-plugins-base-doc, gstreamer1.0-alsa, gstreamer1.0-plugins-base-dbg, libgstreamer-plugins-base1.0-0
+
+**orc**
+ - Version: 1:0.4.24-1
+ - Packages: liborc-0.4-dev, liborc-0.4-doc, liborc-0.4-0-dbg, liborc-0.4-0
+
+**storcli**
+ - Version: 1.17.08-vivid1
+ - Packages: storcli
+
 **hpacucli**
- - Version: 9.40.12.0
+ - Version: 9.40.12.0-vivid1
  - Packages: hpacucli
+
+**libwebsockets**
+ - Version: 1.2.2-1
+ - Packages: libwebsockets3-dbg, libwebsockets-test-server, libwebsockets-dev, libwebsockets3
+
+#### wheezy
+
+**arcconf**
+ - Version: 2.00.21811-wheezy1
+ - Packages: arcconf
+
+**janus**
+ - Version: 0.0.9-wheezy1
+ - Packages: janus
+
+**libsrtp**
+ - Version: 1.5.3-wheezy1
+ - Packages: libsrtp
+
+**janus-gateway-rtpbroadcast**
+ - Version: 0.0.2-wheezy1
+ - Packages: janus-gateway-rtpbroadcast
+
+**usrsctp**
+ - Version: 49335e1-git-wheezy1
+ - Packages: usrsctp
+
+**janus-gateway-audioroom**
+**sas2ircu**
+ - Version: 20.00.00.00-wheezy1
+ - Packages: sas2ircu
+
+**storcli**
+ - Version: 1.17.08-wheezy1
+ - Packages: storcli
+
+**hpacucli**
+ - Version: 9.40.12.0-wheezy1
+ - Packages: hpacucli
+
+**libwebsockets**
+ - Version: 1.5.0-wheezy1
+ - Packages: libwebsockets-dev, libwebsockets-test-server, libwebsockets3-dbg, libwebsockets3
+
+**gearmand**
+ - Version: 1.1.12-1
+ - Packages: libgearman-dbg, libgearman-dev, libgearman7, libgearman7-dbg, libgearman-doc, gearman-tools, gearman-job-server, gearman
+
+**mysql-proxy**
+ - Version: 0.8.4-2
+ - Packages: mysql-proxy
+
+
+
 
 Development
 -----------
