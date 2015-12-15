@@ -23,123 +23,123 @@ Available packages
 
 **gst-plugins-good1.0**
  - Version: 1.6.1-1ubuntu1
- - Packages: gstreamer1.0-plugins-good-dbg_1.6.1-1ubuntu1_amd64.deb, libgstreamer-plugins-good1.0-dev_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-pulseaudio_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-good_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-good-doc_1.6.1-1ubuntu1_all.deb, libgstreamer-plugins-good1.0-0_1.6.1-1ubuntu1_amd64.deb, 
+ - Packages: gstreamer1.0-plugins-good-dbg, libgstreamer-plugins-good1.0-dev, gstreamer1.0-pulseaudio, gstreamer1.0-plugins-good, gstreamer1.0-plugins-good-doc, libgstreamer-plugins-good1.0-0
 
 **graphene**
  - Version: 1.2.10-1
- - Packages: graphene_1.2.10-1_amd64.deb, 
+ - Packages: graphene
 
 **arcconf**
  - Version: 2.00.21811-vivid1
- - Packages: arcconf_2.00.21811-vivid1_amd64.deb, 
+ - Packages: arcconf
 
 **gst-plugins-ugly1.0**
  - Version: 1.6.1-1ubuntu1
- - Packages: gstreamer1.0-plugins-ugly-dbg_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-ugly_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-ugly-doc_1.6.1-1ubuntu1_all.deb, gstreamer1.0-plugins-ugly-amr_1.6.1-1ubuntu1_amd64.deb, 
+ - Packages: gstreamer1.0-plugins-ugly-dbg, gstreamer1.0-plugins-ugly, gstreamer1.0-plugins-ugly-doc, gstreamer1.0-plugins-ugly-amr
 
 **janus**
  - Version: 0.0.9-1
- - Packages: janus_0.0.9-1_amd64.deb, 
+ - Packages: janus
 
 **libsrtp**
  - Version: 1.5.3
- - Packages: libsrtp_1.5.3_amd64.deb, 
+ - Packages: libsrtp
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.2-ubuntu1
- - Packages: janus-gateway-rtpbroadcast_0.0.2-ubuntu1_amd64.deb, 
+ - Version: 0.0.1-1
+ - Packages: janus-gateway-rtpbroadcast
 
 **usrsctp**
  - Version: 49335e1-git
- - Packages: usrsctp_49335e1-git_amd64.deb, 
+ - Packages: usrsctp
 
 **gst-plugins-bad1.0**
  - Version: 1.6.1-1ubuntu1
- - Packages: gstreamer1.0-plugins-bad-faad_1.6.1-1ubuntu1_amd64.deb, libgstreamer-plugins-bad1.0-dev_1.6.1-1ubuntu1_amd64.deb, libgstreamer-plugins-bad1.0-0_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-bad-dbg_1.6.1-1ubuntu1_amd64.deb, gir1.2-gst-plugins-bad-1.0_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-bad-videoparsers_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-bad-doc_1.6.1-1ubuntu1_all.deb, gstreamer1.0-plugins-bad_1.6.1-1ubuntu1_amd64.deb, 
+ - Packages: gstreamer1.0-plugins-bad-faad, libgstreamer-plugins-bad1.0-dev, libgstreamer-plugins-bad1.0-0, gstreamer1.0-plugins-bad-dbg, gir1.2-gst-plugins-bad-1.0, gstreamer1.0-plugins-bad-videoparsers, gstreamer1.0-plugins-bad-doc, gstreamer1.0-plugins-bad
 
 **janus-gateway-audioroom**
 **gstreamer1.0**
  - Version: 1.6.1-1
- - Packages: libgstreamer1.0-dev_1.6.1-1_amd64.deb, libgstreamer1.0-0_1.6.1-1_amd64.deb, gstreamer1.0-tools_1.6.1-1_amd64.deb, gstreamer1.0-doc_1.6.1-1_all.deb, gir1.2-gstreamer-1.0_1.6.1-1_amd64.deb, libgstreamer1.0-0-dbg_1.6.1-1_amd64.deb, 
+ - Packages: libgstreamer1.0-dev, libgstreamer1.0-0, gstreamer1.0-tools, gstreamer1.0-doc, gir1.2-gstreamer-1.0, libgstreamer1.0-0-dbg
 
 **gst-libav1.0**
  - Version: 1.6.1-1
- - Packages: gstreamer1.0-libav_1.6.1-1_amd64.deb, 
+ - Packages: gstreamer1.0-libav
 
 **gst-entrans**
  - Version: 1.0.3-1
- - Packages: gst-entrans_1.0.3-1_amd64.deb, 
+ - Packages: gst-entrans
 
 **sas2ircu**
  - Version: 20.00.00.00-vivid1
- - Packages: sas2ircu_20.00.00.00-vivid1_amd64.deb, 
+ - Packages: sas2ircu
 
 **gst-plugins-base1.0**
  - Version: 1.6.1-1ubuntu1
- - Packages: gstreamer1.0-plugins-base-apps_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-base_1.6.1-1ubuntu1_amd64.deb, libgstreamer-plugins-base1.0-dev_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-x_1.6.1-1ubuntu1_amd64.deb, gir1.2-gst-plugins-base-1.0_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-base-doc_1.6.1-1ubuntu1_all.deb, gstreamer1.0-alsa_1.6.1-1ubuntu1_amd64.deb, gstreamer1.0-plugins-base-dbg_1.6.1-1ubuntu1_amd64.deb, libgstreamer-plugins-base1.0-0_1.6.1-1ubuntu1_amd64.deb, 
+ - Packages: gstreamer1.0-plugins-base-apps, gstreamer1.0-plugins-base, libgstreamer-plugins-base1.0-dev, gstreamer1.0-x, gir1.2-gst-plugins-base-1.0, gstreamer1.0-plugins-base-doc, gstreamer1.0-alsa, gstreamer1.0-plugins-base-dbg, libgstreamer-plugins-base1.0-0
 
 **orc**
  - Version: 1:0.4.24-1
- - Packages: liborc-0.4-dev_0.4.24-1_amd64.deb, liborc-0.4-doc_0.4.24-1_all.deb, liborc-0.4-0-dbg_0.4.24-1_amd64.deb, liborc-0.4-0_0.4.24-1_amd64.deb, 
+ - Packages: liborc-0.4-dev, liborc-0.4-doc, liborc-0.4-0-dbg, liborc-0.4-0
 
 **storcli**
  - Version: 1.17.08-vivid1
- - Packages: storcli_1.17.08-vivid1_amd64.deb, 
+ - Packages: storcli
 
 **hpacucli**
  - Version: 9.40.12.0-vivid1
- - Packages: hpacucli_9.40.12.0-vivid1_amd64.deb, 
+ - Packages: hpacucli
 
 **libwebsockets**
  - Version: 1.2.2-1
- - Packages: libwebsockets3-dbg_1.2.2-1_amd64.deb, libwebsockets-test-server_1.2.2-1_amd64.deb, libwebsockets-dev_1.2.2-1_amd64.deb, libwebsockets3_1.2.2-1_amd64.deb, 
+ - Packages: libwebsockets3-dbg, libwebsockets-test-server, libwebsockets-dev, libwebsockets3
 
 #### wheezy
 
 **arcconf**
  - Version: 2.00.21811-wheezy1
- - Packages: arcconf_2.00.21811-wheezy1_amd64.deb, 
+ - Packages: arcconf
 
 **janus**
  - Version: 0.0.9-wheezy1
- - Packages: janus_0.0.9-wheezy1_amd64.deb, 
+ - Packages: janus
 
 **libsrtp**
  - Version: 1.5.3-wheezy1
- - Packages: libsrtp_1.5.3-wheezy1_amd64.deb, 
+ - Packages: libsrtp
 
 **janus-gateway-rtpbroadcast**
  - Version: 0.0.2-wheezy1
- - Packages: janus-gateway-rtpbroadcast_0.0.2-wheezy1_amd64.deb, 
+ - Packages: janus-gateway-rtpbroadcast
 
 **usrsctp**
  - Version: 49335e1-git-wheezy1
- - Packages: usrsctp_49335e1-git-wheezy1_amd64.deb, 
+ - Packages: usrsctp
 
 **janus-gateway-audioroom**
 **sas2ircu**
  - Version: 20.00.00.00-wheezy1
- - Packages: sas2ircu_20.00.00.00-wheezy1_amd64.deb, 
+ - Packages: sas2ircu
 
 **storcli**
  - Version: 1.17.08-wheezy1
- - Packages: storcli_1.17.08-wheezy1_amd64.deb, 
+ - Packages: storcli
 
 **hpacucli**
  - Version: 9.40.12.0-wheezy1
- - Packages: hpacucli_9.40.12.0-wheezy1_amd64.deb, 
+ - Packages: hpacucli
 
 **libwebsockets**
  - Version: 1.5.0-wheezy1
- - Packages: libwebsockets-dev_1.5.0-wheezy1_amd64.deb, libwebsockets-test-server_1.5.0-wheezy1_amd64.deb, libwebsockets3-dbg_1.5.0-wheezy1_amd64.deb, libwebsockets3_1.5.0-wheezy1_amd64.deb, 
+ - Packages: libwebsockets-dev, libwebsockets-test-server, libwebsockets3-dbg, libwebsockets3
 
 **gearmand**
  - Version: 1.1.12-1
- - Packages: libgearman-dbg_1.1.12-1_all.deb, libgearman-dev_1.1.12-1_amd64.deb, libgearman7_1.1.12-1_amd64.deb, libgearman7-dbg_1.1.12-1_amd64.deb, libgearman-doc_1.1.12-1_all.deb, gearman-tools_1.1.12-1_amd64.deb, gearman-job-server_1.1.12-1_amd64.deb, gearman_1.1.12-1_all.deb, 
+ - Packages: libgearman-dbg, libgearman-dev, libgearman7, libgearman7-dbg, libgearman-doc, gearman-tools, gearman-job-server, gearman
 
 **mysql-proxy**
  - Version: 0.8.4-2
- - Packages: mysql-proxy_0.8.4-2_amd64.deb, 
+ - Packages: mysql-proxy
 
 
 
