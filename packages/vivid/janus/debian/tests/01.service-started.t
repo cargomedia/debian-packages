@@ -8,7 +8,7 @@ test_expect_success "Janus Service is installed and running" "
   service janus status
 "
 
-test_expect_success "Janus Deamon process is alive" "
+test_expect_success "Janus Daemon process is alive" "
   ps aux |grep '[/]usr/bin/janus'
 "
 test_done

@@ -62,16 +62,16 @@ Available packages
  - Packages: hpacucli
 
 **janus**
- - Version: 0.0.9-1
+ - Version: 0.0.9-vivid2
  - Packages: janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.2-1
+ - Version: 0.0.2-ubuntu1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.2-ubuntu1
- - Packages: janus-gateway-rtpbroadcast
+ - Version: 0.0.2-ubuntu2
+ - Packages: janus-gateway-rtpbroadcast_0.0.2-ubuntu1_amd64.deb
 
 **libsrtp**
  - Version: 1.5.3
@@ -112,11 +112,11 @@ Available packages
  - Packages: hpacucli
 
 **janus**
- - Version: 0.0.9-wheezy1
+ - Version: 0.0.9-wheezy2
  - Packages: janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.2-1
+ - Version: 0.0.2-wheezy1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**

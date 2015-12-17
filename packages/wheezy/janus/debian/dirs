@@ -1,4 +1,4 @@
-etc/default/
+/etc/janus/
 usr/share/janus/
 var/lib/janus/
 var/log/janus/
