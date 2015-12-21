@@ -24,7 +24,7 @@ Build-Depends: autoconf (>= 2.69),
                gengetopt,
                libtool,
                automake
-Standards-Version: 0.0.9
+Standards-Version: 0.0.9-9b07c6
 Vcs-Git: git://github.com/meetecho/janus-gateway.git
 Vcs-Browser: http://github.com/meetecho/janus-gateway
 Homepage: http://github.com/meetecho/janus-gateway

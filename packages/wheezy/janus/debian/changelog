@@ -1,3 +1,10 @@
+janus (0.0.9-wheezy2) unstable; urgency=low
+
+  * Updated to 9b07c628185e447ddecaeb6b31c9705a1e96c29e  
+    - Introduced configurable logging to file
+
+ -- Cargomedia <tech@cargomedia.ch>  Fri, 17 Dec 2015 12:00:00 +0200
+
 janus (0.0.9-wheezy1) unstable; urgency=low
 
   * Initial release.
