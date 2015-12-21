@@ -1,4 +1,4 @@
-janus (0.0.9-wheezy2) unstable; urgency=low
+janus (0.0.9.adf88c-wheezy1) unstable; urgency=low
 
   * Upgrade to Janus Version adf88c5a7f7c103b28a65f6229cc6cd7ed64dcef.
 
