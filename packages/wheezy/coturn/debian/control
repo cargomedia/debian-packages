@@ -1,0 +1,71 @@
+Source: coturn
+Section: net
+Priority: extra
+Maintainer: Debian VoIP Team <pkg-voip-maintainers@lists.alioth.debian.org>
+Uploaders: Daniel Pocock <daniel@pocock.pro>, 
+	   Oleg Moskalenko <mom040267@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), dpkg-dev (>= 1.16.1~), 
+	       libssl-dev (>= 1.0.0~), libevent-dev (>= 2.0.1~), 
+	       sqlite3, libsqlite3-dev,
+	       postgresql-client, libpq-dev, 
+	       mysql-client, libmysqlclient-dev, 
+	       libhiredis-dev
+Standards-Version: 3.9.6
+Homepage: https://github.com/coturn/coturn/
+Vcs-Git: git://anonscm.debian.org/pkg-voip/coturn.git
+Vcs-Browser: http://anonscm.debian.org/cgit/pkg-voip/coturn.git
+
+Package: coturn
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser, telnet | telnet-client
+Conflicts: turnserver, rfc5766-turn-server
+Suggests: sip-router, xmpp-server
+Provides: stun-server, turn-server
+Description: TURN and STUN server for VoIP 
+ STUN (Session Traversal Utilities for NAT) and TURN (Traversal Using Relays
+ around NAT) are protocols that can be used to provide NAT traversal for VoIP
+ and WebRTC. This package provides a VoIP media traffic NAT traversal server
+ and gateway.
+ .
+ Supported RFCs:
+ TURN specs:
+  * RFC 5766 - base TURN specs;
+  * RFC 6062 - TCP relaying TURN extension;
+  * RFC 6156 - IPv6 extension for TURN;
+  * RFC 7635 - OAuth third-party TURN/STUN authorization;
+  * DTLS support as client protocol 
+    http://tools.ietf.org/html/draft-petithuguenin-tram-turn-dtls-00
+  * Mobile ICE (MICE) support
+    http://tools.ietf.org/html/draft-wing-tram-turn-mobility-03
+  * TURN ORIGIN specs for multi-tenant servers
+    http://tools.ietf.org/html/draft-johnston-tram-stun-origin-02
+  * TURN Bandwidth draft specs
+    http://tools.ietf.org/html/draft-thomson-tram-turn-bandwidth-00
+  * SSODA (dual allocation) draft specs
+    http://tools.ietf.org/html/draft-martinsen-tram-ssoda-00
+ .
+ STUN specs:
+  * RFC 3489 - obsolete "classic" STUN specs;
+  * RFC 5389 - base "new" STUN specs;
+  * RFC 5769 - test vectors for STUN protocol testing;
+  * RFC 5780 - NAT behavior discovery support.
+ .
+ The implementation fully supports UDP, TCP, TLS, and DTLS as protocols between
+ the TURN client and the TURN server. Both UDP and TCP relaying are supported.
+ .
+ SQLite, MySQL, PostgreSQL and Redis are supported for the user
+ repository (if authentication is required).
+ The long-term credentials mechanism is supported.
+ For WebRTC applications,
+ the TURN server REST API for time-limited
+ secret-based authentication is implemented.
+ The third-party authentication
+ specs (OAuth-based) are supported, too.
+ .
+ Load balancing can be implemented either by DNS round-robin mechanism, or with
+ the external networking tools, or by
+ the built-in ALTERNATE-SERVER mechanism.
+ .
+ The implementation is intended to be simple to install and configure.
+ The project focuses on performance, scalability, and simplicity. 
+ The aim is to provide an enterprise-grade TURN solution.
