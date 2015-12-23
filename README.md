@@ -67,7 +67,7 @@ Available packages
 
 **janus**
  - Version: 0.0.9.adf88c-1
- - Packages: janus_0.0.9-vivid2_amd64.deb, janus
+ - Packages: janus
 
 **janus-gateway-audioroom**
  - Version: 0.0.4-ubuntu1
@@ -121,7 +121,7 @@ Available packages
 
 **janus**
  - Version: 0.0.9.adf88c-wheezy1
- - Packages: janus_0.0.9-wheezy2_amd64.deb, janus
+ - Packages: janus
 
 **janus-gateway-audioroom**
  - Version: 0.0.4-wheezy1
