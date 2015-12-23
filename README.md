@@ -25,6 +25,10 @@ Available packages
  - Version: 2.00.21811-vivid1
  - Packages: arcconf
 
+**coturn**
+ - Version: 4.5.0.3-vivid1
+ - Packages: coturn
+
 **graphene**
  - Version: 1.2.10-1
  - Packages: graphene
@@ -62,15 +66,15 @@ Available packages
  - Packages: hpacucli
 
 **janus**
- - Version: 0.0.9-1
- - Packages: janus
+ - Version: 0.0.9.adf88c-1
+ - Packages: janus_0.0.9-vivid2_amd64.deb, janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.2-1
+ - Version: 0.0.4-ubuntu1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.2-ubuntu1
+ - Version: 0.0.4-ubuntu1
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
@@ -103,6 +107,10 @@ Available packages
  - Version: 2.00.21811-wheezy1
  - Packages: arcconf
 
+**coturn**
+ - Version: 4.5.0.3-wheezy1
+ - Packages: coturn
+
 **gearmand**
  - Version: 1.1.12-1
  - Packages: gearman-job-server, gearman-tools, gearman, libgearman-dbg, libgearman-dev, libgearman-doc, libgearman7-dbg, libgearman7
@@ -112,15 +120,15 @@ Available packages
  - Packages: hpacucli
 
 **janus**
- - Version: 0.0.9-wheezy1
- - Packages: janus
+ - Version: 0.0.9.adf88c-wheezy1
+ - Packages: janus_0.0.9-wheezy2_amd64.deb, janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.2-1
+ - Version: 0.0.4-wheezy1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.2-wheezy1
+ - Version: 0.0.4-wheezy
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
