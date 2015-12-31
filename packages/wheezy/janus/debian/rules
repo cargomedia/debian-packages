@@ -14,9 +14,12 @@ export DH_VERBOSE=1
 ## the generate command EXECUTES in rel/
 build:
 	unset CC CFLAGS CPPFLAGS LDFLAGS CXX CXXFLAGS \
-		&& sh autogen.sh && ./configure --prefix=/usr \
+		&& sh autogen.sh \
+		&& ./configure --prefix=/usr \
 		  --disable-rabbitmq \
-		  --disable-docs && make
+		  --disable-docs \
+		  --enable-post-processing \
+		&& make
 	touch build
 
 clean:
