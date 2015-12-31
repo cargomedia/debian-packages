@@ -194,6 +194,11 @@ cd /vagrant/packages/<codename>/<package>
 dch -U
 ```
 
+Recreate readme:
+```
+python /vagrant/doc.py
+```
+
 Build the repo and upload to S3:
 ```
 sudo su
