@@ -3,4 +3,6 @@
 /.s3cfg
 /keys/
 /packages/*/*/debian/tests/test-results
-/repo
+/repo/db
+/repo/dists
+/repo/pool

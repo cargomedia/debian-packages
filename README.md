@@ -66,7 +66,7 @@ Available packages
  - Packages: hpacucli
 
 **janus**
- - Version: 0.0.9.adf88c-1
+ - Version: 0.0.9.adf88c-vivid2
  - Packages: janus
 
 **janus-gateway-audioroom**
@@ -120,7 +120,7 @@ Available packages
  - Packages: hpacucli
 
 **janus**
- - Version: 0.0.9.adf88c-wheezy1
+ - Version: 0.0.9.adf88c-wheezy2
  - Packages: janus
 
 **janus-gateway-audioroom**
@@ -192,6 +192,11 @@ Bump version of a package:
 ```
 cd /vagrant/packages/<codename>/<package>
 dch -U
+```
+
+Recreate readme:
+```
+python /vagrant/doc.py
 ```
 
 Build the repo and upload to S3:

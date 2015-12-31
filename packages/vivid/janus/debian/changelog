@@ -1,3 +1,9 @@
+janus (0.0.9.adf88c-vivid2) unstable; urgency=low
+
+  * Add janus-pp-rec binary
+
+ -- Reto Kaiser <reto@cargomedia.ch>  Thu, 31 Dec 2015 15:57:05 +0000
+
 janus (0.0.9.adf88c-1) unstable; urgency=low
 
   * Upgrade to Janus Version adf88c5a7f7c103b28a65f6229cc6cd7ed64dcef.
