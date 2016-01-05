@@ -47,15 +47,15 @@ vagrant up <codename>
 vagrant ssh <codename>
 ```
 
-Build and test a package:
-```
-/vagrant/build.sh -c <codename> -p <package>
-```
-
 Bump version of a package:
 ```
 cd /vagrant/packages/<codename>/<package>
 dch -U
+```
+
+Build and test a package:
+```
+/vagrant/build.sh -c <codename> -p <package>
 ```
 
 Recreate readme:
