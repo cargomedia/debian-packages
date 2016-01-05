@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.5-ubuntu1) unstable; urgency=medium
+
+  * Extended stream definition.
+
+ -- Cargomedia <tech@cargomedia.ch>  Tue, 05 Jan 2016 18:20:05 +0000
+
 janus-gateway-rtpbroadcast (0.0.4-ubuntu1) unstable; urgency=low
 
   * Bugfix release.
