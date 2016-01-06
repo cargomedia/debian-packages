@@ -74,7 +74,7 @@ Available packages
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.5-ubuntu1
+ - Version: 0.0.5-vivid1
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
