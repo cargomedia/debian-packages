@@ -74,7 +74,7 @@ Available packages
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.4-ubuntu1
+ - Version: 0.0.5-vivid1
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
@@ -128,7 +128,7 @@ Available packages
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.4-wheezy
+ - Version: 0.0.5-wheezy
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
@@ -183,20 +183,20 @@ vagrant up <codename>
 vagrant ssh <codename>
 ```
 
-Build and test a package:
-```
-/vagrant/build.sh -c <codename> -p <package>
-```
-
 Bump version of a package:
 ```
 cd /vagrant/packages/<codename>/<package>
 dch -U
 ```
 
+Build and test a package:
+```
+/vagrant/build.sh -c <codename> -p <package>
+```
+
 Recreate readme:
 ```
-python /vagrant/doc.py
+cd /vagrant && python doc.py
 ```
 
 Build the repo and upload to S3:
