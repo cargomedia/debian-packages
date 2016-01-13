@@ -1,3 +1,9 @@
+janus-gateway-audioroom (0.0.5-wheezy1) unstable; urgency=low
+
+  * "join" and "changeroom" transparently creates an audioroom if it doesn't exist.
+
+ -- Cargomedia <tech@cargomedia.ch>  Wed, 13 Jan 2016 13:16:35 +0000
+
 janus-gateway-audioroom (0.0.4-wheezy1) unstable; urgency=low
 
   * Bugfix release.
