@@ -70,11 +70,11 @@ Available packages
  - Packages: janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.5-ubuntu1
+ - Version: 0.0.6-ubuntu1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.5-vivid1
+ - Version: 0.0.6-vivid1
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
@@ -124,11 +124,11 @@ Available packages
  - Packages: janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.5-wheezy1
+ - Version: 0.0.6-wheezy1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.5-wheezy
+ - Version: 0.0.6-wheezy
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
