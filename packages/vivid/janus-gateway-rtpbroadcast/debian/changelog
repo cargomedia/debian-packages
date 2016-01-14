@@ -1,3 +1,10 @@
+janus-gateway-rtpbroadcast (0.0.6-vivid1) unstable; urgency=medium
+
+  * Add "uid" for mountpoint instance.
+  * Send "stream-definition" regularly to client.
+
+ -- Cargomedia <tech@cargomedia.ch>  Thu, 14 Jan 2016 17:29:52 +0000
+
 janus-gateway-rtpbroadcast (0.0.5-vivid1) unstable; urgency=medium
 
   * Extended stream definition.
