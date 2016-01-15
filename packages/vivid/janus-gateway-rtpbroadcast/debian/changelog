@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.7-vivid1) unstable; urgency=medium
+
+  * Add uid to watch (and switch) response.
+
+ -- Cargomedia <tech@cargomedia.ch>  Fri, 15 Jan 2016 15:08:20 +0000
+
 janus-gateway-rtpbroadcast (0.0.6-vivid1) unstable; urgency=medium
 
   * Add "uid" for mountpoint instance.
