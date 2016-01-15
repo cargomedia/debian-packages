@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.8-wheezy) unstable; urgency=low
+
+  * Bux fix due to wrong source code.
+
+ -- Cargomedia <tech@cargomedia.ch>  Fri, 15 Jan 2016 18:37:34 +0000
+
 janus-gateway-rtpbroadcast (0.0.7-wheezy) unstable; urgency=low
 
   * Add uid to watch (and switch) response.
