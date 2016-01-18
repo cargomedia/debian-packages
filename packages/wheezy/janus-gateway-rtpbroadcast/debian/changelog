@@ -1,4 +1,4 @@
-janus-gateway-rtpbroadcast (0.0.9-wheezy) unstable; urgency=low
+janus-gateway-rtpbroadcast (0.0.9-wheezy1) unstable; urgency=low
 
   * Add listeners and waiters count to the stream definition.
   * Make recording and thumbnailing configurable in config file.
