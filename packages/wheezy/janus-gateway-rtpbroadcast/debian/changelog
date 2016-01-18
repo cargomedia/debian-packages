@@ -1,3 +1,11 @@
+janus-gateway-rtpbroadcast (0.0.9-wheezy) unstable; urgency=low
+
+  * Add listeners and waiters count to the stream definition.
+  * Make recording and thumbnailing configurable in config file.
+  * Adjust readme.
+
+ -- Cargomedia <tech@cargomedia.ch>  Mon, 18 Jan 2016 13:18:04 +0000
+
 janus-gateway-rtpbroadcast (0.0.8-wheezy) unstable; urgency=low
 
   * Bux fix due to wrong source code.
