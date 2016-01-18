@@ -1,0 +1,3 @@
+version=3
+http://ftp.videolan.org/pub/videolan/x265/ \
+  x265_(\d.*).tar.gz

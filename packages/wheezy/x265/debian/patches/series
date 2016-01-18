@@ -1,0 +1,4 @@
+compile-flags.patch
+highbit-depth-path.patch
+gcc-check.patch
+fix-x32.patch

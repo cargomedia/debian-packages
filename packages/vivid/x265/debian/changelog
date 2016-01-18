@@ -1,0 +1,112 @@
+x265 (1.7-4-vivid1) unstable; urgency=low
+
+  * Backport to Ubuntu Vivid Vervet (15.04)
+
+ -- Cargo Media <tech@cargomedia.ch>  Mon, 18 Jan 2016 17:16:47 +0100
+
+x265 (1.7-4) unstable; urgency=low
+
+  [ Thorsten Glaser ]
+  * Fix building on x32 (without asm, for now) (Closes: #792272)
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 19 Jul 2015 13:19:23 +0200
+
+x265 (1.7-3) unstable; urgency=medium
+
+  * debian/rules: Filter -Wl,-Bsymbolic-functions. (Closes: #789111)
+  * debian/patches/gcc-check.patch: Apply upstream fix to gcc feature
+    detection.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 19 Jun 2015 15:36:04 +0200
+
+x265 (1.7-2) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sat, 23 May 2015 14:54:14 +0200
+
+x265 (1.7-1) experimental; urgency=medium
+
+  * New upstream release.
+  * SONAME bump: libx265-51 -> libx265-59.
+  * debian/patches:
+    - compile-flags.patch: Refreshed.
+    - highbit-depth-path.patch: Use correct path to lookup 10-bit library.
+  * Remove x265-10bit wrapper script. x265 now supports loading the encoder
+    for a different bit depth itself.
+    - debian/{rules,x265.install,x265.manpages}: Do not build and install
+      x265-10bit wrapper script.
+    - debian/x26510bit.{in,1}: Removed.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Thu, 21 May 2015 22:40:21 +0200
+
+x265 (1.6-1) unstable; urgency=medium
+
+  * New upstream release.
+  * SONAME bump: libx265-43 -> libx265-51.
+  * debian/patches:
+    - compile-flags.patch: Refreshed.
+    - workaround-partial-SIMD-support.patch, hide-internal-symbol.patch:
+      Removed, no longer needed.
+  * debian/control: Add libnuma-dev to B-D to build with libnuma support.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Tue, 07 Apr 2015 23:09:39 +0200
+
+x265 (1.5-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Fix bit depth check in CLI. (Closes: #775181)
+  * SONAME bump: libx265-35 -> libx265-43.
+  * debian/patches:
+    - atomic.patch: Removed, no longer needed.
+    - compile-flags.patch, workaround-partial-SIMD-support.patch: Refreshed.
+    - hide-internal-symbol.patch: Hide an internal symbol.
+  * debian/rules: Build with ENABLE_PIC=ON.
+  * debian/copyright: Update copyright years.
+  * debian/x265-10bit.1: Fix error in man page.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Wed, 18 Feb 2015 01:54:07 +0100
+
+x265 (1.4-5) unstable; urgency=medium
+
+  * Also build 10 bit variant:
+    - debian/rules: Build both 8 and 10 bit libraries.
+    - debian/*.install: Install 10 bit libraries.
+    - debian/x265-10bit.{in,1}: Wrapper script to load 10 bit libraries.
+  * debian/x265: Fix header.
+  * debian/control: Fix typo in libx265-dev's Suggests.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 26 Dec 2014 20:23:34 +0100
+
+x265 (1.4-4) unstable; urgency=medium
+
+  * debian/patches/atomic.patch: Fix a "typo": it's OR and not or.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 05 Dec 2014 22:55:44 +0100
+
+x265 (1.4-3) unstable; urgency=medium
+
+  * debian/patches:
+    - atomic.patch: Use functions from atomic instead of builtins on mips,
+      mipsel and powerpc. Thanks to Dejan Latinovi for the patch. (Closes:
+      #771556)
+    - workaround-partial-SIMD-support.patch: Upstream patch to fix build
+      issues if yasm is not available on i386.
+  * debian/rules: Enable LFS support.
+  * debian/control: Do not B-D on yasm on any-i386 until the build system
+    produces PIC code.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 05 Dec 2014 20:55:36 +0100
+
+x265 (1.4-2) unstable; urgency=medium
+
+  * debian/patches/compile-flags.patch: Build with -fPIC everywhere and remove
+    architecture specific compile flags that do not match our defaults.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 30 Nov 2014 17:55:25 +0100
+
+x265 (1.4-1) unstable; urgency=medium
+
+  * Initial release. (Closes: #750817)
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sat, 29 Nov 2014 21:50:08 +0100
