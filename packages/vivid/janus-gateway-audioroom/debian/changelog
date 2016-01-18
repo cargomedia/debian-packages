@@ -1,7 +1,7 @@
-janus-gateway-audioroom (0.0.7-ubuntu1) unstable; urgency=medium
+janus-gateway-audioroom (0.0.7-vivid1) unstable; urgency=medium
 
   * Make recording configurable in config file.
-  * Failure on detach. 
+  * Failure on detach.
 
  -- Cargomedia <tech@cargomedia.ch>  Mon, 18 Jan 2016 13:23:57 +0000
 
