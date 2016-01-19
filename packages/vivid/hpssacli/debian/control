@@ -1,0 +1,11 @@
+Source: hpssacli-64bit
+Section: admin
+Priority: optional
+Maintainer: Cargo Media <tech@cargomedia.ch>
+Build-Depends: debhelper (>= 5), dh-exec
+Standards-Version: 2.30
+
+Package: hpssacli
+Architecture: amd64
+Depends: ${misc:Depends}
+Description: HP Command Line Smart Storage Administrator
