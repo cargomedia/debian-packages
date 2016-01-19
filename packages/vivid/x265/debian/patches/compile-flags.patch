@@ -1,0 +1,19 @@
+Description: Use -fPIC everywhere
+ Also remove platform specific gcc flags that do not match our defaults.
+Author: Sebastian Ramacher <sramacher@debian.org>
+Last-Update: 2014-11-30
+
+--- a/source/CMakeLists.txt
++++ b/source/CMakeLists.txt
+@@ -156,11 +156,6 @@
+         else()
+             add_definitions(-march=native)
+         endif()
+-    elseif(X86 AND NOT X64)
+-        add_definitions(-march=i686)
+-    endif()
+-    if(ARM)
+-        add_definitions(-march=armv6 -mfloat-abi=hard -mfpu=vfp)
+     endif()
+     if(FPROFILE_GENERATE)
+         if(INTEL_CXX)

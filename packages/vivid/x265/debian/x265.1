@@ -1,0 +1,382 @@
+.TH "x265" "1" "November 2014" "x265 1.4" "User Commands"
+.SH NAME
+x256 \- encoder for creating H.265/HVEC video streams
+.SH SYNOPSIS
+x265 [options] infile [\-o] outfile
+.SH DESCRIPTION
+x256 is a commandline encoder for creating H.265/High Efficency Video Coding
+(HEVC) video streams. \fBinfile\fR can be a YUV or Y4M video stream.
+\fBoutfile\fR will be used to store the raw HEVC bitstream.
+.SS "Executable Options:"
+.TP
+\fB\-h\fR/\-\-help
+Show this help text and exit
+.SS "Output Options:"
+.TP
+\fB\-o\fR/\-\-output <filename>
+Bitstream output file name
+.TP
+\fB\-\-log\-level\fR <string>
+Logging level: none error warning info debug full. Default info
+.TP
+\fB\-\-no\-progress\fR
+Disable CLI progress reports
+.TP
+\fB\-\-[no\-]cu\-stats\fR
+Enable logging stats about distribution of cu across all modes. Default disabled
+.TP
+\fB\-\-csv\fR <filename>
+Comma separated log file, log level >= 3 frame log, else one line per run
+.SS "Input Options:"
+.TP
+\fB\-\-input\fR <filename>
+Raw YUV or Y4M input file name. `\-` for stdin
+.TP
+\fB\-\-y4m\fR
+Force parsing of input stream as YUV4MPEG2 regardless of file extension
+.TP
+\fB\-\-fps\fR <float|rational>
+Source frame rate (float or num/denom), auto\-detected if Y4M
+.TP
+\fB\-\-input\-res\fR WxH
+Source picture size [w x h], auto\-detected if Y4M
+.TP
+\fB\-\-input\-depth\fR <integer>
+Bit\-depth of input file. Default 8
+.TP
+\fB\-\-input\-csp\fR <string>
+Source color space: i420, i444 or i422, auto\-detected if Y4M. Default: i420
+.TP
+\fB\-f\fR/\-\-frames <integer>
+Maximum number of frames to encode. Default all
+.TP
+\fB\-\-seek\fR <integer>
+First frame to encode
+.TP
+\fB\-\-[no\-]interlace\fR <bff|tff>
+Indicate input pictures are interlace fields in temporal order. Default progressive
+.TP
+\fB\-\-dither\fR
+Enable dither if downscaling to 8 bit pixels. Default disabled
+.SS "Quality reporting metrics:"
+.TP
+\fB\-\-[no\-]ssim\fR
+Enable reporting SSIM metric scores. Default disabled
+.TP
+\fB\-\-[no\-]psnr\fR
+Enable reporting PSNR metric scores. Default disabled
+.SS "Profile, Level, Tier:"
+.TP
+\fB\-\-profile\fR <string>
+Enforce an encode profile: main, main10, mainstillpicture
+.TP
+\fB\-\-level\-idc\fR <integer|float>
+Force a minumum required decoder level (as '5.0' or '50')
+.TP
+\fB\-\-[no\-]high\-tier\fR
+If a decoder level is specified, this modifier selects High tier of that level
+.SS "Threading, performance:"
+.TP
+\fB\-\-threads\fR <integer>
+Number of threads for thread pool (0: detect CPU core count, default)
+.TP
+\fB\-F\fR/\-\-frame\-threads <integer>
+Number of concurrently encoded frames. 0: auto\-determined by core count
+.TP
+\fB\-\-[no\-]wpp\fR
+Enable Wavefront Parallel Processing. Default enabled
+.TP
+\fB\-\-[no\-]pmode\fR
+Parallel mode analysis. Default disabled
+.TP
+\fB\-\-[no\-]pme\fR
+Parallel motion estimation. Default disabled
+.TP
+\fB\-\-[no\-]asm\fR <bool|int|string>
+Override CPU detection. Default: auto
+.SS "Presets:"
+.TP
+\fB\-p\fR/\-\-preset <string>
+Trade off performance for compression efficiency. Default medium
+.IP
+ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow, or placebo
+.TP
+\fB\-t\fR/\-\-tune <string>
+Tune the settings for a particular type of source or situation:
+.IP
+psnr, ssim, zerolatency, or fastdecode
+.SS "Quad\-Tree size and depth:"
+.TP
+\fB\-s\fR/\-\-ctu <64|32|16>
+Maximum CU size (default: 64x64). Default 64
+.TP
+\fB\-\-tu\-intra\-depth\fR <integer>
+Max TU recursive depth for intra CUs. Default 1
+.TP
+\fB\-\-tu\-inter\-depth\fR <integer>
+Max TU recursive depth for inter CUs. Default 1
+.TP
+\fB\-\-[no\-]rect\fR
+Enable rectangular motion partitions Nx2N and 2NxN. Default disabled
+.TP
+\fB\-\-[no\-]amp\fR
+Enable asymmetric motion partitions, requires \fB\-\-rect\fR. Default disabled
+.SS "Analysis:"
+.TP
+\fB\-\-rd\fR <0..6>
+Level of RD in mode decision 0:least....6:full RDO. Default 3
+.TP
+\fB\-\-psy\-rd\fR <0..2.0>
+Strength of psycho\-visual rate distortion optimization, 0 to disable. Default 0.000000
+.TP
+\fB\-\-psy\-rdoq\fR <0..50.0>
+Strength of psycho\-visual optimization in quantization, 0 to disable. Default 0.000000
+.TP
+\fB\-\-nr\fR <integer>
+An integer value in range of 100 to 1000, which denotes strength of noise reduction. Default disabled
+.TP
+\fB\-\-[no\-]tskip\-fast\fR
+Enable fast intra transform skipping. Default disabled
+.TP
+\fB\-\-[no\-]early\-skip\fR
+Enable early SKIP detection. Default disabled
+.TP
+\fB\-\-[no\-]fast\-cbf\fR
+Enable early outs based on whether residual is coded. Default disabled
+.SS "Coding tools:"
+.TP
+\fB\-w\fR/\-\-[no\-]weightp
+Enable weighted prediction in P slices. Default enabled
+.TP
+\fB\-\-[no\-]weightb\fR
+Enable weighted prediction in B slices. Default disabled
+.TP
+\fB\-\-[no\-]cu\-lossless\fR
+Consider lossless mode in CU RDO decisions. Default disabled
+.TP
+\fB\-\-[no\-]signhide\fR
+Hide sign bit of one coeff per TU (rdo). Default enabled
+.TP
+\fB\-\-[no\-]tskip\fR
+Enable intra 4x4 transform skipping. Default disabled
+.SS "Temporal / motion search options:"
+.TP
+\fB\-\-me\fR <string>
+Motion search method dia hex umh star full. Default 1
+.TP
+\fB\-m\fR/\-\-subme <integer>
+Amount of subpel refinement to perform (0:least .. 7:most). Default 2
+.TP
+\fB\-\-merange\fR <integer>
+Motion search range. Default 57
+.TP
+\fB\-\-max\-merge\fR <1..5>
+Maximum number of merge candidates. Default 2
+.TP
+\fB\-\-[no\-]temporal\-mvp\fR
+Enable temporal MV predictors. Default enabled
+.SS "Spatial / intra options:"
+.HP
+\fB\-\-[no\-]strong\-intra\-smoothing\fR Enable strong intra smoothing for 32x32 blocks. Default enabled
+.TP
+\fB\-\-[no\-]constrained\-intra\fR
+Constrained intra prediction (use only intra coded reference pixels) Default disabled
+.TP
+\fB\-\-[no\-]b\-intra\fR
+Enable intra in B frames in veryslow presets. Default disabled
+.TP
+\fB\-\-[no\-]fast\-intra\fR
+Enable faster search method for angular intra predictions. Default disabled
+.TP
+\fB\-\-rdpenalty\fR <0..2>
+penalty for 32x32 intra TU in non\-I slices. 0:disabled 1:RD\-penalty 2:maximum. Default 0
+.SS "Slice decision options:"
+.TP
+\fB\-\-[no\-]open\-gop\fR
+Enable open\-GOP, allows I slices to be non\-IDR. Default enabled
+.TP
+\fB\-I\fR/\-\-keyint <integer>
+Max IDR period in frames. \fB\-1\fR for infinite\-gop. Default 250
+.TP
+\fB\-i\fR/\-\-min\-keyint <integer>
+Scenecuts closer together than this are coded as I, not IDR. Default: auto
+.TP
+\fB\-\-no\-scenecut\fR
+Disable adaptive I\-frame decision
+.TP
+\fB\-\-scenecut\fR <integer>
+How aggressively to insert extra I\-frames. Default 40
+.TP
+\fB\-\-rc\-lookahead\fR <integer>
+Number of frames for frame\-type lookahead (determines encoder latency) Default 20
+.TP
+\fB\-\-bframes\fR <integer>
+Maximum number of consecutive b\-frames (now it only enables B GOP structure) Default 4
+.TP
+\fB\-\-bframe\-bias\fR <integer>
+Bias towards B frame decisions. Default 0
+.TP
+\fB\-\-b\-adapt\fR <0..2>
+0 \- none, 1 \- fast, 2 \- full (trellis) adaptive B frame scheduling. Default 2
+.TP
+\fB\-\-[no\-]b\-pyramid\fR
+Use B\-frames as references. Default enabled
+.TP
+\fB\-\-ref\fR <integer>
+max number of L0 references to be allowed (1 .. 16) Default 3
+.TP
+\fB\-\-qpfile\fR <string>
+Force frametypes and QPs for some or all frames
+Format of each line: framenumber frametype QP
+QP is optional (none lets x265 choose). Frametypes: I,i,P,B,b.
+QPs are restricted by qpmin/qpmax.
+.SS "Rate control, Quantization:"
+.TP
+\fB\-\-bitrate\fR <integer>
+Target bitrate (kbps) for ABR (implied). Default 0
+.TP
+\fB\-q\fR/\-\-qp <integer>
+QP for P slices in CQP mode (implied). \fB\-\-ipratio\fR and \fB\-\-pbration\fR determine other slice QPs
+.TP
+\fB\-\-crf\fR <float>
+Quality\-based VBR (0\-51). Default 28.000000
+.TP
+\fB\-\-[no\-]lossless\fR
+Enable lossless: bypass transform, quant and loop filters globally. Default disabled
+.TP
+\fB\-\-crf\-max\fR <float>
+With CRF+VBV, limit RF to this value. Default 0.000000
+May cause VBV underflows!
+.TP
+\fB\-\-crf\-min\fR <float>
+With CRF+VBV, limit RF to this value. Default 0.000000
+this specifies a minimum rate factor value for encode!
+.TP
+\fB\-\-vbv\-maxrate\fR <integer>
+Max local bitrate (kbit/s). Default 0
+.TP
+\fB\-\-vbv\-bufsize\fR <integer>
+Set size of the VBV buffer (kbit). Default 0
+.TP
+\fB\-\-vbv\-init\fR <float>
+Initial VBV buffer occupancy (fraction of bufsize or in kbits). Default 0.900000
+.TP
+\fB\-\-aq\-mode\fR <integer>
+Mode for Adaptive Quantization \- 0:none 1:uniform AQ 2:auto variance. Default 2
+.TP
+\fB\-\-aq\-strength\fR <float>
+Reduces blocking and blurring in flat and textured areas.(0 to 3.0). Default 1.000000
+.TP
+\fB\-\-[no\-]cutree\fR
+Enable cutree for Adaptive Quantization. Default enabled
+.TP
+\fB\-\-ipratio\fR <float>
+QP factor between I and P. Default 1.400000
+.TP
+\fB\-\-pbratio\fR <float>
+QP factor between P and B. Default 1.300000
+.TP
+\fB\-\-cbqpoffs\fR <integer>
+Chroma Cb QP Offset. Default 0
+.TP
+\fB\-\-crqpoffs\fR <integer>
+Chroma Cr QP Offset. Default 0
+.TP
+\fB\-\-stats\fR
+Filename for stats file in multipass pass rate control. Default x265_2pass.log
+.TP
+\fB\-\-pass\fR
+Multi pass rate control.
+1: First pass, creates stats file
+2: Last pass, does not overwrite stats file
+3: Nth pass, overwrites stats file
+.TP
+\fB\-\-[no\-]slow\-firstpass\fR
+Enable a slow first pass in a multipass rate control mode. Default disabled
+.TP
+\fB\-\-analysis\-mode\fR <string|int>
+save \- Dump analysis info into file, load \- Load analysis buffers from the file. Default 0
+.TP
+\fB\-\-analysis\-file\fR <filename>
+Specify file name used for either dumping or reading analysis data.
+.TP
+\fB\-\-scaling\-list\fR <string>
+Specify a file containing HM style quant scaling lists or 'default' or 'off'. Default: off
+.TP
+\fB\-\-lambda\-file\fR <string>
+Specify a file containing replacement values for the lambda tables
+MAX_MAX_QP+1 floats for lambda table, then again for lambda2 table
+Blank lines and lines starting with hash(#) are ignored
+Comma is considered to be white\-space
+.SS "Loop filters (deblock and SAO):"
+.TP
+\fB\-\-[no\-]lft\fR
+Enable Deblocking Loop Filter. Default enabled
+.TP
+\fB\-\-[no\-]sao\fR
+Enable Sample Adaptive Offset. Default enabled
+.TP
+\fB\-\-[no\-]sao\-non\-deblock\fR
+Use non\-deblocked pixels, else right/bottom boundary areas skipped. Default disabled
+.SS "VUI options:"
+.TP
+\fB\-\-sar\fR <width:height|int>
+Sample Aspect Ratio, the ratio of width to height of an individual pixel.
+Choose from 0=undef, 1=1:1("square"), 2=12:11, 3=10:11, 4=16:11,
+5=40:33, 6=24:11, 7=20:11, 8=32:11, 9=80:33, 10=18:11, 11=15:11,
+12=64:33, 13=160:99, 14=4:3, 15=3:2, 16=2:1 or custom ratio of <int:int>. Default 0
+.TP
+\fB\-\-crop\-rect\fR <string>
+Add 'left,top,right,bottom' to the bitstream\-level cropping rectangle
+.TP
+\fB\-\-overscan\fR <string>
+Specify whether it is appropriate for decoder to show cropped region: undef, show or crop. Default undef
+.TP
+\fB\-\-videoformat\fR <string>
+Specify video format from undef, component, pal, ntsc, secam, mac. Default undef
+.TP
+\fB\-\-range\fR <string>
+Specify black level and range of luma and chroma signals as full or limited Default limited
+.TP
+\fB\-\-colorprim\fR <string>
+Specify color primaries from undef, bt709, bt470m, bt470bg, smpte170m,
+smpte240m, film, bt2020. Default undef
+.TP
+\fB\-\-transfer\fR <string>
+Specify transfer characteristics from undef, bt709, bt470m, bt470bg, smpte170m,
+smpte240m, linear, log100, log316, iec61966\-2\-4, bt1361e, iec61966\-2\-1,
+bt2020\-10, bt2020\-12. Default undef
+.TP
+\fB\-\-colormatrix\fR <string>
+Specify color matrix setting from undef, bt709, fcc, bt470bg, smpte170m,
+smpte240m, GBR, YCgCo, bt2020nc, bt2020c. Default undef
+.TP
+\fB\-\-chromaloc\fR <integer>
+Specify chroma sample location (0 to 5). Default of 0
+.SS "Bitstream options:"
+.TP
+\fB\-\-[no\-]info\fR
+Emit SEI identifying encoder and parameters. Default enabled
+.TP
+\fB\-\-[no\-]aud\fR
+Emit access unit delimiters at the start of each access unit. Default disabled
+.TP
+\fB\-\-[no\-]hrd\fR
+Enable HRD parameters signalling. Default disabled
+.TP
+\fB\-\-[no\-]repeat\-headers\fR
+Emit SPS and PPS headers at each keyframe. Default disabled
+.TP
+\fB\-\-hash\fR <integer>
+Decoded Picture Hash SEI 0: disabled, 1: MD5, 2: CRC, 3: Checksum. Default 0
+.SS "Reconstructed video options (debugging):"
+.TP
+\fB\-r\fR/\-\-recon <filename>
+Reconstructed raw image YUV or Y4M output file name
+.TP
+\fB\-\-recon\-depth\fR <integer>
+Bit\-depth of reconstructed raw image file. Defaults to input bit depth, or 8 if Y4M
+.PP
+.SH "SEE ALSO"
+Full documentation may be found at
+http://x265.readthedocs.org/en/default/cli.html.
