@@ -1,3 +1,10 @@
+janus-gateway-audioroom (0.0.8-wheezy1) unstable; urgency=low
+
+  * cm_audioroom_room_destroy: assertion `hash_table != NULL' failed.
+  * Seems to destroy room when last participant leaves.
+
+ -- Cargomedia <tech@cargomedia.ch>  Tue, 19 Jan 2016 10:54:43 +0000
+
 janus-gateway-audioroom (0.0.7-wheezy1) unstable; urgency=low
 
   * Make recording configurable in config file.
