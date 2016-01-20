@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.10-wheezy1) unstable; urgency=low
+
+  * Add "createdAt" field to thumbnail job.
+
+ -- Cargomedia <tech@cargomedia.ch>  Wed, 20 Jan 2016 15:07:00 +0000
+
 janus-gateway-rtpbroadcast (0.0.9-wheezy1) unstable; urgency=low
 
   * Add listeners and waiters count to the stream definition.
