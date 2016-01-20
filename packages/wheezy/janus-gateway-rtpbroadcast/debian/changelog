@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.10-wheezy2) unstable; urgency=low
+
+  * Make recording configurable in config file (use as master setting).
+
+ -- Cargomedia <tech@cargomedia.ch>  Wed, 20 Jan 2016 18:49:54 +0000
+
 janus-gateway-rtpbroadcast (0.0.10-wheezy1) unstable; urgency=low
 
   * Add "createdAt" field to thumbnail job.

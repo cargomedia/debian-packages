@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.10-vivid2) unstable; urgency=medium
+
+  * Make recording configurable in config file (use as master setting).
+
+ -- Cargomedia <tech@cargomedia.ch>  Wed, 20 Jan 2016 18:50:47 +0000
+
 janus-gateway-rtpbroadcast (0.0.10-vivid1) unstable; urgency=medium
 
   * Add "createdAt" field to thumbnail job.
