@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.10-vivid1) unstable; urgency=medium
+
+  * Add "createdAt" field to thumbnail job.
+
+ -- Cargomedia <tech@cargomedia.ch>  Wed, 20 Jan 2016 15:05:52 +0000
+
 janus-gateway-rtpbroadcast (0.0.9-vivid1) unstable; urgency=medium
 
   * Add listeners and waiters count to the stream definition.
