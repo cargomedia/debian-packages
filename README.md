@@ -127,6 +127,10 @@ Available packages
  - Version: 9.40.12.0-wheezy1
  - Packages: hpacucli
 
+**hpssacli**
+ - Version: 2.30-6.0-wheezy1
+ - Packages: hpssacli
+
 **janus**
  - Version: 0.0.9.adf88c-wheezy2
  - Packages: janus
