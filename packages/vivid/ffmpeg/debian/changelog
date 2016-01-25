@@ -1,7 +1,7 @@
 ffmpeg (7:2.8.5-vivid1) unstable; urgency=medium
 
   * Import new upstream release 2.8.5
-  * Package for Debian Wheezy
+  * Package for Ubuntu Vivid Vervet (15.04)
 
  -- Cargo Media <tech@cargomedia.ch>  Mon, 25 Jan 2016 11:16:31 +0000
 

@@ -29,6 +29,10 @@ Available packages
  - Version: 4.5.0.3-vivid1
  - Packages: coturn
 
+**ffmpeg**
+ - Version: 7:2.8.5-vivid1
+ - Packages: ffmpeg-dbg, ffmpeg-doc, ffmpeg, libav-tools, libavcodec-dev, libavcodec-extra, libavcodec-ffmpeg-extra56, libavcodec-ffmpeg56, libavdevice-dev, libavdevice-ffmpeg56, libavfilter-dev, libavfilter-ffmpeg5, libavformat-dev, libavformat-ffmpeg56, libavresample-dev, libavresample-ffmpeg2, libavutil-dev, libavutil-ffmpeg54, libpostproc-dev, libpostproc-ffmpeg53, libswresample-dev, libswresample-ffmpeg1, libswscale-dev, libswscale-ffmpeg3
+
 **graphene**
  - Version: 1.2.10-1
  - Packages: graphene
@@ -118,6 +122,10 @@ Available packages
 **coturn**
  - Version: 4.5.0.3-wheezy1
  - Packages: coturn
+
+**ffmpeg**
+ - Version: 7:2.8.5-1wheezy1
+ - Packages: ffmpeg-dbg, ffmpeg-doc, ffmpeg, libav-tools, libavcodec-dev, libavcodec-extra, libavcodec-ffmpeg-extra56, libavcodec-ffmpeg56, libavdevice-dev, libavdevice-ffmpeg56, libavfilter-dev, libavfilter-ffmpeg5, libavformat-dev, libavformat-ffmpeg56, libavresample-dev, libavresample-ffmpeg2, libavutil-dev, libavutil-ffmpeg54, libpostproc-dev, libpostproc-ffmpeg53, libswresample-dev, libswresample-ffmpeg1, libswscale-dev, libswscale-ffmpeg3
 
 **gearmand**
  - Version: 1.1.12-1
