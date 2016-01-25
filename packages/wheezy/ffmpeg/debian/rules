@@ -4,6 +4,11 @@
 #export DH_VERBOSE=1
 export V=1
 
+# Skip very lengthy tests (when built on VM)
+ifneq (,$(filter $(DEB_BUILD_OPTIONS),nocheck))
+    export DEB_BUILD_OPTIONS := nocheck $(DEB_BUILD_OPTIONS)
+endif
+
 # Determine the debian directory, which is the directory of this makefile.
 # The path of this makefile is the first word in the MAKEFILE_LIST.
 DEBIAN_DIR = $(dir $(firstword $(MAKEFILE_LIST)))
