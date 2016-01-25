@@ -1,0 +1,37 @@
+Description: Compile with -O2 on s390x
+ This is a workaround for https://bugs.launchpad.net/bugs/1526324, and
+ should be dropped once that bug is fixed.
+Author: Colin Watson <cjwatson@ubuntu.com>
+Forwarded: not-needed
+Last-Update: 2015-12-24
+
+Index: b/configure
+===================================================================
+--- a/configure
++++ b/configure
+@@ -3393,6 +3393,15 @@
+     done
+ }
+ 
++gcc_s390x_flags(){
++    for flag; do
++        case $flag in
++            -O3)                  echo -O2 ;;
++            *)                    echo $flag ;;
++        esac
++    done
++}
++
+ msvc_common_flags(){
+     for flag; do
+         case $flag in
+@@ -3577,6 +3586,9 @@
+         fi
+         _cflags_speed='-O3'
+         _cflags_size='-Os'
++        case "$arch" in
++            s390x) _flags_filter=gcc_s390x_flags ;;
++        esac
+     elif $_cc --version 2>/dev/null | grep -q ^icc; then
+         _type=icc
+         _ident=$($_cc --version | head -n1)
