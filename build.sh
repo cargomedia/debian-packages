@@ -43,7 +43,7 @@ rm -rf tmp/ && mkdir tmp/ && cd tmp/
 . "${DIR_PACKAGE}/setup.sh"
 cp -r "${DIR_PACKAGE}/debian" ./debian
 sudo mk-build-deps --install --remove debian/control
-dpkg-buildpackage -us -uc
+DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -us -uc
 
 cd "${DIR_PACKAGE}"
 rm -rf pkg/ && mkdir pkg/
