@@ -4,10 +4,13 @@ Priority: optional
 Maintainer: Cargo Media <tech@cargomedia.ch>
 XSBC-Original-Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
 Homepage: https://ffmpeg.org/
-Standards-Version: 2.8.5
 Vcs-Git: git://anonscm.debian.org/pkg-multimedia/ffmpeg.git
 Vcs-Browser: https://anonscm.debian.org/cgit/pkg-multimedia/ffmpeg.git
-Build-Depends:
+Build-Depends: yasm, zlib1g-dev,
+    libspeex-dev,
+    libvpx-dev,
+    libopus-dev
+Standards-Version: 2.8.5
 
 Package: ffmpeg
 Architecture: any

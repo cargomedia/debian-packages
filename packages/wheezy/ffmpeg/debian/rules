@@ -1,8 +1,12 @@
 #!/usr/bin/make -f
 
-build:
-	dh build
+%:
+	dh $@ --parallel --with autoreconf
 
+override_dh_auto_configure:
+	dh_auto_configure -- --enable-libspeex --enable-gpl --enable-nonfree \
+	            --enable-shared --enable-version3 --enable-runtime-cpudetect \
+	            --enable-libvpx --enable-libopus
 
 install:
 	dh_testdir
