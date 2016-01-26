@@ -1,11 +1,11 @@
 #!/bin/sh
 
-test_description="Basic installation check for ffmpeg"
+test_description="Check that the arcconf tool runs"
 
 . ./sharness.sh
 
-test_expect_success "ffmpeg binary executes" "
-  ffmpeg -codecs
+test_expect_success "controller version" "
+  arcconf GETVERSION
 "
 
 test_done

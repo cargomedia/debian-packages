@@ -39,7 +39,8 @@ DIR_PACKAGE="${DIR}/packages/${CODENAME}/${PACKAGE}"
 
 cd "${DIR_PACKAGE}"
 
-rm -rf tmp/ && mkdir tmp/ && cd tmp/
+#rm -rf tmp/ && mkdir tmp/ &&
+cd tmp/
 . "${DIR_PACKAGE}/setup.sh"
 cp -r "${DIR_PACKAGE}/debian" ./debian
 sudo mk-build-deps --install --remove debian/control
