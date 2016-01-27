@@ -119,10 +119,6 @@ Available packages
  - Version: 4.5.0.3-wheezy1
  - Packages: coturn
 
-**ffmpeg**
- - Version: 7:2.8.5-1wheezy1
- - Packages: ffmpeg
-
 **gearmand**
  - Version: 1.1.12-1
  - Packages: gearman-job-server, gearman-tools, gearman, libgearman-dbg, libgearman-dev, libgearman-doc, libgearman7-dbg, libgearman7
