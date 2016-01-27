@@ -1,7 +1,0 @@
-ffmpeg (7:2.8.5-1wheezy1) unstable; urgency=medium
-
-  * Import new upstream release 2.8.5
-  * Package for Debian Wheezy
-  * config: --enable-libspeex --enable-gpl --enable-nonfree --enable-version3 --enable-runtime-cpudetect --enable-libvpx --enable-libopus
-
- -- Cargo Media <tech@cargomedia.ch>  Thu, 21 Jan 2016 12:38:21 +0000
