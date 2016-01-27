@@ -9,14 +9,14 @@ Vcs-Browser: https://anonscm.debian.org/cgit/pkg-multimedia/ffmpeg.git
 Build-Depends: yasm, zlib1g-dev,
     libspeex-dev,
     libvpx-dev,
-    libopus-dev
+    libopus-dev,
+    debhelper (>=9)
 Standards-Version: 2.8.5
 
 Package: ffmpeg
 Architecture: any
 Multi-Arch: foreign
 Depends:
- ${shlibs:Depends},
  ${misc:Depends}
 Description: Tools for transcoding, streaming and playing of multimedia files
  FFmpeg is the leading multimedia framework, able to decode, encode, transcode,

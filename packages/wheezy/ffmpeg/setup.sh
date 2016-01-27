@@ -1,7 +1,7 @@
 #!/bin/sh
 
-VERSION="2.00.21811"
-wget "http://download.adaptec.com/raid/storage_manager/arcconf_v$(echo ${VERSION} | tr '.' '_').zip"
-mkdir ${PACKAGE}-${VERSION}
-unzip -d ${PACKAGE}-${VERSION} arcconf_*.zip
-cd ${PACKAGE}-${VERSION}
+VERSION="2.8.5"
+wget "https://ffmpeg.org/releases/ffmpeg-${VERSION}.tar.xz"
+unp ffmpeg-${VERSION}.tar.xz
+cp ffmpeg-${VERSION}.tar.xz ffmpeg_${VERSION}.orig.tar.xz
+cd ffmpeg-${VERSION}/
