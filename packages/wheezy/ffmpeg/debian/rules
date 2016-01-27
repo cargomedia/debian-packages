@@ -1,0 +1,45 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+DEB_BUILD_OPTIONS := nocheck
+
+build:
+	unset CC CFLAGS CPPFLAGS LDFLAGS CXX CXXFLAGS \
+		&& ./configure --prefix=/usr --enable-libspeex --enable-gpl --enable-nonfree \
+                       --enable-version3 --enable-runtime-cpudetect \
+                       --enable-libvpx --enable-libopus \
+        && make && sudo make install
+
+install:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	dh_install
+
+clean:
+	dh_clean
+
+%:  dh $@  --parallel
+
+# We have nothing to do by default.
+binary-indep: install build-stamp
+build-stamp:
+
+# Build architecture-dependent files here.
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+
