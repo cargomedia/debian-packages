@@ -19,6 +19,12 @@ deb http://debian-packages.cargomedia.ch <codename> main
 Available packages
 ------------------
 
+#### jessie
+
+**arcconf**
+ - Version: 2.00.21811-jessie1
+ - Packages: arcconf
+
 #### vivid
 
 **arcconf**

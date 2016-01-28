@@ -5,7 +5,7 @@ test_description="Check that the arcconf tool runs"
 . ./sharness.sh
 
 test_expect_success "controller version" "
-  arcconf GETVERSION
+  sudo arcconf GETVERSION
 "
 
 test_done
