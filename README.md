@@ -2,6 +2,7 @@ debian-packages
 ===============
 Custom DEB packages for the following codenames:
 - **wheezy**: Debian 7
+- **jessie**: Debian 8
 - **vivid**: Ubuntu 15.04
 
 Installing the packages
@@ -18,6 +19,12 @@ deb http://debian-packages.cargomedia.ch <codename> main
 
 Available packages
 ------------------
+
+#### jessie
+
+**arcconf**
+ - Version: 2.00.21811-jessie1
+ - Packages: arcconf
 
 #### vivid
 
