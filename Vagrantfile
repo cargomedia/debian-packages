@@ -32,4 +32,8 @@ Vagrant.configure('2') do |config|
   config.vm.define 'vivid' do |vivid|
     vivid.vm.box = 'cargomedia/ubuntu-1504-default'
   end
+
+  config.vm.define 'jessie' do |vivid|
+    vivid.vm.box = 'cargomedia/debian-8-amd64-default'
+  end
 end
