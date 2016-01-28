@@ -19,6 +19,12 @@ deb http://debian-packages.cargomedia.ch <codename> main
 Available packages
 ------------------
 
+#### jessie
+
+**coturn**
+ - Version: 4.5.0.3-jessie1
+ - Packages: coturn
+
 #### vivid
 
 **arcconf**
