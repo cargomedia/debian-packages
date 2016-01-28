@@ -26,6 +26,10 @@ Available packages
  - Version: 2.00.21811-jessie1
  - Packages: arcconf
 
+**coturn**
+ - Version: 4.5.0.3-jessie1
+ - Packages: coturn
+
 #### vivid
 
 **arcconf**
