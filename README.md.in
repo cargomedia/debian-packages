@@ -2,6 +2,7 @@ debian-packages
 ===============
 Custom DEB packages for the following codenames:
 - **wheezy**: Debian 7
+- **jessie**: Debian 8
 - **vivid**: Ubuntu 15.04
 
 Installing the packages
