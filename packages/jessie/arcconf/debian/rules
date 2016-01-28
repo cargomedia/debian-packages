@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+
+
+build:
+	dh build
+
+install:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	install -D -m 755 linux_x64/cmdline/arcconf $(CURDIR)/cmdline/arcconf
+	dh_install
+
+clean:
+	dh clean
+
+binary-arch:
+	dh binary-arch
+
+binary-indep:
+	dh binary-indep
+
+binary: build binary-arch binary-indep
