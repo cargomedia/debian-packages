@@ -1,0 +1,11 @@
+sas2ircu-64bit (20.00.00.00-jessie1) unstable; urgency=low
+
+  * Jessie variant
+
+ -- Cargo Media <tech@cargomedia.ch>  Mon, 8 Feb 2016 14:29:00 +0000
+
+sas2ircu-64bit (20.00.00.00-vivid1) unstable; urgency=low
+
+  * Imported Upstream version 20.00.00.00
+
+ -- Reto Kaiser (njam) <reto@cargomedia.ch>  Sun, 13 Dec 2015 09:00:00 +0200
