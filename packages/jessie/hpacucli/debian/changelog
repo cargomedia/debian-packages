@@ -1,0 +1,11 @@
+hpacucli-64bit (9.40.12.0-jessie1) unstable; urgency=low
+
+  * Imported Upstream version 9.40.12.0
+
+ -- Cargo Media <tech@cargomedia.ch>  Mon, 8 Feb 2016 14:29:00 +0000
+
+hpacucli-64bit (9.40.12.0-vivid1) unstable; urgency=low
+
+  * Imported Upstream version 9.40.12.0
+
+ -- Reto Kaiser (njam) <reto@cargomedia.ch>  Sun, 13 Dec 2015 09:00:00 +0200
