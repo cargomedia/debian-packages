@@ -30,6 +30,22 @@ Available packages
  - Version: 4.5.0.3-jessie1
  - Packages: coturn
 
+**hpacucli**
+ - Version: 9.40.12.0-jessie1
+ - Packages: hpacucli
+
+**hpssacli**
+ - Version: 2.30-6.0-jessie1
+ - Packages: hpssacli
+
+**sas2ircu**
+ - Version: 20.00.00.00-jessie1
+ - Packages: sas2ircu
+
+**storcli**
+ - Version: 1.17.08-jessie1
+ - Packages: storcli
+
 #### vivid
 
 **arcconf**
