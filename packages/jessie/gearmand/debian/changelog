@@ -1,0 +1,360 @@
+gearmand (1.1.12-jessie1) unstable; urgency=low
+
+   * Imported Upstream version 1.1.12
+   * Apply adjustment from https://github.com/ssm/pkg-gearmand/tree/upstream-development
+
+ -- Cargo Media <tech@cargomedia.ch>  Tue, 9 Feb 2015 11:15:00 +0000
+
+gearmand (1.1.12) unstable; urgency=low
+
+  * Imported Upstream version 1.1.12
+  * Apply adjustment from https://github.com/ssm/pkg-gearmand/tree/upstream-development
+
+ -- Reto Kaiser <reto@cargomedia.ch>  Mon, 16 Jun 2014 08:32:00 +0200
+
+gearmand (1.0.6-3) unstable; urgency=low
+
+  * gearman-job-server: listen on "localhost" instead of IPv4 only loopback address
+    (Closes: #711859)
+  * Rename "libgearman-dbg" to "libgearman7-dbg" (Closes: #698371)
+  * debian/watch: track current and next stable release series
+  * Improve autopkgtests
+    - Add missing XS-Testsuite header
+    - Add procps to server test dependency
+    - Add worker/client test
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Sun, 10 Nov 2013 22:58:28 +0100
+
+gearmand (1.0.6-2) unstable; urgency=low
+
+  [ Pino Toscano ]
+  * Fix FTBFS on GNU/Hurd (Closes: #715322)
+  * Fix parallel building (Closes: #715323)
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Mon, 08 Jul 2013 12:48:35 +0200
+
+gearmand (1.0.6-1) unstable; urgency=low
+
+  [ Stig Sandbeck Mathisen ]
+  * New upstream release
+  * Add dep8 test for gearman-job-server
+
+  [ Michael Stapelberg ]
+  * Use dh_systemd (Closes: #715253)
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Sun, 07 Jul 2013 17:06:22 +0200
+
+gearmand (1.0.5-2) unstable; urgency=low
+
+  * Upload to unstable after freeze
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Sun, 05 May 2013 11:58:42 +0200
+
+gearmand (1.0.5-1) experimental; urgency=low
+
+  * New upstream version
+  * Update debian/copyright
+  * Add upstart configuration for gearman-job-server
+  * Systemd will now restart gearman-job-server
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Wed, 24 Apr 2013 14:49:40 +0200
+
+gearmand (1.0.2-1) experimental; urgency=low
+
+  * New upstream release
+  * Add persistent storage with MySQL (Closes: #694572)
+  * Add persistent storage with PostgreSQL
+  * Remove GNU/Hurd patch included upstream
+  * Remove typo patch included upstream
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Mon, 14 Jan 2013 22:39:53 +0100
+
+gearmand (0.41-1) experimental; urgency=low
+
+  * Imported Upstream version 0.41
+  * Soname bump: libgearman6 -> libgearman7
+  * Set build dependency on libmemcached-dev to require >= 1.0
+    (Closes: #681768)
+  * Add build dependency on libboost-system-dev
+  * Remove support-gcc-4.7.patch, included upstream
+  * debian/control: Remove old conflicts/replaces/provides
+  * debian/clean: Clean up config.log after build
+  * debian/watch: Check for updates from the stable branch only
+  * Use "gitpkg" to handle patch generation, in-tree patches has been removed
+  * Track upstream manpage location
+  * Disable build tests
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Mon, 15 Oct 2012 23:18:00 +0200
+
+gearmand (0.33-2) unstable; urgency=low
+
+  * Add patch to support gcc/g++ 4.7 (Closes: #678903)
+    * Revert "Use gcc 4.6 when building"
+  * Fix FTBFS on GNU/Hurd (Closes: #678063)
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Tue, 26 Jun 2012 08:58:21 +0200
+
+gearmand (0.33-1) unstable; urgency=low
+
+  * Imported Upstream version 0.33
+  * Remove kfreebsd O_CLOEXEC patch, this is now checked by configure
+  * Add versions for build dependencies where stated in configure
+  * ExecStartPre= needs root acecss…
+  * Use gcc 4.6 when building
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Sun, 24 Jun 2012 13:53:02 +0200
+
+gearmand (0.32-2) unstable; urgency=low
+
+  * Add O_CLOEXEC patch (Closes: #671158)
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Sun, 06 May 2012 14:21:47 +0200
+
+gearmand (0.32-1) unstable; urgency=low
+
+  * Imported Upstream version 0.32
+  * Remove spelling patch included upstream
+  * Remove documentation patch, we do not rebuild documentation
+  * Remove memcached patch, fixed upstream
+  * Use dh_autoreconf
+  * Use copyright format 1.0
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Tue, 01 May 2012 20:43:47 +0200
+
+gearmand (0.29-2) unstable; urgency=low
+
+  * Adjust architectures for systemtap-std-dev build dependency
+    (Closes: #668792)
+  * Update "forwarded" status for patches
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Mon, 16 Apr 2012 07:55:59 +0200
+
+gearmand (0.29-1) unstable; urgency=low
+
+  * New upstream release
+  * Update watch file, use https
+  * Revert "Remove build dependency on libmemcached"
+  * Bump standards version (no changes)
+  * Bump debhelper compatibility level to 9 (multiarch)
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Fri, 16 Mar 2012 01:31:03 +0100
+
+gearmand (0.28-1) unstable; urgency=low
+
+  * New upstream release
+  * Only run build tests on "amd64" (Closes: #659256)
+  * Remove build dependency on tokyocabinet
+  * Remove build dependency on libmemcached
+  * Add install information for systemd service
+  * Set priority to "optional" for libgearman6
+  * Refresh patch debian_patches_fix_test_files.patch
+  * Refresh patch workaround_duplicate_address_in_tests.patch
+  * Update debian/copyright
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Mon, 20 Feb 2012 09:36:11 +0100
+
+gearmand (0.27-5) unstable; urgency=low
+
+  * Set priority to "extra" after (repeated) feedback from ftpmaster
+    auto script
+  * Remove the sybols file until the toolchain for handling c++ symbols
+    improves enough
+  * Build depend on libsasl2-dev
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Sat, 04 Feb 2012 11:22:47 +0100
+
+gearmand (0.27-4) unstable; urgency=low
+
+  * Use a whitelist for architectures we run build tests for
+    (Closes: #657163)
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Sat, 04 Feb 2012 00:48:17 +0100
+
+gearmand (0.27-3) unstable; urgency=low
+
+  * Mark systemtap-sdt-dev as a linux specific build dependency
+    (Closes: #657774)
+  * Add systemd service for gearman-job-server
+  * Add --list-missing to dh_install
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Sat, 28 Jan 2012 23:01:06 +0100
+
+gearmand (0.27-2) unstable; urgency=low
+
+  [ Stig Sandbeck Mathisen ]
+  * Add missing include/libgearman-1.0 (Closes: #657189)
+
+  [ Michael Fladischer ]
+  * Tag varying symbols by architecture (Closes: #657165)
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Wed, 25 Jan 2012 10:25:18 +0100
+
+gearmand (0.27-1) unstable; urgency=low
+
+  [Michael Fladischer]
+  * Patch: fix spelling
+  * Patch: remove dependency on googleanalytics
+  * Patch: fix tests
+  * Use non-authenticating URL for Vcs-Git.
+  * Add "status" action to init script.
+
+  [Stig Sandbeck Mathisen]
+  * New upstream release (Closes: #621486) (LP: #682680)
+  * Remove build dependency on drizzle
+    (until it reaches testing again)
+  * Build with support for tokyocabinet
+  * Remove backported ipv6 patch
+  * Patch: disable hostile build tests, they take hours...
+  * Patch: workaround duplicate address issue for tests
+  * Do not build API documentation, the sources are not shipped in
+    upstream tarball
+  * Update debian/copyright
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Mon, 23 Jan 2012 11:31:08 +0100
+
+gearmand (0.26-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Stig Sandbeck Mathisen <ssm@debian.org>  Tue, 27 Dec 2011 15:44:24 +0100
+
+gearmand (0.14-1) unstable; urgency=low
+
+  * New upstream release. (Closes: #590116)
+  * Don't install .la file. (Closes: #590967)
+  * Listen on localhost by default - thanks Francois. (Closes: #609640)
+  * New standards version 3.9.1.
+  * Cleaned up debian/rules.
+  * Install the upstream changelog.
+
+ -- Monty Taylor <mordred@inaugust.com>  Sat, 05 Feb 2011 09:21:29 -0800
+
+gearmand (0.13-1) unstable; urgency=low
+
+  * New upstream release. (Closes: #581517)
+
+ -- Monty Taylor <mordred@inaugust.com>  Fri, 14 May 2010 06:48:17 +0200
+
+gearmand (0.12-1) unstable; urgency=low
+
+  * Cleaned up docs/api and docs/dev. (Closes: #562428)
+  * New upstream release. 
+  * Removed libgearman-server0 and libgearman-server-dev packages. Upstream
+    has removed these as installed libraries. 
+  * Updated to source format 3.0.
+  * New standards version 3.8.4.
+  * Added -dev depend on libevent-dev (Closes: #569734)
+
+ -- Monty Taylor <mordred@inaugust.com>  Thu, 18 Feb 2010 12:33:40 -0800
+
+gearmand (0.11-1) unstable; urgency=low
+
+  * Cleaned up debian/rules.
+  * New upstream release. 
+  * Added entries to the copyright file. 
+
+ -- Monty Taylor <mordred@inaugust.com>  Wed, 02 Dec 2009 12:45:07 -0800
+
+gearmand (0.10-2) unstable; urgency=low
+
+  * Fixed an empty libgearman-server-dev package.
+  * Added a patch to prevent writing test files into /tmp.  
+  * Removed lintian override now that the manpages are split.
+
+ -- Monty Taylor <mordred@inaugust.com>  Sun, 11 Oct 2009 00:57:35 -0700
+
+gearmand (0.10-1) unstable; urgency=low
+
+  * Added doc-base entries for documentation.
+  * Added lintian-override for arch-dep-package-has-big-usr-share. The files
+    are all manpages, which do in fact need to be in the package. 
+  * New upstream version. 
+  * Removed postgres include path hack. 
+
+ -- Monty Taylor <mordred@inaugust.com>  Mon, 28 Sep 2009 21:43:31 -0700
+
+gearmand (0.9-5) unstable; urgency=low
+
+  * Fix LSB init script header. Thanks Petter. (Closes: #544770)
+  * Updated standards version to 3.8.3.
+
+ -- Monty Taylor <mordred@inaugust.com>  Mon, 07 Sep 2009 15:08:39 -0700
+
+gearmand (0.9-4) unstable; urgency=low
+
+  * Clean up /var/lib/gearman.
+  * Put priority back to optional. It's sort of clear that setting it to
+    extra was the wrong choice.
+
+ -- Monty Taylor <mordred@inaugust.com>  Tue, 11 Aug 2009 10:06:22 -0700
+
+gearmand (0.9-3) unstable; urgency=low
+
+  * Added missing -dev depends on libpq-dev and libsqlite-dev reported
+    against Ubuntu. (LP: #408433)
+  * Test for existence of daemon in startup script to comply with policy.
+    (Closes: #539757)
+  * Give gearman a real home dir - it'll need somewhere to stick sqlite queues.
+
+ -- Monty Taylor <mordred@inaugust.com>  Tue, 04 Aug 2009 10:18:57 -0700
+
+gearmand (0.9-2) unstable; urgency=low
+
+  * Removed a stray chown that was left in below.
+
+ -- Monty Taylor <mordred@inaugust.com>  Sun, 02 Aug 2009 12:06:29 -0700
+
+gearmand (0.9-1) unstable; urgency=low
+
+  [ Thomas Koch ]
+  * Fixed init script to actually work. (Closes: #538121)
+  * Create gearman user to own pid and log files.
+  * Provide and parse /etc/default/gearman-job-server.
+
+  [ Monty Taylor ]
+  * Add depend on adduser.
+  * New upstream release.
+  * Added build dep on libsqlite3-dev and libpq-dev.
+  * Added workaround for postgres include file location madness. Better fix
+    coming from upstream next release.
+  * Lowered priority to extra, because libmemcached and libdrizzle are both
+    extra to follow policy.
+  * Added -dev depends on -dev packages of libraries needed. (Closes: #538015)
+  * Added direct depend on libgearman1 for gearman-job-server and gearman-tools.
+  * Added gensymbols files libgearman1.symbols.
+  * Don't run tests on s390. 
+
+ -- Monty Taylor <mordred@inaugust.com>  Thu, 30 Jul 2009 16:09:36 -0700
+
+gearmand (0.8-2) unstable; urgency=low
+
+  * Reverted gearman-server to gearman-job-server. The Perl server already
+    has this package name.
+
+ -- Monty Taylor <mordred@inaugust.com>  Fri, 10 Jul 2009 01:31:59 -0700
+
+gearmand (0.8-1) unstable; urgency=low
+
+  * Removed perl from build-depends, it's already provided.
+  * Added procps to build-depends so that we can use kill in make test.
+  * New upstream release.
+
+ -- Monty Taylor <mordred@inaugust.com>  Fri, 10 Jul 2009 01:11:15 -0700
+
+gearmand (0.7-1) unstable; urgency=low
+
+  * Added depend on libgearman1 to libgearman-dev. (Closes: #531655)
+  * Aligned section with the one in the override file.
+  * Renamed gearman-worker to gearman-tools on request of upstream.
+  * Renamed gearman-job-server to gearman-server on request of upstream.
+  * Fixed typo in init script.
+  * Updated standards version to 3.8.2.
+  * New upstream release.
+
+ -- Monty Taylor <mordred@inaugust.com>  Sun, 21 Jun 2009 11:01:50 -0700
+
+gearmand (0.6-1) unstable; urgency=low
+
+  * Initial release. (Closes: #528309)
+
+ -- Monty Taylor <mordred@inaugust.com>  Mon, 11 May 2009 15:08:16 -0700
