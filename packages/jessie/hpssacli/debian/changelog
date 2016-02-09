@@ -1,0 +1,13 @@
+hpssacli-64bit (2.30-6.0-jessie1) unstable; urgency=low
+
+  * Debianized from original rpm hpssacli-2.30-6.0.x86_64.rpm
+
+  - From http://downloads.linux.hpe.com/SDR/repo/spp/2015.10.0_supspp_rhel7.2_x86_64/
+
+  - Please refer to online documentation by searching for the
+  "HP Array Configuration Utility CLI" using the search box on
+  http://www.hp.com. Then select the Download software link,
+  select your operation system. Under the Enhancements tab is a
+  description of the changes. (Severity: Low)
+
+ -- Cargo Media <tech@cargomedia.ch>  Mon, 8 Feb 2016 14:29:00 +0000
