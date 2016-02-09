@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+GROUP="gearman"
+USER="gearman"
+LOGDIR="/var/log/gearman-job-server"
+
+# shamelessly copied from debian mysql-server package...
+#
+# - Remove the gearman user only after all his owned files are purged.
+#   
+if [ "$1" = "purge" ]; then
+  # we remove the mysql user only after all his owned files are purged
+  rm -rf $LOGDIR
+  rm -rf /var/run/gearman
+	rm -rf /var/lib/gearman
+
+  # --remove-all-files takes ages, so delete manually
+  deluser --system $USER || true
+  delgroup --system --only-if-empty $GROUP || true
+fi
+
+#DEBHELPER#

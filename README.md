@@ -30,6 +30,10 @@ Available packages
  - Version: 4.5.0.3-jessie1
  - Packages: coturn
 
+**gearmand**
+ - Version: 1.1.12-jessie1
+ - Packages: gearman-job-server, gearman-tools, gearman, libgearman-dbg, libgearman-dev, libgearman-doc, libgearman7-dbg, libgearman7
+
 **hpacucli**
  - Version: 9.40.12.0-jessie1
  - Packages: hpacucli
