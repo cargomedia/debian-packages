@@ -188,7 +188,7 @@ Available packages
  - Packages: libwebsockets-dev, libwebsockets-test-server, libwebsockets3-dbg, libwebsockets3
 
 **mysql-proxy**
- - Version: 0.8.4-2
+ - Version: 0.8.5-wheezy1
  - Packages: mysql-proxy
 
 **sas2ircu**
