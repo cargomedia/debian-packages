@@ -54,7 +54,6 @@ Available packages
  - Version: 1.17.08-jessie1
  - Packages: storcli
 
-**usrsctp**
 #### vivid
 
 **arcconf**
@@ -198,6 +197,10 @@ Available packages
 **storcli**
  - Version: 1.17.08-wheezy1
  - Packages: storcli
+
+**usrsctp**
+ - Version: 49335e1-git-wheezy1
+ - Packages: usrsctp
 
 **x265**
  - Version: 1.7-4-wheezy1
