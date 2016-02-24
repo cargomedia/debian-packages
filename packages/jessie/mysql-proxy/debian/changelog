@@ -1,0 +1,142 @@
+mysql-proxy (0.8.5-jessie1) unstable; urgency=low
+
+  * New upstream release
+  * Added unit file for systemd
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Wed, 24 Feb 2016 12:07:25 +0000
+
+mysql-proxy (0.8.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Reto Kaiser <reto@cargomedia.>  Wed, 25 Jun 2014 15:40:00 +0200
+
+mysql-proxy (0.8.1-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Don't ship .la files (Closes: #622489).
+
+ -- Luk Claes <luk@debian.org>  Sat, 25 Jun 2011 18:18:28 +0200
+
+mysql-proxy (0.8.1-1) unstable; urgency=low
+
+  * New upstream release. (closes: #620373)
+  * Import and acknowledge NMUs. (closes: #575246, #578403)
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Tue, 21 Jun 2011 20:25:33 +0200
+
+mysql-proxy (0.8.0-1.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix "DAEMON=".." in initscripts points to": point DAEMON to
+    /usr/bin/mysql-proxy; patch from Chris Lamb (closes: #578403).
+  * init script: add dependency on $remote_fs to Required-Start and
+    Required-Stop.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 02 Oct 2010 16:03:38 +0200
+
+mysql-proxy (0.8.0-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Clean up after upstream build system properly
+  * Fix FTBFS on sparc (Closes: #575246)
+  * Correctly version the libevent build-dependency
+
+ -- Paul Wise <pabs@debian.org>  Sat, 21 Aug 2010 08:29:43 +0000
+
+mysql-proxy (0.8.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Tue, 26 Jan 2010 19:10:16 +0100
+
+mysql-proxy (0.7.2-3) unstable; urgency=low
+
+  * Add back missing .lua files.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Mon, 24 Aug 2009 13:04:33 +0200
+
+mysql-proxy (0.7.2-2) unstable; urgency=low
+
+  * Rebuild against MySQL 5.1.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Sun, 26 Jul 2009 15:59:36 +0200
+
+mysql-proxy (0.7.2-1) unstable; urgency=low
+
+  * New upstream release. (closes: #536146)
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Tue, 07 Jul 2009 23:19:28 +0200
+
+mysql-proxy (0.7.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Wed, 03 Jun 2009 22:17:47 +0200
+
+mysql-proxy (0.7.0-2) unstable; urgency=low
+
+  * Now maintained by Debian MySQL Maintainers.
+  * Fix some lintian errors and warnings:
+    + Update Standards-Version to 3.8.1, no changes required.
+    + Drop empty /usr/libexec/ directory.
+    + Call ldconfig in postinst and postrm.
+    + Enable dh_makeshlibs.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Sat, 25 Apr 2009 12:48:00 +0200
+
+mysql-proxy (0.7.0-1) unstable; urgency=low
+
+  * New upstream release.
+    + No longer send queries to crashed servers. (closes: #513558)
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Sun, 12 Apr 2009 10:09:35 +0200
+
+mysql-proxy (0.7.0~r646-2) experimental; urgency=low
+
+  * Set section to database, priority extra.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Mon, 06 Apr 2009 16:29:43 +0200
+
+mysql-proxy (0.7.0~r646-1) experimental; urgency=low
+
+  * New upstream snapshot.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Sun, 05 Apr 2009 18:04:18 +0200
+
+mysql-proxy (0.6.1-5) unstable; urgency=low
+
+  * Add patch from Raoul Bhatia which adds support for status option to init
+    script. (closes: #505710)
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Fri, 14 Nov 2008 20:50:01 +0100
+
+mysql-proxy (0.6.1-4) unstable; urgency=low
+
+  * Add default database check to rw-splitting.lua.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Thu, 13 Nov 2008 14:36:16 +0100
+
+mysql-proxy (0.6.1-3) unstable; urgency=low
+
+  * Add init script.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Wed, 24 Sep 2008 13:23:05 +0200
+
+mysql-proxy (0.6.1-2) unstable; urgency=low
+
+  * Add homepage field to source stanza in control file.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Wed, 26 Mar 2008 22:23:34 +0100
+
+mysql-proxy (0.6.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Sun, 03 Feb 2008 12:55:52 +0100
+
+mysql-proxy (0.6.0-1) unstable; urgency=low
+
+  * Initial release. (closes: #446727)
+
+ -- Norbert Tretkowski <norbert@tretkowski.de>  Fri, 19 Oct 2007 23:41:43 +0200

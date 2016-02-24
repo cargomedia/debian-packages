@@ -42,6 +42,10 @@ Available packages
  - Version: 2.30-6.0-jessie1
  - Packages: hpssacli
 
+**mysql-proxy**
+ - Version: 0.8.5-jessie1
+ - Packages: mysql-proxy
+
 **sas2ircu**
  - Version: 20.00.00.00-jessie1
  - Packages: sas2ircu
@@ -50,6 +54,7 @@ Available packages
  - Version: 1.17.08-jessie1
  - Packages: storcli
 
+**usrsctp**
 #### vivid
 
 **arcconf**
@@ -193,10 +198,6 @@ Available packages
 **storcli**
  - Version: 1.17.08-wheezy1
  - Packages: storcli
-
-**usrsctp**
- - Version: 49335e1-git-wheezy1
- - Packages: usrsctp
 
 **x265**
  - Version: 1.7-4-wheezy1
