@@ -1,0 +1,26 @@
+Source: libsrtp
+Section: libs
+Priority: extra
+Maintainer: Cargomedia <tech@cargomedia.com>
+Build-Depends: autoconf (>= 2.69),
+               automake (>= 1.14),
+               autopoint (>= 0.17),
+               autotools-dev,
+               cdbs (>= 0.4.93),
+               debhelper (>= 9),
+               pkg-config,
+               libtool,
+               automake
+Standards-Version: 1.5.4
+Vcs-Git: git://github.com/cisco/libsrtp.git
+Vcs-Browser: https://github.com/cisco/libsrtp
+Homepage: https://github.com/cisco/libsrtp
+
+Package: libsrtp
+Architecture: any
+Section: libs
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Homepage: https://github.com/cisco/libsrtp
+Description: Library for SRTP (Secure Realtime Transport Protocol)
+

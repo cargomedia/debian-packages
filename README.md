@@ -42,6 +42,26 @@ Available packages
  - Version: 2.30-6.0-jessie1
  - Packages: hpssacli
 
+**janus**
+ - Version: 0.0.9.adf88c-jessie2
+ - Packages: janus
+
+**janus-gateway-audioroom**
+ - Version: 0.0.8-jessie1
+ - Packages: janus-gateway-audioroom
+
+**janus-gateway-rtpbroadcast**
+ - Version: 0.0.10-jessie2
+ - Packages: janus-gateway-rtpbroadcast
+
+**libsrtp**
+ - Version: 1.5.3
+ - Packages: libsrtp
+
+**libwebsockets**
+ - Version: 1.5.0-jessie1
+ - Packages: libwebsockets-dev, libwebsockets-test-server, libwebsockets3-dbg, libwebsockets3
+
 **sas2ircu**
  - Version: 20.00.00.00-jessie1
  - Packages: sas2ircu
@@ -49,6 +69,10 @@ Available packages
 **storcli**
  - Version: 1.17.08-jessie1
  - Packages: storcli
+
+**usrsctp**
+ - Version: 49335e1-git
+ - Packages: usrsctp
 
 #### vivid
 
