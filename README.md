@@ -55,7 +55,7 @@ Available packages
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
- - Version: 1.5.3
+ - Version: 1.5.3-jessie1
  - Packages: libsrtp
 
 **libwebsockets**
@@ -141,7 +141,7 @@ Available packages
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
- - Version: 1.5.3
+ - Version: 1.5.3-vivid1
  - Packages: libsrtp
 
 **libwebsockets**
