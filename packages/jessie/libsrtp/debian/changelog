@@ -1,5 +1,5 @@
-libsrtp (1.5.3) unstable; urgency=low
+libsrtp (1.5.3-jessie1) unstable; urgency=low
 
   * Initial release.
 
- -- Cargomedia <tech@cargomedia.ch>  Wed, 24 Feb 2016 10:06:05 +0000
+ -- Cargomedia <tech@cargomedia.ch>  Thu, 25 Feb 2016 17:02:00 +0100
