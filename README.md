@@ -62,6 +62,10 @@ Available packages
  - Version: 1.5.0-jessie1
  - Packages: libwebsockets-dev, libwebsockets-test-server, libwebsockets3-dbg, libwebsockets3
 
+**mysql-proxy**
+ - Version: 0.8.5-jessie1
+ - Packages: mysql-proxy
+
 **sas2ircu**
  - Version: 20.00.00.00-jessie1
  - Packages: sas2ircu
@@ -207,7 +211,7 @@ Available packages
  - Packages: libwebsockets-dev, libwebsockets-test-server, libwebsockets3-dbg, libwebsockets3
 
 **mysql-proxy**
- - Version: 0.8.4-2
+ - Version: 0.8.5-wheezy1
  - Packages: mysql-proxy
 
 **sas2ircu**

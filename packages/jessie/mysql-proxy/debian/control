@@ -4,6 +4,7 @@ Priority: extra
 Maintainer: Debian MySQL Maintainers <pkg-mysql-maint@lists.alioth.debian.org>
 Uploaders: Norbert Tretkowski <norbert@tretkowski.de>
 Build-Depends: debhelper (>= 5),
+    dh-systemd (>= 1.5),
     autotools-dev,
     libmysqlclient-dev,
     liblua5.1-dev,

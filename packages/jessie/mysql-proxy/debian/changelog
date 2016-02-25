@@ -1,14 +1,9 @@
-mysql-proxy (0.8.5-wheezy1) unstable; urgency=low
+mysql-proxy (0.8.5-jessie1) unstable; urgency=low
 
   * New upstream release
+  * Added unit file for systemd
 
- -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Wed, 24 Feb 2016 14:36:12 +0000
-
-mysql-proxy (0.8.4-2) unstable; urgency=low
-
-  * Streamlined init scripts.
-
- -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 11 Mar 2015 14:02:00 +0200
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Wed, 24 Feb 2016 12:07:25 +0000
 
 mysql-proxy (0.8.4-1) unstable; urgency=low
 
