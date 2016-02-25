@@ -75,7 +75,7 @@ Available packages
  - Packages: storcli
 
 **usrsctp**
- - Version: 49335e1-git
+ - Version: 49335e1-git-jessie1
  - Packages: usrsctp
 
 #### vivid
