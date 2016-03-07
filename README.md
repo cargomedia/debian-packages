@@ -191,7 +191,7 @@ Available packages
  - Packages: hpssacli
 
 **janus**
- - Version: 0.0.9.adf88c-wheezy2
+ - Version: 0.0.9.2ef5bb-wheezy1
  - Packages: janus
 
 **janus-gateway-audioroom**

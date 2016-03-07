@@ -1,3 +1,9 @@
+janus (0.0.9.2ef5bb-wheezy1) unstable; urgency=low
+
+  * New version from upstream
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 7 Mar 2016 14:11:20 +0000
+
 janus (0.0.9.adf88c-wheezy2) unstable; urgency=low
 
   * Add janus-pp-rec binary
