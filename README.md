@@ -30,6 +30,10 @@ Available packages
  - Version: 4.5.0.3-jessie1
  - Packages: coturn
 
+**ffmpeg-cm**
+ - Version: 7:2.8.6-jessie1
+ - Packages: ffmpeg-cm
+
 **gearmand**
  - Version: 1.1.12-jessie1
  - Packages: gearman-job-server, gearman-tools, gearman, libgearman-dbg, libgearman-dev, libgearman-doc, libgearman7-dbg, libgearman7
@@ -178,6 +182,10 @@ Available packages
  - Version: 4.5.0.3-wheezy1
  - Packages: coturn
 
+**ffmpeg-cm**
+ - Version: 7:2.8.6-wheezy1
+ - Packages: ffmpeg-cm
+
 **gearmand**
  - Version: 1.1.12-1
  - Packages: gearman-job-server, gearman-tools, gearman, libgearman-dbg, libgearman-dev, libgearman-doc, libgearman7-dbg, libgearman7
@@ -225,10 +233,6 @@ Available packages
 **usrsctp**
  - Version: 49335e1-git-wheezy1
  - Packages: usrsctp
-
-**x265**
- - Version: 1.7-4-wheezy1
- - Packages: libx265-59-dbg, libx265-59, libx265-dev, libx265-doc, x265
 
 
 
