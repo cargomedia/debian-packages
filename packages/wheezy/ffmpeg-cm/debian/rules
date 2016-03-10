@@ -8,7 +8,6 @@ export DH_VERBOSE=1
 build:
 	unset CC CFLAGS CPPFLAGS LDFLAGS CXX CXXFLAGS \
 		&& ./configure \
-		  --prefix=/usr \
 		  --enable-gpl \
 		  --enable-shared \
 		  --enable-version3 \
@@ -17,6 +16,8 @@ build:
 		  --enable-libopus \
 		&& make \
 		&& sudo make install \
+
+## --prefix=/usr \ commented
 
 clean:
 	dh_clean
