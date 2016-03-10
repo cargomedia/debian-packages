@@ -1,0 +1,56 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+
+## Clear variables that may confound our build of sub-projects; also
+## note that it is necessary to use overlay_vars relative to .. as
+## the generate command EXECUTES in rel/
+build:
+	unset CC CFLAGS CPPFLAGS LDFLAGS CXX CXXFLAGS \
+		&& ./configure \
+		  --prefix=/usr \
+		  --enable-gpl \
+		  --enable-shared \
+		  --enable-version3 \
+		  --enable-runtime-cpudetect \
+		  --enable-libvpx \
+		  --enable-libopus \
+		&& make \
+		&& sudo make install \
+
+clean:
+	dh_clean
+	rm -f build
+
+## dh_shlibdeps was added to figure out the dependencies on shared libraries
+##   and will populate the ${shlibs:Depends} callout in the control file
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+# We have nothing to do by default.
+binary-indep: install build-stamp
+build-stamp:
+
+# Build architecture-dependent files here.
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_installexamples
+	dh_installinit
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+
