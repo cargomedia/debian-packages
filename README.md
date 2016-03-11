@@ -168,10 +168,6 @@ Available packages
  - Version: 49335e1-git
  - Packages: usrsctp
 
-**x265**
- - Version: 1.7-4-vivid1
- - Packages: libx265-59-dbg, libx265-59, libx265-dev, libx265-doc, x265
-
 #### wheezy
 
 **arcconf**
