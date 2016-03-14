@@ -1,0 +1,5 @@
+ffmpeg-cm (7:2.8.6-jessie1) unstable; urgency=medium
+
+  * Simplifyied debianization for special-purpose use case at Cargomedia
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Wed, 09 Mar 2016 11:23:34 +0100

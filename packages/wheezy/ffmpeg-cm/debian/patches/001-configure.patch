@@ -1,0 +1,41 @@
+Index: packages/wheezy/ffmpeg-cm/tmp/ffmpeg-2.8.6/configure
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- a/configure	(revision )
++++ b/configure	(revision )
+@@ -3066,6 +3066,33 @@
+ for opt do
+     optval="${opt#*=}"
+     case "$opt" in
++        --build=*)
++            true
++        ;;
++        --includedir=*)
++            true
++        ;;
++        --mandir=*)
++            true
++        ;;
++        --infodir=*)
++            true
++        ;;
++        --sysconfdir=*)
++            true
++        ;;
++        --localstatedir=*)
++            true
++        ;;
++        --libexecdir=*)
++            true
++        ;;
++        --disable-maintainer-mode)
++            true
++        ;;
++        --disable-dependency-tracking)
++            true
++        ;;
+         --extra-ldflags=*)
+             add_ldflags $optval
+         ;;
