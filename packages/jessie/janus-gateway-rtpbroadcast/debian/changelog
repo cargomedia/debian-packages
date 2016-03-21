@@ -1,3 +1,14 @@
+janus-gateway-rtpbroadcast (0.0.11-jessie1) unstable; urgency=low
+
+  * Make compatible with current janus-gateway (#77) @kris-lab
+  * Detach command and move towards endpoint-based REST API (#73)
+  * Superuser fixes (#71) @kris-lab
+  * Improve WebRTC/UDP relay switching mode (#67) @kris-lab
+  * Detach command and move towards endpoint-based REST API (#73) @kris-lab
+  * Verify cm_rtpbcast_pick_source is working properly (#74) @kris-lab
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 21 Mar 2016 15:33:47 +0000
+
 janus-gateway-rtpbroadcast (0.0.10-jessie2) unstable; urgency=medium
 
   * Make recording configurable in config file (use as master setting).
