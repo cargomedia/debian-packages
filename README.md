@@ -47,15 +47,15 @@ Available packages
  - Packages: hpssacli
 
 **janus**
- - Version: 0.0.9.adf88c-jessie2
+ - Version: 0.0.9.088882-jessie1
  - Packages: janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.8-jessie1
+ - Version: 0.0.9-jessie1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.10-jessie2
+ - Version: 0.0.11-jessie1
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
@@ -133,15 +133,15 @@ Available packages
  - Packages: hpssacli
 
 **janus**
- - Version: 0.0.9.adf88c-vivid2
+ - Version: 0.0.9.088882-vivid1
  - Packages: janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.8-vivid1
+ - Version: 0.0.9-vivid1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.10-vivid2
+ - Version: 0.0.11-vivid1
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
@@ -195,15 +195,15 @@ Available packages
  - Packages: hpssacli
 
 **janus**
- - Version: 0.0.9.2ef5bb-wheezy1
+ - Version: 0.0.9.088882-wheezy1
  - Packages: janus
 
 **janus-gateway-audioroom**
- - Version: 0.0.8-wheezy1
+ - Version: 0.0.9-wheezy1
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.10-wheezy2
+ - Version: 0.0.11-wheezy1
  - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
