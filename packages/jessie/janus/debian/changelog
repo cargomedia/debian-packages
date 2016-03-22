@@ -1,8 +1,8 @@
-janus (0.0.9.088882-jessie1) unstable; urgency=low
+janus (0.0.9.088882-jessie3) unstable; urgency=low
 
   * New version from upstream
 
- -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 21 Mar 2016 14:49:17 +0000
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Tue, 22 Mar 2016 11:02:17 +0000
 
 janus (0.0.9.adf88c-jessie2) unstable; urgency=low
 
