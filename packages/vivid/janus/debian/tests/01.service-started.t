@@ -5,7 +5,7 @@ test_description="Basic Janus installation verification"
 . ./sharness.sh
 
 test_expect_success "Janus Service is installed and running" "
-  service janus status
+  sudo service janus status
 "
 
 test_expect_success "Janus Deamon process is alive" "

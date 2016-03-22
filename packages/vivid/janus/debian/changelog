@@ -1,3 +1,9 @@
+janus (0.0.9.088882-vivid1) unstable; urgency=low
+
+  * New version from upstream
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 21 Mar 2016 14:49:17 +0000
+
 janus (0.0.9.adf88c-vivid2) unstable; urgency=low
 
   * Add janus-pp-rec binary

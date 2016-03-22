@@ -1,3 +1,9 @@
+janus-gateway-audioroom (0.0.9-vivid1) unstable; urgency=low
+
+  * Compile against newer janus core (08888212c99f715061bcc833f47dd36aabb382ed)
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 21 Mar 2016 15:31:05 +0000
+
 janus-gateway-audioroom (0.0.8-vivid1) unstable; urgency=medium
 
   * cm_audioroom_room_destroy: assertion `hash_table != NULL' failed.
