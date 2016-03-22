@@ -47,7 +47,7 @@ Available packages
  - Packages: hpssacli
 
 **janus**
- - Version: 0.0.9.088882-jessie3
+ - Version: 0.0.9.git1.088882-jessie1
  - Packages: janus
 
 **janus-gateway-audioroom**
@@ -133,7 +133,7 @@ Available packages
  - Packages: hpssacli
 
 **janus**
- - Version: 0.0.9.088882-vivid3
+ - Version: 0.0.9.git1.088882-vivid1
  - Packages: janus
 
 **janus-gateway-audioroom**
@@ -195,7 +195,7 @@ Available packages
  - Packages: hpssacli
 
 **janus**
- - Version: 0.0.9.088882-wheezy3
+ - Version: 0.0.9.git1.088882-wheezy1
  - Packages: janus
 
 **janus-gateway-audioroom**
