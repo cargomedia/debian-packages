@@ -46,7 +46,7 @@ sudo mk-build-deps --install --remove debian/control
 dpkg-buildpackage -us -uc
 
 cd "${DIR_PACKAGE}"
-rm -rf pkg/ && mkdir pkg/
+mkdir -p pkg/
 mv tmp/*.deb pkg/
 rm -rf tmp/
 
