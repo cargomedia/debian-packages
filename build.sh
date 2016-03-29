@@ -4,6 +4,8 @@ DIR="$(cd "$(dirname "${0}")" && pwd)"
 
 usage() { echo "Usage: ${0} -c <codename> -p <package>" 1>&2; exit 1; }
 
+keepNewestThreeDebFiles() { rm -f $(ls -1t $1/*.deb | tail -n +4); }
+
 exitIfRoot() {
   if [ "$(id -u)" -eq "0" ]; then
       echo "Don't execute this script as root user!"
@@ -46,9 +48,10 @@ sudo mk-build-deps --install --remove debian/control
 dpkg-buildpackage -us -uc
 
 cd "${DIR_PACKAGE}"
-rm -rf pkg/ && mkdir pkg/
+mkdir -p pkg/
 mv tmp/*.deb pkg/
 rm -rf tmp/
+keepNewestThreeDebFiles "pkg/"
 
 if ! (sudo dpkg -i "${DIR_PACKAGE}/pkg/"*.deb); then
     sudo apt-get install -f
