@@ -1,3 +1,10 @@
+janus-gateway-rtpbroadcast (0.0.12-vivid1) unstable; urgency=low
+
+  * Measure and expose inbound RTP packet loss (#81, @kris-lab)
+  * Don't create job file if there is no data (#80, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Wed, 06 Apr 2016 07:44:13 +0000
+
 janus-gateway-rtpbroadcast (0.0.11-vivid1) unstable; urgency=low
 
   * Make compatible with current janus-gateway (#77) @kris-lab
