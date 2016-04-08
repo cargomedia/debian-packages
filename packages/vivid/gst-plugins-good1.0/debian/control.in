@@ -64,7 +64,7 @@ Depends: ${misc:Depends},
          libgstreamer-plugins-good@GST_DEB_ABI@ (= ${binary:Version}),
 Recommends: @GST_PKGNAME@-x
 Replaces: gstreamer1.0-plugins-bad (<< 1.1.2)
-Breaks: gstreamer1.0-plugins-bad (<< 1.1.2)
+Breaks: gstreamer1.0-plugins-bad (<< 1.7.90)
 XB-GStreamer-Version: ${gstreamer:Version}
 XB-GStreamer-Elements: ${gstreamer:Elements}
 XB-GStreamer-URI-Sources: ${gstreamer:URISources}
@@ -92,7 +92,7 @@ Depends: @GST_PKGNAME@-plugins-good (= ${binary:Version}),
          @GST_PKGNAME@-pulseaudio (= ${binary:Version}),
          ${misc:Depends}
 Replaces: gstreamer1.0-plugins-bad (<< 1.1.2)
-Breaks: gstreamer1.0-plugins-bad (<< 1.1.2)
+Breaks: gstreamer1.0-plugins-bad (<< 1.7.90)
 Description: GStreamer plugins from the "good" set
  GStreamer is a streaming media framework, based on graphs of filters
  which operate on media data.  Applications using this library can do
