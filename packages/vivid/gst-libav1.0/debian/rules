@@ -1,79 +1,50 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
 
-# Uncomment this to turn on verbose mode.
-export DH_VERBOSE=1
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/gnome.mk
+include /usr/share/cdbs/1/rules/utils.mk
+include /usr/share/cdbs/1/rules/autoreconf.mk
 
-## Clear variables that may confound our build of sub-projects; also
-## note that it is necessary to use overlay_vars relative to .. as
-## the generate command EXECUTES in rel/
-configure-stamp:
-	unset CC CFLAGS CPPFLAGS LDFLAGS CXX CXXFLAGS \
-		&& sh autogen.sh && ./configure --prefix=/usr \
-		--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH)
-	touch configure-stamp
+DEB_DH_AUTORECONF_ARGS += --as-needed
 
-build-stamp: configure-stamp
-	-rm -f build-stamp
-	${MAKE}
-	touch build-stamp
+export DEB_BUILD_MAINT_OPTIONS=hardening=-all
+include /usr/share/dpkg/buildflags.mk
 
-build: build-stamp
+CFLAGS += -Wno-error
+LDFLAGS += -Wl,-z,defs -Wl,-O1 -Wl,--as-needed
 
-clean:
-	dh_clean
-	-rm -f *-stamp
+# Let's decide the package name and url depending on the distribution
+DISTRO = "$(shell dpkg-vendor --query vendor)"
 
-## dh_shlibdeps was added to figure out the dependencies on shared libraries
-##   and will populate the ${shlibs:Depends} callout in the control file
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
+GST_PACKAGE_NAME := "GStreamer libav Plugins (unknown Debian derivative)"
+GST_PACKAGE_ORIGIN="http://packages.qa.debian.org/gst-libav1.0"
 
-	# Add here commands to install the package into debian/gstreamer1.0-libav
-	$(MAKE) DESTDIR=$(CURDIR)/debian/gstreamer1.0-libav install
+ifeq ($(DISTRO),"Debian")
+GST_PACKAGE_NAME := "GStreamer libav Plugins (Debian)"
+GST_PACKAGE_ORIGIN="http://packages.qa.debian.org/gst-libav1.0"
+endif
 
-# We have nothing to do by default.
-binary-indep: install build-stamp
-build-stamp:
-
-# Build architecture-dependent files here.
-binary-arch: install
-	dh_testdir
-	dh_testroot
-#	dh_installchangelogs NEWS
-#	dh_installdocs --exclude=NEWS
-	dh_installexamples
-#	dh_install
-#	dh_installmenu
-#	dh_installdebconf
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_python
-	dh_installinit
-#	dh_installcron
-#	dh_installinfo
-	dh_installman
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-#	dh_perl
-	dh_makeshlibs
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+ifeq ($(DISTRO),"Ubuntu")
+GST_PACKAGE_NAME := "GStreamer libav Plugins (Ubuntu)"
+GST_PACKAGE_ORIGIN="https://launchpad.net/distros/ubuntu/+source/gst-libav1.0"
+endif
 
 
-binary: binary-indep binary-arch
+DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
+
+DEB_CONFIGURE_EXTRA_FLAGS += --with-system-libav \
+                             --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
+                             --with-package-name=$(GST_PACKAGE_NAME) \
+                             --with-package-origin=$(GST_PACKAGE_ORIGIN)
+
+DEB_INSTALL_DOCS_ALL += debian/README.Debian NEWS
+
+DEB_DH_STRIP_ARGS := --dbg-package=gstreamer1.0-libav-dbg
+
+install/gst-libav1.0::
+	rm -f debian/gstreamer1.0-libav/usr/lib/*/gstreamer-1.0/libgst*.la
+	rm -f debian/gstreamer1.0-libav/usr/lib/*/gstreamer-1.0/libgst*.a
+
+common-binary-fixup-arch::
+	dh_gstscancodecs
+
