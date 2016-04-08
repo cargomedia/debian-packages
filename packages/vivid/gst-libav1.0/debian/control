@@ -14,10 +14,20 @@ Build-Depends: debhelper (>= 9),
                automake (>= 1.14),
                libtool (>= 2.2.6),
                autopoint (>= 0.17),
+               gtk-doc-tools (>= 1.12),
+               zlib1g-dev,
+               liblzma-dev,
+               libglib2.0-dev (>= 2.40),
                pkg-config (>= 0.11.0),
-               libgstreamer1.0-dev (>= 1.6.1),
-               libgstreamer-plugins-base1.0-dev (>= 1.6.1),
+               libgstreamer1.0-dev (>= 1.8.0),
+               libgstreamer-plugins-base1.0-dev (>= 1.8.0),
                liborc-0.4-dev (>= 1:0.4.16),
+               libavutil-dev (>= 7:2.7),
+               libavcodec-dev (>= 7:2.7),
+               libavfilter-dev (>= 7:2.7),
+               libavformat-dev (>= 7:2.7),
+               libswscale-dev (>= 7:2.7),
+               libbz2-dev,
                yasm
 Standards-Version: 3.9.3
 Vcs-Git: git://anonscm.debian.org/pkg-gstreamer/gst-libav1.0.git
@@ -47,3 +57,35 @@ Description: libav plugin for GStreamer
  http://www.libav.org/
  http://gstreamer.freedesktop.org/
  http://gstreamer.freedesktop.org/modules/gst-libav.html
+
+Package: gstreamer1.0-libav-dbg
+Architecture: any
+Multi-Arch: same
+Section: debug
+Priority: extra
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         gstreamer1.0-libav (= ${binary:Version})
+XB-GStreamer-Version: ${gstreamer:Version}
+XB-GStreamer-Elements: ${gstreamer:Elements}
+XB-GStreamer-URI-Sources: ${gstreamer:URISources}
+XB-GStreamer-URI-Sinks: ${gstreamer:URISinks}
+XB-GStreamer-Encoders: ${gstreamer:Encoders}
+XB-GStreamer-Decoders: ${gstreamer:Decoders}
+Provides: ${gstreamer:Provides}
+Description: libav plugin for GStreamer (debug symbols)
+ This GStreamer plugin supports a large number of audio and video compression
+ formats through the use of the libav library.  The plugin contains GStreamer
+ elements for encoding 40+ formats (MPEG, DivX, MPEG4, AC3, DV, ...), decoding
+ elements for decoding 90+ formats (AVI, MPEG, OGG, Matroska, ASF, ...),
+ demuxing 30+ formats and colorspace conversion.
+ .
+ http://www.libav.org/
+ http://gstreamer.freedesktop.org/
+ http://gstreamer.freedesktop.org/modules/gst-libav.html
+ .
+ This package contains unstripped shared libraries. It is provided primarily
+ to provide a backtrace with names in a debugger, this makes it somewhat
+ easier to interpret core dumps. The libraries are installed in
+ /usr/lib/debug and are automatically used by gdb.
+
