@@ -10,6 +10,7 @@ debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstvideoconvert.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstgio.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstlibvisual.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstogg.so
+debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstopus.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstplayback.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstsubparse.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgsttcp.so
