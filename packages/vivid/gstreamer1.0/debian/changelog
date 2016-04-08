@@ -1,3 +1,54 @@
+gstreamer1.0 (1.8.0-1) unstable; urgency=medium
+
+  * New upstream stable release.
+
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 24 Mar 2016 11:52:02 +0200
+
+gstreamer1.0 (1.7.91-1) experimental; urgency=medium
+
+  * New upstream release candidate:
+    + debian/libgstreamer.symbols:
+      - Update new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 15 Mar 2016 11:52:25 +0200
+
+gstreamer1.0 (1.7.90-1) experimental; urgency=medium
+
+  * New upstream release candidate:
+    + debian/libgstreamer.symbols:
+      - Add new symbols.
+    + debian/control.in:
+      - Build-depend on texlive-generic-recommended for ulem.sty.
+        It's not pulled in automatically anymore for whatever reason.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 01 Mar 2016 16:57:02 +0200
+
+gstreamer1.0 (1.7.2-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/libgstreamer.symbols:
+      - Add new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 19 Feb 2016 10:55:13 +0200
+
+gstreamer1.0 (1.7.1-1) experimental; urgency=medium
+
+  * debian/control.in:
+    + Build-depend on libgsl-dev | libgsl0-dev instead of just the latter.
+  * New upstream unstable release:
+    + debian/control.in:
+      - Build-depend on GLib >= 2.40.
+    + debian/libgstreamer.symbols:
+      - Add new symbols.
+
+ -- Sebastian Dröge <slomo@debian.org>  Wed, 23 Dec 2015 14:13:49 +0100
+
+gstreamer1.0 (1.6.2-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+
+ -- Sebastian Dröge <slomo@debian.org>  Mon, 14 Dec 2015 19:06:24 +0100
+
 gstreamer1.0 (1.6.1-1) unstable; urgency=medium
 
   * New upstream bugfix release.

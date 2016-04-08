@@ -45,7 +45,7 @@ gst_abi=$(gst_major).$(gst_minor)
 gst_lib=libgstreamer$(gst_abi)-0
 gst_lib_dev=libgstreamer$(gst_abi)-dev
 # what gstreamer version is needed
-gst_lib_dev_dep=$(gst_lib_dev) (>= 1.6.1)
+gst_lib_dev_dep=$(gst_lib_dev) (>= 1.8.0)
 
 gst_pkgname=gstreamer$(gst_abi)
 gst_deb_abi=$(gst_abi)-0

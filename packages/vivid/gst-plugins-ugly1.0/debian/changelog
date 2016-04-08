@@ -1,3 +1,120 @@
+gst-plugins-ugly1.0 (1.8.0-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian. Remaining changes:
+    + Split AMR out into a gstreamer1.0-plugins-ugly-amr package.
+    + Run dh_install with --fail-missing to error out if files aren't
+      installed.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+
+ -- Iain Lane <iain.lane@canonical.com>  Fri, 25 Mar 2016 12:29:22 +0000
+
+gst-plugins-ugly1.0 (1.8.0-1) unstable; urgency=medium
+
+  * New upstream stable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.8.0.
+
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 24 Mar 2016 12:41:14 +0200
+
+gst-plugins-ugly1.0 (1.7.91-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian. Remaining changes:
+    + Split AMR out into a gstreamer1.0-plugins-ugly-amr package.
+    + Run dh_install with --fail-missing to error out if files aren't
+      installed.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+
+ -- Iain Lane <iain.lane@canonical.com>  Thu, 17 Mar 2016 17:21:27 +0000
+
+gst-plugins-ugly1.0 (1.7.91-1) experimental; urgency=medium
+
+  * New upstream release candidate:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.91.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 15 Mar 2016 12:12:15 +0200
+
+gst-plugins-ugly1.0 (1.7.90-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian. Remaining changes:
+    + Split AMR out into a gstreamer1.0-plugins-ugly-amr package.
+    + Run dh_install with --fail-missing to error out if files aren't
+      installed.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+
+ -- Iain Lane <iain.lane@canonical.com>  Thu, 03 Mar 2016 18:12:37 +0000
+
+gst-plugins-ugly1.0 (1.7.90-1) experimental; urgency=medium
+
+  * New upstream release candidate:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.90.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 01 Mar 2016 17:33:20 +0200
+
+gst-plugins-ugly1.0 (1.7.2-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian. Remaining changes:
+    + Split AMR out into a gstreamer1.0-plugins-ugly-amr package.
+    + Run dh_install with --fail-missing to error out if files aren't
+      installed.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+
+ -- Iain Lane <iain.lane@canonical.com>  Mon, 22 Feb 2016 12:32:01 +0000
+
+gst-plugins-ugly1.0 (1.7.2-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.2.
+      - Update build-depends on opencore-amrnb/wb to >= 0.1.3.
+      - Build-depend on libmpg123-dev >= 1.13
+    + debian/gstreamer-plugins-ugly.install,
+      debian/control.in:
+      - Add new mpg123 plugin and add Replaces/Breaks for
+        gstreamer1.0-plugins-bad << 1.7.2 where it came from.
+
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 19 Feb 2016 11:43:42 +0200
+
+gst-plugins-ugly1.0 (1.7.1-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian. Remaining changes:
+    + Split AMR out into a gstreamer1.0-plugins-ugly-amr package.
+    + Run dh_install with --fail-missing to error out if files aren't
+      installed.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+
+ -- Iain Lane <iain.lane@canonical.com>  Tue, 05 Jan 2016 17:56:36 +0000
+
+gst-plugins-ugly1.0 (1.7.1-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GLib >= 2.40 and GStreamer >= 1.7.1.
+
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 24 Dec 2015 14:34:41 +0100
+
+gst-plugins-ugly1.0 (1.6.2-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian. Remaining changes:
+    + Split AMR out into a gstreamer1.0-plugins-ugly-amr package.
+    + Run dh_install with --fail-missing to error out if files aren't
+      installed.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+
+ -- Iain Lane <iain.lane@canonical.com>  Tue, 15 Dec 2015 17:42:14 +0000
+
+gst-plugins-ugly1.0 (1.6.2-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+
+ -- Sebastian Dröge <slomo@debian.org>  Mon, 14 Dec 2015 19:54:06 +0100
+
 gst-plugins-ugly1.0 (1.6.1-1ubuntu1) xenial; urgency=medium
 
   * Merge with Debian. Remaining changes:
