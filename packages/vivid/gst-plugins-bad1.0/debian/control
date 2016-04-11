@@ -24,16 +24,15 @@ Build-Depends: autoconf (>= 2.69),
                libdc1394-22-dev (>= 2.0.0) [linux-any],
                libgudev-1.0-dev (>= 143) [linux-any],
                libusb-1.0-0-dev [linux-any],
-               libbluetooth-dev (>= 5) [linux-any],
                libsbc-dev (>= 1.1) [linux-any],
                libwayland-dev (>= 1.0) [linux-any],
-               libgstreamer1.0-dev (>= 1.8.0),
+               libgstreamer1.0-dev (>= 1.6.1),
                gstreamer1.0-doc,
-               gstreamer1.0-plugins-base (>= 1.8.0),
+               gstreamer1.0-plugins-base (>= 1.6.1),
                gstreamer1.0-plugins-base-doc,
                gtk-doc-tools (>= 1.12),
                ladspa-sdk,
-               libass-dev (>= 0.10.2),
+               libass-dev (>= 0.9.4),
                libbs2b-dev,
                libbz2-dev,
                libcairo2-dev,
@@ -42,25 +41,24 @@ Build-Depends: autoconf (>= 2.69),
                libdca-dev,
                libde265-dev,
                libdirectfb-dev (>= 0.9.25),
-               libdrm-dev,
                libdvdnav-dev (>= 4.1.2) [!hurd-any],
                libegl1-mesa-dev,
                libexempi-dev,
                libexif-dev (>= 0.6.16),
-               libfaad-dev (>= 2.7),
+               libfaad-dev,
                libfluidsynth-dev (>= 1.0),
                libgirepository1.0-dev (>= 0.9.12-4~),
                libgl1-mesa-dev [!armhf],
                libgles2-mesa-dev,
-               libglib2.0-dev (>= 2.40),
+               libglib2.0-dev (>= 2.32),
                libglu1-mesa-dev [!armhf],
                libgme-dev,
                libgnutls28-dev (>= 2.11.3),
                libgsm1-dev,
-               libgstreamer-plugins-base1.0-dev (>= 1.8.0),
-               libgstreamer-plugins-good1.0-dev (>= 1.8.0),
-               libgtk-3-dev (>= 3.14.13),
+               libgstreamer-plugins-base1.0-dev (>= 1.6.1),
+               libgstreamer-plugins-good1.0-dev (>= 1.6.1),
                libiptcdata0-dev (>= 1.0.2),
+               libjasper-dev,
                libkate-dev (>= 0.1.7),
                libmedia-dev (>= 0.1.0+git20131207+e452e83-0ubuntu3) [i386 armhf],
                libmimic-dev (>= 1.0),
@@ -69,6 +67,7 @@ Build-Depends: autoconf (>= 2.69),
                libmms-dev (>= 0.4),
                libmodplug-dev,
                libmpcdec-dev,
+               libmpg123-dev (>= 1.13),
                libofa0-dev (>= 0.9.3),
                libopenal-dev (>= 1:1.14),
                libopencv-dev (>= 2.3.0),
@@ -78,13 +77,13 @@ Build-Depends: autoconf (>= 2.69),
                liborc-0.4-dev (>= 1:0.4.17),
                libplatform-api1-dev [i386 armhf],
                libpng-dev,
-               librsvg2-dev (>= 2.36.2),
+               librsvg2-dev (>= 2.36),
                librtmp-dev,
                libschroedinger-dev (>= 1.0.7),
                libsndfile1-dev (>= 1.0.16),
                libsoundtouch-dev (>= 1.5.0),
                libspandsp-dev,
-               libsrtp0-dev,
+               libsrtp (>= 1.5.3),
                libssl-dev,
                libtool (>= 2.2.6),
                libvo-aacenc-dev,
@@ -99,11 +98,10 @@ Build-Depends: autoconf (>= 2.69),
                libzvbi-dev,
                nettle-dev,
                pkg-config (>= 0.11.0)
+
 Standards-Version: 3.9.3
-XS-Debian-Vcs-Git: git://anonscm.debian.org/pkg-gstreamer/gst-plugins-bad1.0.git
-XS-Debian-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-gstreamer/gst-plugins-bad1.0.git;a=summary
-Vcs-Git: git://git.launchpad.net/~ubuntu-desktop/ubuntu/+source/gst-plugins-bad1.0
-Vcs-Browser: https://code.launchpad.net/~ubuntu-desktop/ubuntu/+source/gst-plugins-bad1.0/+git/gst-plugins-bad1.0
+Vcs-Git: git://anonscm.debian.org/pkg-gstreamer/gst-plugins-bad1.0.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-gstreamer/gst-plugins-bad1.0.git;a=summary
 Homepage: http://gstreamer.freedesktop.org/modules/gst-plugins-bad.html
 
 Package: gstreamer1.0-plugins-bad-doc
@@ -126,30 +124,6 @@ Description: GStreamer documentation for plugins from the "bad" set
  real live maintainer, or some actual wide use.
  .
  This package contains the documentation for plugins from the "bad" set.
-
-Package: gstreamer1.0-hybris
-Architecture: i386 armhf
-Multi-Arch: same
-Depends: ${misc:Depends},
-         ${shlibs:Depends}
-Provides: ${gstreamer:Provides}
-XB-GStreamer-Version: ${gstreamer:Version}
-XB-GStreamer-Elements: ${gstreamer:Elements}
-XB-GStreamer-URI-Sources: ${gstreamer:URISources}
-XB-GStreamer-URI-Sinks: ${gstreamer:URISinks}
-XB-GStreamer-Encoders: ${gstreamer:Encoders}
-XB-GStreamer-Decoders: ${gstreamer:Decoders}
-Description: GStreamer plugins from hybris
- GStreamer is a streaming media framework, based on graphs of filters
- which operate on media data.  Applications using this library can do
- anything from real-time sound processing to playing videos, and just
- about anything else media-related.  Its plugin-based architecture means
- that new data types or processing capabilities can be added simply by
- installing new plug-ins.
- .
- This package contains the GStreamer plugin for hybris, which provides
- a way to do hardware decode using both hybris and libstagefright from
- Android.
 
 Package: gstreamer1.0-plugins-bad
 Architecture: any

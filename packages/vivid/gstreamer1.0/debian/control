@@ -16,7 +16,7 @@ Build-Depends: debhelper (>= 9),
                dh-autoreconf,
                autopoint (>= 0.17),
                zlib1g-dev (>= 1:1.1.4),
-               libglib2.0-dev (>= 2.40),
+               libglib2.0-dev (>= 2.32),
                libgmp3-dev,
                pkg-config (>= 0.11.0),
                bison (>= 1:2.4),
@@ -31,7 +31,6 @@ Build-Depends: debhelper (>= 9),
 Build-Depends-Indep: python (>= 2.2),
                      gtk-doc-tools (>= 1.12),
                      jade (>= 1.2.1),
-                     texlive-generic-recommended,
                      transfig (>= 3.2.3.c),
                      docbook-utils (>= 0.6.9),
                      docbook-xml,
@@ -133,7 +132,7 @@ Section: utils
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          pkg-config,
-         libgstreamer1.0-0 (>= 1.7.90)
+         libgstreamer1.0-0 (>= 1.5.1)
 Suggests: gstreamer1.0-plugins-base
 Description: Tools for use with GStreamer
  GStreamer is a streaming media framework, based on graphs of filters

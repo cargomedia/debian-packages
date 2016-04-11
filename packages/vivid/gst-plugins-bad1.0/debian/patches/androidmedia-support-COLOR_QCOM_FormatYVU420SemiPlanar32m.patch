@@ -9,17 +9,11 @@ using same code as COLOR_QCOM_FormatYUV420SemiPlanar
 to handle software conversion.
 
 BugLink: https://bugs.launchpad.net/ubuntu/+source/gst-plugins-bad1.0/+bug/1452386
----
- sys/androidmedia/gstamchybris.c         | 3 ++-
- sys/androidmedia/gstamcvideodechybris.c | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sys/androidmedia/gstamchybris.c b/sys/androidmedia/gstamchybris.c
-index 160a006..06b1cd1 100644
 --- a/sys/androidmedia/gstamchybris.c
 +++ b/sys/androidmedia/gstamchybris.c
-@@ -1475,7 +1475,8 @@ static const struct
-   COLOR_EXYNOS_Format32bitABGR8888, GST_VIDEO_FORMAT_ABGR}, {
+@@ -1367,7 +1367,8 @@
+   COLOR_EXYNOS_FormatNV21Linear, GST_VIDEO_FORMAT_NV21}, {
    256, GST_VIDEO_FORMAT_NV12}, {
    263, GST_VIDEO_FORMAT_NV12}, {
 -  COLOR_MTK_FormatYV12, GST_VIDEO_FORMAT_YV12}
@@ -28,11 +22,9 @@ index 160a006..06b1cd1 100644
  };
  
  static gboolean
-diff --git a/sys/androidmedia/gstamcvideodechybris.c b/sys/androidmedia/gstamcvideodechybris.c
-index cff94c4..8f20501 100644
 --- a/sys/androidmedia/gstamcvideodechybris.c
 +++ b/sys/androidmedia/gstamcvideodechybris.c
-@@ -1151,6 +1151,7 @@ gst_amc_video_dec_fill_buffer (GstAmcVideoDec * self, gint idx,
+@@ -1137,6 +1137,7 @@
          break;
        }
        case COLOR_QCOM_FormatYUV420SemiPlanar:
