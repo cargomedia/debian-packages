@@ -7,7 +7,6 @@ debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstdvdsub.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstlame.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstmad.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstmpeg2dec.so
-debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstmpg123.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstrmdemux.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgstsid.so
 debian/tmp/usr/lib/*/gstreamer-@GST_ABI@/libgsttwolame.so
