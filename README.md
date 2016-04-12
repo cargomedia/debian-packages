@@ -30,10 +30,6 @@ Available packages
  - Version: 4.5.0.3-jessie1
  - Packages: coturn
 
-**ffmpeg-cm**
- - Version: 7:2.8.6-jessie1
- - Packages: ffmpeg-cm
-
 **gearmand**
  - Version: 1.1.12-jessie1
  - Packages: gearman-job-server, gearman-tools, gearman, libgearman-dbg, libgearman-dev, libgearman-doc, libgearman7-dbg, libgearman7
