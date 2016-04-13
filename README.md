@@ -100,28 +100,24 @@ Available packages
  - Version: 1.0.3-1
  - Packages: gst-entrans
 
-**gst-libav1.0**
- - Version: 1.6.1-1
- - Packages: gstreamer1.0-libav
-
 **gst-plugins-bad1.0**
- - Version: 1.6.1-1ubuntu1
+ - Version: 1.8.0-1ubuntu1
  - Packages: gir1.2-gst-plugins-bad-1.0, gstreamer1.0-plugins-bad-dbg, gstreamer1.0-plugins-bad-doc, gstreamer1.0-plugins-bad-faad, gstreamer1.0-plugins-bad-videoparsers, gstreamer1.0-plugins-bad, libgstreamer-plugins-bad1.0-0, libgstreamer-plugins-bad1.0-dev
 
 **gst-plugins-base1.0**
- - Version: 1.6.1-1ubuntu1
+ - Version: 1.8.0-1ubuntu1
  - Packages: gir1.2-gst-plugins-base-1.0, gstreamer1.0-alsa, gstreamer1.0-plugins-base-apps, gstreamer1.0-plugins-base-dbg, gstreamer1.0-plugins-base-doc, gstreamer1.0-plugins-base, gstreamer1.0-x, libgstreamer-plugins-base1.0-0, libgstreamer-plugins-base1.0-dev
 
 **gst-plugins-good1.0**
- - Version: 1.6.1-1ubuntu1
+ - Version: 1.8.0-1ubuntu1
  - Packages: gstreamer1.0-plugins-good-dbg, gstreamer1.0-plugins-good-doc, gstreamer1.0-plugins-good, gstreamer1.0-pulseaudio, libgstreamer-plugins-good1.0-0, libgstreamer-plugins-good1.0-dev
 
 **gst-plugins-ugly1.0**
- - Version: 1.6.1-1ubuntu1
+ - Version: 1.8.0-1ubuntu1
  - Packages: gstreamer1.0-plugins-ugly-amr, gstreamer1.0-plugins-ugly-dbg, gstreamer1.0-plugins-ugly-doc, gstreamer1.0-plugins-ugly
 
 **gstreamer1.0**
- - Version: 1.6.1-1
+ - Version: 1.8.0-1
  - Packages: gir1.2-gstreamer-1.0, gstreamer1.0-doc, gstreamer1.0-tools, libgstreamer1.0-0-dbg, libgstreamer1.0-0, libgstreamer1.0-dev
 
 **hpacucli**
