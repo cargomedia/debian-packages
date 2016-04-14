@@ -97,7 +97,7 @@ Available packages
  - Packages: gst-entrans
 
 **gst-plugins-bad1.0**
- - Version: 1.8.0-1ubuntu1
+ - Version: 1.8.0-1vivid2
  - Packages: gir1.2-gst-plugins-bad-1.0, gstreamer1.0-plugins-bad-dbg, gstreamer1.0-plugins-bad-doc, gstreamer1.0-plugins-bad-faad, gstreamer1.0-plugins-bad-videoparsers, gstreamer1.0-plugins-bad, libgstreamer-plugins-bad1.0-0, libgstreamer-plugins-bad1.0-dev
 
 **gst-plugins-base1.0**
