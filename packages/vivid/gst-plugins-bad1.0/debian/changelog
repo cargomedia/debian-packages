@@ -1,3 +1,269 @@
+gst-plugins-bad1.0 (1.8.0-1vivid2) xenial; urgency=medium
+
+  * Downgrade of libx265 to 1.5.1
+
+ -- Krzysztof Stasiak <chris.stasiak@cagomedia.ch>  Wed, 13 Apr 2016 12:28:15 +0000
+
+gst-plugins-bad1.0 (1.8.0-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian experimental; remaining changes:
+    + Stop installing camerabin2 basecamerabin jpegformat - plugins which have
+    moved to -good.
+    + Provide gstreamer-plugins-bad-1.0.pc with Requires on
+      gstreamer-plugins-good-1.0 - the package we've moved the referenced
+      library to. This maintains compatibility with upstream software and
+      other distributions.
+    + debian/patches/adding-mirsink-and-android-media-over-hybris-support.patch:
+      - Adding mirsink and Android media over hybris support, for hardware
+        accelerated decode using libstagefright and the hybris compat layer.
+    + debian/control.in:
+      - Making the hybris plugin as part of a separated package, and i386 and
+        armhf only (can only work with android compatible archs)
+    + debian/build-deps.in:
+      - Adding mirsink/android decoder specific build dependencies for i386 and
+        armhf (libplatform-api1-dev and libmedia-dev)
+    + Split videoparsers and faad out into their own packages.
+    + Disable gl and glx on armhf as it's not useful there.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+    + debian/watch: Update Vcs-* for new URL scheme
+
+ -- Iain Lane <iain.lane@canonical.com>  Fri, 25 Mar 2016 12:28:15 +0000
+
+gst-plugins-bad1.0 (1.8.0-1) unstable; urgency=medium
+
+  * New upstream stable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.8.0.
+
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 24 Mar 2016 12:32:02 +0200
+
+gst-plugins-bad1.0 (1.7.91-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian experimental; remaining changes:
+    + Stop installing camerabin2 basecamerabin jpegformat - plugins which have
+    moved to -good.
+    + Provide gstreamer-plugins-bad-1.0.pc with Requires on
+      gstreamer-plugins-good-1.0 - the package we've moved the referenced
+      library to. This maintains compatibility with upstream software and
+      other distributions.
+    + debian/patches/adding-mirsink-and-android-media-over-hybris-support.patch:
+      - Adding mirsink and Android media over hybris support, for hardware
+        accelerated decode using libstagefright and the hybris compat layer.
+    + debian/control.in:
+      - Making the hybris plugin as part of a separated package, and i386 and
+        armhf only (can only work with android compatible archs)
+    + debian/build-deps.in:
+      - Adding mirsink/android decoder specific build dependencies for i386 and
+        armhf (libplatform-api1-dev and libmedia-dev)
+    + Split videoparsers and faad out into their own packages.
+    + Disable gl and glx on armhf as it's not useful there.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+    + debian/watch: Update Vcs-* for new URL scheme
+  * Really re-enable bluez.
+
+ -- Iain Lane <iain.lane@canonical.com>  Thu, 17 Mar 2016 16:53:29 +0000
+
+gst-plugins-bad1.0 (1.7.91-1) experimental; urgency=medium
+
+  * debian/build-deps.in:
+    + Remove libjasper-dev. It's unused and supposed to be removed soon.
+      (Closes: #818213).
+  * New upstream release candidate:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.91.
+
+ -- Sebastian Dröge <slomo@debian.org>  Wed, 02 Mar 2016 16:45:09 +0200
+
+gst-plugins-bad1.0 (1.7.90-1ubuntu2) xenial; urgency=medium
+
+  * Remove the files we ship in -good instead of listing the files to keep.
+    (LP: #1554393)
+  * debian/control.in: Remove a bad newline
+
+ -- Iain Lane <iain.lane@canonical.com>  Tue, 08 Mar 2016 18:56:23 +0000
+
+gst-plugins-bad1.0 (1.7.90-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian experimental; remaining changes:
+    + Stop installing camerabin2 basecamerabin jpegformat - plugins which have
+    moved to -good.
+    + Provide gstreamer-plugins-bad-1.0.pc with Requires on
+      gstreamer-plugins-good-1.0 - the package we've moved the referenced
+      library to. This maintains compatibility with upstream software and
+      other distributions.
+    + debian/patches/adding-mirsink-and-android-media-over-hybris-support.patch:
+      - Adding mirsink and Android media over hybris support, for hardware
+        accelerated decode using libstagefright and the hybris compat layer.
+    + debian/control.in:
+      - Making the hybris plugin as part of a separated package, and i386 and
+        armhf only (can only work with android compatible archs)
+    + debian/build-deps.in:
+      - Adding mirsink/android decoder specific build dependencies for i386 and
+        armhf (libplatform-api1-dev and libmedia-dev)
+    + Split videoparsers and faad out into their own packages.
+    + Disable gl and glx on armhf as it's not useful there.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+    + debian/watch: Update Vcs-* for new URL scheme
+
+ -- Iain Lane <iain.lane@canonical.com>  Thu, 03 Mar 2016 18:11:16 +0000
+
+gst-plugins-bad1.0 (1.7.90-1) experimental; urgency=medium
+
+  [ Iain Lane ]
+  * debian/watch: Fix to work with upstream locations
+
+  [ Sebastian Dröge ]
+  * New upstream release candidate:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.90.
+    + debian/gstreamer-plugins-bad.install:
+      - Ship new opusparse plugin, renamed from opus and only contains
+        the parser now.
+
+ -- Sebastian Dröge <slomo@debian.org>  Tue, 01 Mar 2016 17:25:00 +0200
+
+gst-plugins-bad1.0 (1.7.2-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian experimental; remaining changes:
+    + Stop installing camerabin2 basecamerabin jpegformat - plugins which have
+    moved to -good.
+    + Provide gstreamer-plugins-bad-1.0.pc with Requires on
+      gstreamer-plugins-good-1.0 - the package we've moved the referenced
+      library to. This maintains compatibility with upstream software and
+      other distributions.
+    + debian/patches/adding-mirsink-and-android-media-over-hybris-support.patch:
+      - Adding mirsink and Android media over hybris support, for hardware
+        accelerated decode using libstagefright and the hybris compat layer.
+    + debian/control.in:
+      - Making the hybris plugin as part of a separated package, and i386 and
+        armhf only (can only work with android compatible archs)
+    + debian/build-deps.in:
+      - Adding mirsink/android decoder specific build dependencies for i386 and
+        armhf (libplatform-api1-dev and libmedia-dev)
+    + Split videoparsers and faad out into their own packages.
+    + Disable gl and glx on armhf as it's not useful there.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+    + debian/watch: Update Vcs-* for new URL scheme
+
+ -- Iain Lane <iain.lane@canonical.com>  Mon, 22 Feb 2016 12:31:13 +0000
+
+gst-plugins-bad1.0 (1.7.2-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GStreamer >= 1.7.2.
+      - Update faad dependency to >= 2.7 and rsvg to >= 2.36.2.
+    + debian/gstreamer-plugins-bad.install:
+      - Drop mpg123 (moved to -ugly) and rtpbad (moved to -good) plugins.
+      - Add new netsim plugin.
+    + debian/libgstreamer-plugins-bad*.install:
+      - Add new badaudio library.
+
+ -- Sebastian Dröge <slomo@debian.org>  Fri, 19 Feb 2016 11:29:54 +0200
+
+gst-plugins-bad1.0 (1.7.1-1ubuntu4) UNRELEASED; urgency=medium
+
+  [ Thomas Voss ]
+  * Add color formats
+  * Increase rank for androidmedia so it is preferred over v4l when present
+
+  [ Iain Lane ]
+  * Remove debian/patches/add-android-color-formats.patch since the above
+    duplicates the same changes.
+
+ -- Alfonso Sanchez-Beato (email Canonical) <alfonso.sanchez-beato@canonical.com>  Fri, 19 Feb 2016 18:12:34 +0100
+
+gst-plugins-bad1.0 (1.7.1-1ubuntu3) xenial; urgency=medium
+
+  * No-change rebuild due to citrain landing process.
+
+ -- Simon Fels <simon.fels@canonical.com>  Thu, 28 Jan 2016 16:44:12 +0100
+
+gst-plugins-bad1.0 (1.7.1-1ubuntu2) xenial; urgency=medium
+
+  [ Iain Lane ]
+  * Really update Vcs-*
+
+  [ Simon Fels ]
+  * debian/patches/add-android-color-formats.patch
+    + Add additional patch to add more color formats from Android we need
+      to handle in gstacmhybris element.
+
+ -- Simon Fels <simon.fels@canonical.com>  Thu, 28 Jan 2016 15:43:33 +0100
+
+gst-plugins-bad1.0 (1.7.1-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian experimental; remaining changes:
+    + Stop installing camerabin2 basecamerabin jpegformat - plugins which have
+    moved to -good.
+    + Provide gstreamer-plugins-bad-1.0.pc with Requires on
+      gstreamer-plugins-good-1.0 - the package we've moved the referenced
+      library to. This maintains compatibility with upstream software and
+      other distributions.
+    + debian/patches/adding-mirsink-and-android-media-over-hybris-support.patch:
+      - Adding mirsink and Android media over hybris support, for hardware
+        accelerated decode using libstagefright and the hybris compat layer.
+    + debian/control.in:
+      - Making the hybris plugin as part of a separated package, and i386 and
+        armhf only (can only work with android compatible archs)
+    + debian/build-deps.in:
+      - Adding mirsink/android decoder specific build dependencies for i386 and
+        armhf (libplatform-api1-dev and libmedia-dev)
+    + Split videoparsers and faad out into their own packages.
+    + Disable gl and glx on armhf as it's not useful there.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+    + debian/watch: Update Vcs-* for new URL scheme
+
+ -- Iain Lane <iain.lane@canonical.com>  Wed, 06 Jan 2016 10:45:21 +0000
+
+gst-plugins-bad1.0 (1.7.1-1) experimental; urgency=medium
+
+  * New upstream unstable release:
+    + debian/build-deps.in,
+      debian/rules:
+      - Build-depend on GLib >= 2.40 and GStreamer >= 1.7.1.
+      - Build-depend on libass >= 0.10.2.
+      - Build-depend on libdrm-dev.
+    + debian/gstreamer-plugins-base.install:
+      - Drop liveadder plugin and add new videoframe_audiolevel plugin.
+
+ -- Sebastian Dröge <slomo@debian.org>  Thu, 24 Dec 2015 14:23:55 +0100
+
+gst-plugins-bad1.0 (1.6.2-1ubuntu1) xenial; urgency=medium
+
+  * Merge with Debian experimental; remaining changes:
+    + Stop installing camerabin2 basecamerabin jpegformat - plugins which have
+    moved to -good.
+    + Provide gstreamer-plugins-bad-1.0.pc with Requires on
+      gstreamer-plugins-good-1.0 - the package we've moved the referenced
+      library to. This maintains compatibility with upstream software and
+      other distributions.
+    + debian/patches/adding-mirsink-and-android-media-over-hybris-support.patch:
+      - Adding mirsink and Android media over hybris support, for hardware
+        accelerated decode using libstagefright and the hybris compat layer.
+    + debian/control.in:
+      - Making the hybris plugin as part of a separated package, and i386 and
+        armhf only (can only work with android compatible archs)
+    + debian/build-deps.in:
+      - Adding mirsink/android decoder specific build dependencies for i386 and
+        armhf (libplatform-api1-dev and libmedia-dev)
+    + Split videoparsers and faad out into their own packages.
+    + Disable gl and glx on armhf as it's not useful there.
+    + debian/control{,.in}: Update Vcs-* for Ubuntu
+    + debian/watch: Update Vcs-* for new URL scheme
+
+ -- Iain Lane <iain.lane@canonical.com>  Tue, 15 Dec 2015 17:40:57 +0000
+
+gst-plugins-bad1.0 (1.6.2-1) unstable; urgency=medium
+
+  * New upstream bugfix release.
+
+ -- Sebastian Dröge <slomo@debian.org>  Mon, 14 Dec 2015 19:33:55 +0100
+
 gst-plugins-bad1.0 (1.6.1-1ubuntu1) xenial; urgency=medium
 
   * Merge with Debian experimental; remaining changes:
@@ -1120,7 +1386,7 @@ gst-plugins-bad1.0 (1.0.7-1ubuntu1) saucy; urgency=low
 
   * Merge from Debian unstable.  Remaining changes:
     + Stop installing gstreamer-plugins-bad-1.0.pc — the referenced library is
-      in gst-plugins-good1.0 now. 
+      in gst-plugins-good1.0 now.
     + Stop installing scapetempo rtpmux rtpvp8 camerabin2 basecamerabin
       jpegformat - plugins which have moved to -good.
 
@@ -1136,7 +1402,7 @@ gst-plugins-bad1.0 (1.0.6-1ubuntu1) raring; urgency=low
 
   * Merge with Debian unstable.  Remaining changes:
     + Stop installing gstreamer-plugins-bad-1.0.pc — the referenced library is
-      in gst-plugins-good1.0 now. 
+      in gst-plugins-good1.0 now.
     + Stop installing scapetempo rtpmux rtpvp8 camerabin2 basecamerabin
       jpegformat - plugins which have moved to -good.
 
@@ -1155,7 +1421,7 @@ gst-plugins-bad1.0 (1.0.5-1ubuntu1) raring; urgency=low
 
   * Merge from Debian unstable.  Remaining changes:
     + Stop installing gstreamer-plugins-bad-1.0.pc — the referenced library is
-      in gst-plugins-good1.0 now. 
+      in gst-plugins-good1.0 now.
     + Stop installing scapetempo rtpmux rtpvp8 camerabin2 basecamerabin
       jpegformat - plugins which have moved to -good.
 
@@ -1178,7 +1444,7 @@ gst-plugins-bad1.0 (1.0.4-1) unstable; urgency=low
 gst-plugins-bad1.0 (1.0.3-1ubuntu2) raring; urgency=low
 
   * Stop installing gstreamer-plugins-bad-1.0.pc — the referenced library is
-    in gst-plugins-good1.0 now. 
+    in gst-plugins-good1.0 now.
 
  -- Iain Lane <iain.lane@canonical.com>  Fri, 04 Jan 2013 16:20:30 +0000
 
@@ -1443,7 +1709,7 @@ gst-plugins-bad0.10 (0.10.22-1) unstable; urgency=low
   * New upstream release, "Toy Piano":
     + debian/patches/99_decklink.patch,
       debian/patches/99_decklink-linking.patch:
-      - Dropped, merged upstream.    
+      - Dropped, merged upstream.
     + debian/rules,
       debian/build-deps.in:
       - Build-depend on GStreamer core/base 0.10.33.
@@ -1751,7 +2017,7 @@ gst-plugins-bad0.10 (0.10.17.2-1) experimental; urgency=low
     + debian/gstreamer-plugins-bad.install,
       debian/build-deps.in:
       - Add adpcmdec, adpcmenc, dataurisrc, flite, jpegformat plugins.
-      - Remove shapewipe plugin, it was moved to gst-plugins-good. 
+      - Remove shapewipe plugin, it was moved to gst-plugins-good.
     + debian/patches/01_cog-orc-memcpy.patch,
       debian/patches/02_cog-link-lm.patch,
       debian/patches/03_frei0r.patch:
@@ -2472,7 +2738,7 @@ gst-plugins-bad0.10 (0.10.5.2-1) experimental; urgency=low
       - Add and update a few build dependencies.
     + debian/gstreamer-plugins-bad.install:
       - Add dvdspu, festival, flv, mpegtsparse, mpeg4videoparse, rawparse,
-        sdp, selector, speexresample, stereo, fbdev, metadata, vcd plugins. 
+        sdp, selector, speexresample, stereo, fbdev, metadata, vcd plugins.
       - Remove equalizer, multifile, spectrum, switch, videoparse, xingheader
         plugins. These have moved to other places now.
       - Sort everything alphabetically.

@@ -108,7 +108,7 @@ libgstbase-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_base_transform_set_prefer_passthrough@Base 1.0.0
  gst_base_transform_set_qos_enabled@Base 1.0.0
  gst_base_transform_update_qos@Base 1.0.0
- gst_base_transform_update_src_caps@Base 1.5.0.1+git20150513
+ gst_base_transform_update_src_caps@Base 1.6.0
  gst_bit_reader_free@Base 1.0.0
  gst_bit_reader_get_bits_uint16@Base 1.0.0
  gst_bit_reader_get_bits_uint32@Base 1.0.0
@@ -353,7 +353,9 @@ libgstcheck-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_consistency_checker_free@Base 1.0.0
  gst_consistency_checker_new@Base 1.0.0
  gst_consistency_checker_reset@Base 1.0.0
+ gst_harness_add_element_full@Base 1.8.0
  gst_harness_add_element_src_pad@Base 1.6.0
+ gst_harness_add_parse@Base 1.8.0
  gst_harness_add_probe@Base 1.6.0
  gst_harness_add_sink@Base 1.6.0
  gst_harness_add_sink_harness@Base 1.6.0
@@ -375,6 +377,7 @@ libgstcheck-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_harness_get_last_pushed_timestamp@Base 1.6.0
  gst_harness_get_testclock@Base 1.6.0
  gst_harness_new@Base 1.6.0
+ gst_harness_new_empty@Base 1.8.0
  gst_harness_new_full@Base 1.6.0
  gst_harness_new_parse@Base 1.6.0
  gst_harness_new_with_element@Base 1.6.0
@@ -412,7 +415,9 @@ libgstcheck-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_harness_stress_push_buffer_start_full@Base 1.6.0
  gst_harness_stress_push_buffer_with_cb_start_full@Base 1.6.0
  gst_harness_stress_push_event_start_full@Base 1.6.0
+ gst_harness_stress_push_event_with_cb_start_full@Base 1.8.0
  gst_harness_stress_push_upstream_event_start_full@Base 1.6.0
+ gst_harness_stress_push_upstream_event_with_cb_start_full@Base 1.8.0
  gst_harness_stress_requestpad_start_full@Base 1.6.0
  gst_harness_stress_statechange_start_full@Base 1.6.0
  gst_harness_stress_thread_stop@Base 1.6.0
@@ -426,6 +431,7 @@ libgstcheck-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_harness_use_testclock@Base 1.6.0
  gst_harness_wait_for_clock_id_waits@Base 1.6.0
  gst_test_clock_advance_time@Base 1.2.0
+ gst_test_clock_crank@Base 1.8.0
  gst_test_clock_get_next_entry_time@Base 1.2.0
  gst_test_clock_get_type@Base 1.2.0
  gst_test_clock_has_id@Base 1.2.0
@@ -506,6 +512,7 @@ libgstcontroller-1.0.so.0 libgstreamer1.0-0 #MINVER#
 libgstnet-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_buffer_add_net_address_meta@Base 1.0.0
  gst_buffer_add_net_control_message_meta@Base 1.6.0
+ gst_buffer_get_net_address_meta@Base 1.8.0
  gst_net_address_meta_api_get_type@Base 1.0.0
  gst_net_address_meta_get_info@Base 1.0.0
  gst_net_client_clock_get_type@Base 1.0.0
@@ -647,7 +654,7 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_bitmask_get_type@Base 1.0.0
  gst_buffer_add_meta@Base 1.0.0
  gst_buffer_add_parent_buffer_meta@Base 1.6.0
- gst_buffer_add_protection_meta@Base 1.5.0.1+git20150513
+ gst_buffer_add_protection_meta@Base 1.6.0
  gst_buffer_append@Base 1.0.0
  gst_buffer_append_memory@Base 1.0.0
  gst_buffer_append_region@Base 1.0.0
@@ -869,6 +876,7 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_clock_single_shot_id_reinit@Base 1.0.0
  gst_clock_type_get_type@Base 1.0.0
  gst_clock_unadjust_unlocked@Base 1.0.0
+ gst_clock_unadjust_with_calibration@Base 1.8.0
  gst_clock_wait_for_sync@Base 1.6.0
  gst_context_get_context_type@Base 1.2.0
  gst_context_get_structure@Base 1.2.0
@@ -1012,6 +1020,7 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_element_class_add_metadata@Base 1.0.0
  gst_element_class_add_pad_template@Base 1.0.0
  gst_element_class_add_static_metadata@Base 1.0.0
+ gst_element_class_add_static_pad_template@Base 1.8.0
  gst_element_class_get_metadata@Base 1.0.0
  gst_element_class_get_pad_template@Base 1.0.0
  gst_element_class_get_pad_template_list@Base 1.0.0
@@ -1044,6 +1053,9 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_element_get_clock@Base 1.0.0
  gst_element_get_compatible_pad@Base 1.0.0
  gst_element_get_compatible_pad_template@Base 1.0.0
+ gst_element_get_context@Base 1.8.0
+ gst_element_get_context_unlocked@Base 1.8.0
+ gst_element_get_contexts@Base 1.8.0
  gst_element_get_factory@Base 1.0.0
  gst_element_get_request_pad@Base 1.0.0
  gst_element_get_start_time@Base 1.0.0
@@ -1106,7 +1118,7 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_event_new_gap@Base 1.0.0
  gst_event_new_latency@Base 1.0.0
  gst_event_new_navigation@Base 1.0.0
- gst_event_new_protection@Base 1.5.0.1+git20150513
+ gst_event_new_protection@Base 1.6.0
  gst_event_new_qos@Base 1.0.0
  gst_event_new_reconfigure@Base 1.0.0
  gst_event_new_seek@Base 1.0.0
@@ -1124,7 +1136,7 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_event_parse_gap@Base 1.0.0
  gst_event_parse_group_id@Base 1.2.0
  gst_event_parse_latency@Base 1.0.0
- gst_event_parse_protection@Base 1.5.0.1+git20150513
+ gst_event_parse_protection@Base 1.6.0
  gst_event_parse_qos@Base 1.0.0
  gst_event_parse_seek@Base 1.0.0
  gst_event_parse_segment@Base 1.0.0
@@ -1173,6 +1185,9 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_ghost_pad_new_no_target@Base 1.0.0
  gst_ghost_pad_new_no_target_from_template@Base 1.0.0
  gst_ghost_pad_set_target@Base 1.0.0
+ gst_info_strdup_printf@Base 1.8.0
+ gst_info_strdup_vprintf@Base 1.8.0
+ gst_info_vasprintf@Base 1.8.0
  gst_init@Base 1.0.0
  gst_init_check@Base 1.0.0
  gst_init_get_option_group@Base 1.0.0
@@ -1425,6 +1440,7 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_pad_set_chain_function_full@Base 1.0.0
  gst_pad_set_chain_list_function_full@Base 1.0.0
  gst_pad_set_element_private@Base 1.0.0
+ gst_pad_set_event_full_function_full@Base 1.8.0
  gst_pad_set_event_function_full@Base 1.0.0
  gst_pad_set_getrange_function_full@Base 1.0.0
  gst_pad_set_iterate_internal_links_function_full@Base 1.0.0
@@ -1467,7 +1483,7 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_pipeline_get_clock@Base 1.0.0
  gst_pipeline_get_delay@Base 1.0.0
  gst_pipeline_get_latency@Base 1.6.0
- gst_pipeline_get_pipeline_clock@Base 1.5.0.1+git20150513
+ gst_pipeline_get_pipeline_clock@Base 1.6.0
  gst_pipeline_get_type@Base 1.0.0
  gst_pipeline_new@Base 1.0.0
  gst_pipeline_set_auto_flush_bus@Base 1.0.0
@@ -1544,9 +1560,9 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_preset_set_app_dir@Base 1.0.0
  gst_preset_set_meta@Base 1.0.0
  gst_progress_type_get_type@Base 1.0.0
- gst_protection_meta_api_get_type@Base 1.5.0.1+git20150513
- gst_protection_meta_get_info@Base 1.5.0.1+git20150513
- gst_protection_select_system@Base 1.5.0.1+git20150513
+ gst_protection_meta_api_get_type@Base 1.6.0
+ gst_protection_meta_get_info@Base 1.6.0
+ gst_protection_select_system@Base 1.6.0
  gst_proxy_pad_chain_default@Base 1.0.0
  gst_proxy_pad_chain_list_default@Base 1.0.0
  gst_proxy_pad_get_internal@Base 1.0.0
@@ -1684,14 +1700,19 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_segment_free@Base 1.0.0
  gst_segment_get_type@Base 1.0.0
  gst_segment_init@Base 1.0.0
- gst_segment_is_equal@Base 1.5.0.1+git20150513
+ gst_segment_is_equal@Base 1.6.0
  gst_segment_new@Base 1.0.0
  gst_segment_offset_running_time@Base 1.2.3
+ gst_segment_position_from_running_time@Base 1.8.0
+ gst_segment_position_from_running_time_full@Base 1.8.0
+ gst_segment_position_from_stream_time@Base 1.8.0
+ gst_segment_position_from_stream_time_full@Base 1.8.0
  gst_segment_set_running_time@Base 1.0.0
  gst_segment_to_position@Base 1.0.0
  gst_segment_to_running_time@Base 1.0.0
- gst_segment_to_running_time_full@Base 1.5.0.1+git20150513
+ gst_segment_to_running_time_full@Base 1.6.0
  gst_segment_to_stream_time@Base 1.0.0
+ gst_segment_to_stream_time_full@Base 1.8.0
  gst_segtrap_is_enabled@Base 1.0.0
  gst_segtrap_set_enabled@Base 1.0.0
  gst_state_change_get_type@Base 1.0.0
@@ -1908,6 +1929,16 @@ libgstreamer-1.0.so.0 libgstreamer1.0-0 #MINVER#
  gst_toc_setter_get_type@Base 1.0.0
  gst_toc_setter_reset@Base 1.0.0
  gst_toc_setter_set_toc@Base 1.0.0
+ gst_tracer_factory_get_list@Base 1.8.0
+ gst_tracer_factory_get_type@Base 1.8.0
+ gst_tracer_get_type@Base 1.8.0
+ gst_tracer_record_get_type@Base 1.8.0
+ gst_tracer_record_log@Base 1.8.0
+ gst_tracer_record_new@Base 1.8.0
+ gst_tracer_register@Base 1.8.0
+ gst_tracer_value_flags_get_type@Base 1.8.0
+ gst_tracer_value_scope_get_type@Base 1.8.0
+ gst_tracing_register_hook@Base 1.8.0
  gst_type_find_factory_call_function@Base 1.0.0
  gst_type_find_factory_get_caps@Base 1.0.0
  gst_type_find_factory_get_extensions@Base 1.0.0

@@ -45,7 +45,7 @@ gst_abi=$(gst_major).$(gst_minor)
 gst_lib=libgstreamer$(gst_abi)-0
 gst_lib_dev=libgstreamer$(gst_abi)-dev
 # what gstreamer version is needed
-gst_lib_dev_dep=$(gst_lib_dev) (>= 1.6.1)
+gst_lib_dev_dep=$(gst_lib_dev) (>= 1.8.0)
 
 gst_pkgname=gstreamer$(gst_abi)
 gst_deb_abi=$(gst_abi)-0
@@ -95,7 +95,7 @@ dc1394 = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstdc1
 decklink = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstdecklink.so
 linsys = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstlinsys.so
 uvch264 = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstuvch264.so
-#bluez = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstbluez.so
+bluez = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstbluez.so
 sbc = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstsbc.so
 waylandsink = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/gstreamer-$(gst_abi)/libgstwaylandsink.so
 wayland = debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/libgstwayland-$(gst_abi).so.*
@@ -223,6 +223,10 @@ DEB_CONFIGURE_EXTRA_FLAGS += --disable-opengl --disable-glx
 endif
 
 common-binary-fixup-arch::
+	rm -r $(CURDIR)/debian/libgstreamer-plugins-bad$(gst_abi)-dev/usr/include/*/*/basecamerabinsrc \
+		$(CURDIR)/debian/libgstreamer-plugins-bad$(gst_abi)-dev/usr/include/*/*/interfaces/photography* \
+		$(CURDIR)/debian/libgstreamer-plugins-bad$(gst_abi)-dev/usr/lib/*/libgstbasecamerabinsrc* \
+		$(CURDIR)/debian/libgstreamer-plugins-bad$(gst_abi)-dev/usr/lib/*/libgstphotography*
 	LD_LIBRARY_PATH=debian/libgstreamer-plugins-bad1.0-0/usr/lib/$(DEB_HOST_MULTIARCH):$(LD_LIBRARY_PATH) \
 		dh_gstscancodecs
 
