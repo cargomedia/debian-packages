@@ -1,3 +1,13 @@
+janus-gateway-rtpbroadcast (0.0.13-wheezy1) unstable; urgency=low
+
+  * Return public RTP host on "mountpoint creation" (#46, @kris-lab)
+  * Doc: change packet-loss type to float (#84, @zazabe)
+  * Improve stats (#82, @kris-lab)
+  * Single config value for session info interval (#60, @kris-lab)
+  * rtpbroadcast dies on development VM (#85, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Mon, 25 Apr 2016 08:46:05 +0000
+
 janus-gateway-rtpbroadcast (0.0.12-wheezy1) unstable; urgency=low
 
   * Measure and expose inbound RTP packet loss (#81, @kris-lab)
