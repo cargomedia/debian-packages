@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.14-wheezy1) unstable; urgency=low
+
+  * janus rtpbroadcast: check packet loss metric (#88, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Tue, 10 May 2016 08:26:26 +0000
+
 janus-gateway-rtpbroadcast (0.0.13-wheezy1) unstable; urgency=low
 
   * Return public RTP host on "mountpoint creation" (#46, @kris-lab)
