@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.15-wheezy1) unstable; urgency=low
+
+  * Remove averaging and delay of auto-switch (#90, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Wed, 25 May 2016 08:42:35 +0000
+
 janus-gateway-rtpbroadcast (0.0.14-wheezy1) unstable; urgency=low
 
   * janus rtpbroadcast: check packet loss metric (#88, @kris-lab)
