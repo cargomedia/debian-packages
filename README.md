@@ -52,7 +52,7 @@ Available packages
 
 **janus-gateway-rtpbroadcast**
  - Version: 0.0.16-jessie1
- - Packages:janus-gateway-rtpbroadcast
+ - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
  - Version: 1.5.3-jessie1
