@@ -1,3 +1,11 @@
+janus-gateway-rtpbroadcast (0.0.16-wheezy1) unstable; urgency=low
+
+  * Prettify readme (#66, @kris-lab)
+  * Expose packet loss count in stats (#95, @kris-lab)
+  * Fixes for pick-up the right stream based on REMB (#94, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Tue, 31 May 2016 15:52:26 +0000
+
 janus-gateway-rtpbroadcast (0.0.15-wheezy1) unstable; urgency=low
 
   * Remove averaging and delay of auto-switch (#90, @kris-lab)
