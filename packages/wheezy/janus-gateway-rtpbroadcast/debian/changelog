@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.17-wheezy1) unstable; urgency=low
+
+  * Fix packet-loss-count metric (#96, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Wed, 01 Jun 2016 11:06:18 +0000
+
 janus-gateway-rtpbroadcast (0.0.16-wheezy1) unstable; urgency=low
 
   * Prettify readme (#66, @kris-lab)
