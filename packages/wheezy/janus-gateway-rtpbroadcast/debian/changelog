@@ -1,3 +1,10 @@
+janus-gateway-rtpbroadcast (0.0.18-wheezy1) unstable; urgency=low
+
+  * Investigate wrong "packet-loss-count" calculation (#97, @kris-lab)
+  * Make source "autoswitch" configurable (default to "false") (#98, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Thu, 02 Jun 2016 15:09:40 +0000
+
 janus-gateway-rtpbroadcast (0.0.17-wheezy1) unstable; urgency=low
 
   * Fix packet-loss-count metric (#96, @kris-lab)
