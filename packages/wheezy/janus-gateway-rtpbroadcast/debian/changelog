@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.19-wheezy1) unstable; urgency=low
+
+  * Autoswitch: make sure the first stream is the default one (#99, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Mon, 06 Jun 2016 15:04:58 +0000
+
 janus-gateway-rtpbroadcast (0.0.18-wheezy1) unstable; urgency=low
 
   * Investigate wrong "packet-loss-count" calculation (#97, @kris-lab)

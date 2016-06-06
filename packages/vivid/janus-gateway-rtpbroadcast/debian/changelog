@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.19-vivid1) unstable; urgency=medium
+
+  * Autoswitch: make sure the first stream is the default one (#99, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Mon, 06 Jun 2016 15:06:30 +0000
+
 janus-gateway-rtpbroadcast (0.0.18-vivid1) unstable; urgency=medium
 
   * Investigate wrong "packet-loss-count" calculation (#97, @kris-lab)
