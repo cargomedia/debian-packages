@@ -1,3 +1,9 @@
+janus-gateway-audioroom (0.0.10-jessie1) unstable; urgency=medium
+
+  * Send a proper response to client offer (#37, @fvovan)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Thu, 09 Jun 2016 10:51:54 +0000
+
 janus-gateway-audioroom (0.0.9-jessie1) unstable; urgency=low
 
   * Compile against newer janus core (08888212c99f715061bcc833f47dd36aabb382ed)
