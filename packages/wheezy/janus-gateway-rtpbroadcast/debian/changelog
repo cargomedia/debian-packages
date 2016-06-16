@@ -1,3 +1,10 @@
+janus-gateway-rtpbroadcast (0.0.20-wheezy1) unstable; urgency=medium
+
+  * Packet loss count not resetting correctly? (#101, @kris-lab)
+  * "switchSource" response with same data than "mountpoint-info" event (#100, @fvovan)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Thu, 16 Jun 2016 14:16:36 +0000
+
 janus-gateway-rtpbroadcast (0.0.19-wheezy1) unstable; urgency=low
 
   * Autoswitch: make sure the first stream is the default one (#99, @kris-lab)
