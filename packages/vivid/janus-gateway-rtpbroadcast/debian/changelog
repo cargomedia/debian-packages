@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.21-vivid1) unstable; urgency=medium
+
+  * Make sure we do not create "thumbnails" while RTP packet loss occurred (#102, @kris-lab)
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 04 Jul 2016 12:29:17 +0000
+
 janus-gateway-rtpbroadcast (0.0.20-vivid1) unstable; urgency=medium
 
   * Packet loss count not resetting correctly? (#101, @kris-lab)
