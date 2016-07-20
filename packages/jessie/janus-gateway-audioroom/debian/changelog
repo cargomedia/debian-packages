@@ -1,3 +1,9 @@
+janus-gateway-audioroom (0.0.11-jessie1) unstable; urgency=medium
+
+  * Lots of "Too many packets in queue" warnings (#39, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Wed, 20 Jul 2016 09:33:14 +0000
+
 janus-gateway-audioroom (0.0.10-jessie1) unstable; urgency=medium
 
   * Send a proper response to client offer (#37, @fvovan)
