@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.22-vivid1) unstable; urgency=medium
+
+  * This upgrade fixes Vivid distribution compatibility
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Thu, 28 Jul 2016 17:06:57 +0000
+
 janus-gateway-rtpbroadcast (0.0.21-vivid1) unstable; urgency=medium
 
   * Make sure we do not create "thumbnails" while RTP packet loss occurred (#102, @kris-lab)

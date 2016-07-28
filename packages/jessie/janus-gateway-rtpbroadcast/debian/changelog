@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.22-jessie1) unstable; urgency=medium
+
+  * This upgrade fixes Jessie distribution compatibility
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Thu, 28 Jul 2016 17:07:05 +0000
+
 janus-gateway-rtpbroadcast (0.0.21-jessie1) unstable; urgency=medium
 
   * Make sure we do not create "thumbnails" while RTP packet loss occurred (#102, @kris-lab)
