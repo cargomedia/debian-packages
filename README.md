@@ -51,8 +51,8 @@ Available packages
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.21-jessie1
- - Packages: janus-gateway-rtpbroadcast
+ - Version: 0.0.22-jessie1
+ - Packages: janus-gateway-rtpbroadcast_0.0.21-jessie1_amd64.deb, janus-gateway-rtpbroadcast
 
 **libsrtp**
  - Version: 1.5.3-jessie1
@@ -133,8 +133,8 @@ Available packages
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.21-vivid1
- - Packages: janus-gateway-rtpbroadcast
+ - Version: 0.0.22-vivid1
+ - Packages: janus-gateway-rtpbroadcast_0.0.21-vivid1_amd64.deb, janus-gateway-rtpbroadcast
 
 **libsrtp**
  - Version: 1.5.3-vivid1
@@ -195,8 +195,8 @@ Available packages
  - Packages: janus-gateway-audioroom
 
 **janus-gateway-rtpbroadcast**
- - Version: 0.0.21-wheezy1
- - Packages: janus-gateway-rtpbroadcast
+ - Version: 0.0.22-wheezy1
+ - Packages: janus-gateway-rtpbroadcast_0.0.21-wheezy1_amd64.deb, janus-gateway-rtpbroadcast
 
 **libsrtp**
  - Version: 1.5.3-wheezy1
