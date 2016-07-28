@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.22-wheezy1) unstable; urgency=low
+
+  * This upgrade fixes Wheezy distribution compatibility
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Thu, 28 Jul 2016 17:07:11 +0000
+
 janus-gateway-rtpbroadcast (0.0.21-wheezy1) unstable; urgency=medium
 
   * Make sure we do not create "thumbnails" while RTP packet loss occurred (#102, @kris-lab)
