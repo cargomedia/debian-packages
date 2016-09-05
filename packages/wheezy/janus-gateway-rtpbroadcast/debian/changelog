@@ -1,3 +1,10 @@
+janus-gateway-rtpbroadcast (0.0.24-wheezy1) unstable; urgency=low
+
+  * Segfaults during stream switching - take 3 (#113, @kris-lab)
+  * Segfaults during stream switching - take 2 (#112, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Mon, 05 Sep 2016 15:30:45 +0000
+
 janus-gateway-rtpbroadcast (0.0.23-wheezy1) unstable; urgency=low
 
   * Segfaults during stream switching (#108, @kris-lab)
