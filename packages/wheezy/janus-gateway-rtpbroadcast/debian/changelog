@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast (0.0.25-wheezy1) unstable; urgency=low
+
+  * Make multi-thread safe for sessions, mp and sources (#114, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Tue, 06 Sep 2016 07:56:19 +0000
+
 janus-gateway-rtpbroadcast (0.0.24-wheezy1) unstable; urgency=low
 
   * Segfaults during stream switching - take 3 (#113, @kris-lab)
