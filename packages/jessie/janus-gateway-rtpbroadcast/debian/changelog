@@ -1,3 +1,10 @@
+janus-gateway-rtpbroadcast (0.0.27-jessie1) unstable; urgency=medium
+
+  * Detect VP8 frame fragmented across RTP packets (#110, @kris-lab)
+  * Adjust "thumbnails recorder" to be resistant for packets lost (#106, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Fri, 09 Sep 2016 08:31:48 +0000
+
 janus-gateway-rtpbroadcast (0.0.26-jessie1) unstable; urgency=medium
 
   * Make multi-thread safe for sessions, mp and sources - take 2 (#115, @kris-lab)
