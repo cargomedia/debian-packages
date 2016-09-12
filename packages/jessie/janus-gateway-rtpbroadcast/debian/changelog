@@ -1,3 +1,17 @@
+janus-gateway-rtpbroadcast (0.0.28-jessie1) unstable; urgency=medium
+
+  * Mountpoint is not cleaned up properly (#117, @kris-lab)
+  * Revert "Mountpoint is not cleaned up properly" (#120, @cargomedia)
+  * Revert "Adjust "thumbnails recorder" to be resistant for packets lost" (#121, @cargomedia)
+  * Revert "Detect VP8 frame fragmented across RTP packets" (#122, @cargomedia)
+  * Revert "Make multi-thread safe for sessions, mp and sources - take 2" (#123, @cargomedia)
+  * Revert "Segfaults during stream switching - take 3" (#124, @cargomedia)
+  * Revert "Segfaults during stream switching" (#125, @cargomedia)
+  * Revert "Make multi-thread safe for sessions, mp and sources" (#126, @cargomedia)
+  * Revert "Segfaults during stream switching - take 2" (#127, @cargomedia)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Mon, 12 Sep 2016 11:15:20 +0000
+
 janus-gateway-rtpbroadcast (0.0.27-jessie1) unstable; urgency=medium
 
   * Detect VP8 frame fragmented across RTP packets (#110, @kris-lab)
