@@ -1,3 +1,0 @@
-#!/usr/bin/dh-exec
-
-SAS2IRCU_P20/sas2ircu_linux_x86_rel/sas2ircu => /usr/sbin/sas2ircu

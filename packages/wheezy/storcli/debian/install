@@ -1,3 +1,0 @@
-#!/usr/bin/dh-exec
-
-opt/MegaRAID/storcli/storcli64 => /usr/sbin/storcli
