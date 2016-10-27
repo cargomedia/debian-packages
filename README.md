@@ -1,7 +1,6 @@
 debian-packages
 ===============
 Custom DEB packages for the following codenames:
-- **wheezy**: Debian 7
 - **jessie**: Debian 8
 - **vivid**: Ubuntu 15.04
 
@@ -158,68 +157,6 @@ Available packages
 
 **usrsctp**
  - Version: 49335e1-git
- - Packages: usrsctp
-
-#### wheezy
-
-**arcconf**
- - Version: 2.00.21811-wheezy1
- - Packages: arcconf
-
-**coturn**
- - Version: 4.5.0.3-wheezy1
- - Packages: coturn
-
-**ffmpeg-cm**
- - Version: 7:2.8.6-wheezy1
- - Packages: ffmpeg-cm
-
-**gearmand**
- - Version: 1.1.12-1
- - Packages: gearman-job-server, gearman-tools, gearman, libgearman-dbg, libgearman-dev, libgearman-doc, libgearman7-dbg, libgearman7
-
-**hpacucli**
- - Version: 9.40.12.0-wheezy1
- - Packages: hpacucli
-
-**hpssacli**
- - Version: 2.30-6.0-wheezy1
- - Packages: hpssacli
-
-**janus**
- - Version: 0.0.9.git1.088882-wheezy1
- - Packages: janus
-
-**janus-gateway-audioroom**
- - Version: 0.0.11-wheezy1
- - Packages: janus-gateway-audioroom
-
-**janus-gateway-rtpbroadcast**
- - Version: 0.0.28-wheezy1
- - Packages: janus-gateway-rtpbroadcast
-
-**libsrtp**
- - Version: 1.5.3-wheezy1
- - Packages: libsrtp
-
-**libwebsockets**
- - Version: 1.5.0-wheezy1
- - Packages: libwebsockets-dev, libwebsockets-test-server, libwebsockets3-dbg, libwebsockets3
-
-**mysql-proxy**
- - Version: 0.8.5-wheezy1
- - Packages: mysql-proxy
-
-**sas2ircu**
- - Version: 20.00.00.00-wheezy1
- - Packages: sas2ircu
-
-**storcli**
- - Version: 1.17.08-wheezy1
- - Packages: storcli
-
-**usrsctp**
- - Version: 49335e1-git-wheezy1
  - Packages: usrsctp
 
 

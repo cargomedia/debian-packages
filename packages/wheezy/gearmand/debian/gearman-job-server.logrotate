@@ -1,6 +1,0 @@
-/var/log/gearman-job-server/*.log {
-        daily
-        rotate 4
-        missingok
-        compress
-}

@@ -1,8 +1,3 @@
-Codename: wheezy
-Components: main
-Architectures: amd64
-SignWith: 4A45CD8B
-
 Codename: vivid
 Components: main
 Architectures: amd64

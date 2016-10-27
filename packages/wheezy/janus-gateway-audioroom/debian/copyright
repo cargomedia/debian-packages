@@ -1,7 +1,0 @@
-Format: http://dep.debian.net/deps/dep5
-Upstream-Name: janus-gateway-audioroom
-Upstream-Contact: Cargomedia
-
-Files: *
-Copyright: 2015, Cargomedia
-License: Other
