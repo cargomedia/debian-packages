@@ -1,0 +1,6 @@
+janus-gateway-rtpbroadcast-experimental (0.0.29-beta1-jessie1) unstable; urgency=medium
+
+  * Investigate Doxygen for docu generation (#111, @kris-lab)
+  * Re-add removed PRs: (#129, @kris-lab) 
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Mon, 28 Nov 2016 15:36:23 +0000
