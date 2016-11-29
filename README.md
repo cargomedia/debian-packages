@@ -137,7 +137,7 @@ Available packages
 
 **janus-gateway-rtpbroadcast**
  - Version: 0.0.28-vivid1
- - Packages: janus-gateway-rtpbroadcast_0.0.22-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.23-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.24-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.25-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.26-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.27-vivid1_amd64.deb, janus-gateway-rtpbroadcast
+ - Packages: janus-gateway-rtpbroadcast
 
 **libsrtp**
  - Version: 1.5.3-vivid1
