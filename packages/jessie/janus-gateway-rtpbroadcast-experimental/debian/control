@@ -15,6 +15,7 @@ Build-Depends: autoconf (>= 2.69),
                libini-config-dev,
                dpkg-dev (>= 1.15.1),
                pkg-config (>= 0.11.0)
+Build-Conflicts: janus-gateway-rtpbroadcast (>= 0)
 Standards-Version: 0.0.1
 
 Package: janus-gateway-rtpbroadcast-experimental
