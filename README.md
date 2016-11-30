@@ -54,7 +54,7 @@ Available packages
  - Packages: janus-gateway-rtpbroadcast
 
 **janus-gateway-rtpbroadcast-experimental**
- - Version: 0.0.29-beta1-jessie1
+ - Version: 0.0.29-beta2-jessie1
  - Packages: janus-gateway-rtpbroadcast-experimental
 
 **libsrtp**
