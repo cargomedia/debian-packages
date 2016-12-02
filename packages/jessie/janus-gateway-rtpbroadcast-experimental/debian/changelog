@@ -1,3 +1,9 @@
+janus-gateway-rtpbroadcast-experimental (0.0.29-beta4-jessie1) unstable; urgency=medium
+
+  * Investigate memory leak (#132, @kris-lab)
+
+ -- Krzysztof Stasiak <chris.stasiak@cargomedia.ch>  Fri, 02 Dec 2016 10:15:48 +0000
+
 janus-gateway-rtpbroadcast-experimental (0.0.29-beta3-jessie1) unstable; urgency=medium
 
   * Fix job_temp_path and memory usage (#131, @kris-lab) 
