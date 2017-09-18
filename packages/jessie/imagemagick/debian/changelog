@@ -1,3 +1,10 @@
+imagemagick (8:6.9.9.12-jessie1) jessie; urgency=medium
+
+  * Backport to Debian Jessie from Ubuntu Artful
+  * Upgrade from upsource (see https://github.com/ImageMagick/ImageMagick/issues).
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 18 Sep 2017 14:47:45 +0000
+
 imagemagick (8:6.9.7.4+dfsg-16ubuntu2) artful; urgency=medium
 
   * No-change rebuild for GCC 7 abi mangling change.
@@ -45,7 +52,7 @@ imagemagick (8:6.9.7.4+dfsg-16) unstable; urgency=high
     (Closes: #870491)
   * Memory leak in WriteINLINEImage
     (Closes: #870482)
-  * CVE-2017-11752  
+  * CVE-2017-11752
     The ReadMAGICKImage function in coders/magick.c
     allows remote attackers to cause a denial of
     service (memory leak) via a crafted file.
@@ -250,7 +257,7 @@ imagemagick (8:6.9.7.4+dfsg-13) unstable; urgency=high
       lead to a heap-based buffer over-read in the WriteUILImage() function
       in coders/uil.c.
       (Closes: #869834)
- 
+
  -- Bastien Roucariès <rouca@debian.org>  Tue, 25 Jul 2017 22:13:44 +0200
 
 imagemagick (8:6.9.7.4+dfsg-12ubuntu1) artful; urgency=low
@@ -719,7 +726,7 @@ imagemagick (8:6.9.6.5+dfsg-1) unstable; urgency=high
   * Use safer policy.xml file.
   * Improve postinst file by checking version.
   * Improve rules by using set -e
-  
+
  -- Bastien Roucariès <roucaries.bastien+debian@gmail.com>  Wed, 23 Nov 2016 13:59:54 +0100
 
 imagemagick (8:6.9.6.2+dfsg-3) experimental; urgency=medium
@@ -1308,8 +1315,8 @@ imagemagick (8:6.8.9.9-2) unstable; urgency=high
 imagemagick (8:6.8.9.9-1) unstable; urgency=high
 
   * New upstream version, fixing four security problems:
-    - Remotely DOS: "convert +profile regression enters 
-      infinite loop exhausting memory", thanks to 
+    - Remotely DOS: "convert +profile regression enters
+      infinite loop exhausting memory", thanks to
       Yuri D'Elia (Closes: #764872). Fix CVE-2014-8561.
     - Fixed buffer overflow in PCX and DCM coder. Fix
       CVE-2014-8562 and CVE-2014-8355.
@@ -1318,7 +1325,7 @@ imagemagick (8:6.8.9.9-1) unstable; urgency=high
     - Off-by-one count when parsing an 8BIM profile.
   * Fix identify -quiet has non zero exit code on warnings
     (Closes:  #763686).
-  * Fix "convert -crop" doesn't just crop, 
+  * Fix "convert -crop" doesn't just crop,
     but makes the output darker than the input (Closes: #731157).
   * Fix identify warning is now an error (Closes: #761918).
   * Fix unrecognized color in xpm image (Closes: #754107).
@@ -1408,7 +1415,7 @@ imagemagick (8:6.8.8.2-1) experimental; urgency=low
 
   * New upstream version:
     - add new symbols to magickcore symbols file.
-    - so bump of libmagickwand and libmagickcore needed because of 
+    - so bump of libmagickwand and libmagickcore needed because of
       a small API change.
     - Remove a few non free files (closes: #734800)
   * Packaging improvements:
@@ -1453,7 +1460,7 @@ imagemagick (8:6.8.5.6-2) experimental; urgency=low
   * Bug fix: "fails to install: update-alternatives: error: alternative
     path /usr/bin/compare-im6 doesn't exist", thanks to Andreas
     Beckmann (Closes: #709856, #709845).
-  
+
   [ Vincent Fourmond ]
   * Fix small typo in debian/rules that makes nice FTBSes
 
@@ -1472,7 +1479,7 @@ imagemagick (8:6.8.5.6-1) experimental; urgency=low
      allow to compile hdri and other quantum depth.
    - lib versionning.
   * Debian packaging bug fixes:
-   - "Depend on liblcms2-dev, not liblcms-dev", 
+   - "Depend on liblcms2-dev, not liblcms-dev",
      thanks to Michael Terry (Closes: #701655).
    - "package name does not adhere to naming policy for Perl
      modules", thanks to ansgar@debian.org (Closes: #575932).
@@ -1502,9 +1509,9 @@ imagemagick (8:6.7.9.3-1) experimental; urgency=low
   * Improve download and commit script.
   * Depend on libfftw3.
   * Suggest: graphviz, ufraw-batch.
-  * New upstream version use inkscape delegate for svg. Suggest it. 
+  * New upstream version use inkscape delegate for svg. Suggest it.
     Rsvg one is still used as fallback.
-  * Drop build depend on graphicsmagick's convert. 
+  * Drop build depend on graphicsmagick's convert.
     Use builded imagemagick one.
   * Use internal svg engine instead of rsvg one.
   * Improve icons aspect particularly for small size.
@@ -1514,8 +1521,8 @@ imagemagick (8:6.7.9.3-1) experimental; urgency=low
   * Add symbols file (except for libmagickcore5).
   * Do not mess up MAKEFLAGS.
   * Fail to build in case of testcase failure.
-  * autoreconf package in order to avoid linking with depends lib 
-    (use debian patched libtool). Patch magick++ demo by adding 
+  * autoreconf package in order to avoid linking with depends lib
+    (use debian patched libtool). Patch magick++ demo by adding
     required libs.
 
  -- Bastien Roucariès <roucaries.bastien+debian@gmail.com>  Mon, 03 Sep 2012 11:59:37 +0200
@@ -1529,7 +1536,7 @@ imagemagick (8:6.7.7.10-4) unstable; urgency=high
 
 imagemagick (8:6.7.7.10-3) unstable; urgency=high
 
-  * Bug fix: "CVE-2012-3437", ImageMagick: Magick_png_malloc() size 
+  * Bug fix: "CVE-2012-3437", ImageMagick: Magick_png_malloc() size
     argument thanks to Moritz Muehlenhoff (Closes: #683285).
 
  -- Bastien Roucariès <roucaries.bastien+debian@gmail.com>  Mon, 30 Jul 2012 22:47:47 +0200
@@ -1547,7 +1554,7 @@ imagemagick (8:6.7.7.10-1) unstable; urgency=low
     /usr/lib/x86_64-linux-gnu/ImageMagick-6.7.7/modules-Q16/coders/pango.so",
     thanks to Andreas Beckmann (Closes: #679188 and Closes: #679063).
   * New upstream version:
-  - Fix FTBS on arm (closes: #679430). 
+  - Fix FTBS on arm (closes: #679430).
   - drop previous patch queue (merged upstream).
   - Fix pointer size missmatch.
   - Document feature: "SVG displayed in wrong size", thanks to Marc-Jano Knopp
@@ -1557,15 +1564,15 @@ imagemagick (8:6.7.7.10-1) unstable; urgency=low
 
 imagemagick (8:6.7.7.9-1) unstable; urgency=low
   [ Bastien Roucariès ]
-   
+
   * New upstream version
   * Bug fix: "Menu entry of imagemagick does not launch it", thanks to
-    Michael Biebl (Closes: #675453). 
+    Michael Biebl (Closes: #675453).
   * Bug fix: "Please include large 256x256px icon", thanks to Ralph
     Aichinger (Closes: #675484). Add scalable icons, 16x16, 32x32, 48x48
   * Copyright review:
   - move to dep5 format.
-  - Remove dot support due to incompatibility between EPL and GPL 
+  - Remove dot support due to incompatibility between EPL and GPL
     (Closes: #677413).
   - Remove non modifiable sRGB.icc (Closes: #677414).
   * Add automation script for source download and git machinery
@@ -1575,15 +1582,15 @@ imagemagick (8:6.7.7.9-1) unstable; urgency=low
     is readonly", thanks to jidanni; (Closes: #636932).
   - Bug fix: "SYNOPSIS should drive home more than one input-file point",
     thanks to jidanni; (Closes: #662579).
-  - Bug fix: "document that they are no way to make real white 
+  - Bug fix: "document that they are no way to make real white
     and black jpg", thanks to jidanni. format.html under upstream
-    documentation say now: "Note, JPEG is a lossy compression. 
-    In addition, you cannot create black and white images with JPEG 
+    documentation say now: "Note, JPEG is a lossy compression.
+    In addition, you cannot create black and white images with JPEG
     nor can you save transparency." (Closes: #603097).
   - Bug fix: "convert -- [man] input-options and output-options not
-    referenced", thanks to Jari Aalto (Closes: #602474). Now man 
-    page read: "Use any setting or operator as an output-option.  
-    Only a limited number of setting are  input-option, 
+    referenced", thanks to Jari Aalto (Closes: #602474). Now man
+    page read: "Use any setting or operator as an output-option.
+    Only a limited number of setting are  input-option,
     they include: [...]"
 
   [ Vincent Fourmond ]
@@ -1643,15 +1650,15 @@ imagemagick (8:6.7.4.0-4) unstable; urgency=high
     reading invalid memory, while parsing EXIF IFD in a TIFF file.
   - Vulnerability CVE-2012-1610 Fix a Potential EXIF Integer Overflow
   * Fix menu file to run display.im6 instead of display (fix lintian warning)
-  
+
  -- Bastien Roucariès <roucaries.bastien+debian@gmail.com>  Tue, 10 Apr 2012 17:24:02 +0200
 
 imagemagick (8:6.7.4.0-3) unstable; urgency=low
 
   [ Bastien Roucariès ]
-  * Fix "Invalid validation DoS CVE-2012-1185 / CVE-2012-1186" 
+  * Fix "Invalid validation DoS CVE-2012-1185 / CVE-2012-1186"
   (Closes: #665007)
-  
+
   [ Vincent Fourmond ]
   * Uploading to unstable, opening the way for the transition (see bug
     #652650)
@@ -1664,7 +1671,7 @@ imagemagick (8:6.7.4.0-2) experimental; urgency=low
   [ Bastien Roucariès ]
   * Bug fix: "Please enable hardened build flags", thanks to Moritz
     Muehlenhoff (Closes: #657833).
-  * Bug fix: "Invalid validation DoS CVE-2012-0247/CVE-2012-02478", 
+  * Bug fix: "Invalid validation DoS CVE-2012-0247/CVE-2012-02478",
     thanks to Henri Salo (Closes: #659339).
   * Bug Fix: Convert delegate from removed /usr/bin/rsvg to
     /usr/bin/rsvg-convert, thanks to Scott Howard (Closes: #659259)
@@ -1686,11 +1693,11 @@ imagemagick (8:6.7.4.0-1) experimental; urgency=low
     (Closes: #644170).
   * Upstream break ABI keeping API. Bump soname
   * Multiarch aware , thanks to Riku Voipio (Closes: #640680).
-  * Fix perlmagick fails at runtime with symbol lookup error, 
+  * Fix perlmagick fails at runtime with symbol lookup error,
     thanks to Michael Terry (Closes: #650417).
-  * Prepare new major version transition: build version suffixed 
+  * Prepare new major version transition: build version suffixed
   binaries.
-  * Switch to lcms v2.X support 
+  * Switch to lcms v2.X support
   * Add libfftw support (Closes: #598693).
 
   [ Vincent Fourmond ]
@@ -1702,10 +1709,10 @@ imagemagick (8:6.7.4.0-1) experimental; urgency=low
 imagemagick (8:6.6.9.7-5) unstable; urgency=low
 
   * Replace a overlapped memcopy by a memmove
-  * Fix a PNG reduction bug "Corrupted (?) icons", thanks to  
-    Torbjörn Andersson <eriknospam@telia.com> 
+  * Fix a PNG reduction bug "Corrupted (?) icons", thanks to
+    Torbjörn Andersson <eriknospam@telia.com>
     (Closes: #630619).
-  * Fix parallel build issue. Make debian/rules install target depend 
+  * Fix parallel build issue. Make debian/rules install target depend
     on check. Thanks Colin Watson <cjwatson@ubuntu.com>
     (Closes: #593041).
 
@@ -1719,7 +1726,7 @@ imagemagick (8:6.6.9.7-4) unstable; urgency=low
   * Fixed one-off bug in option parser (Closes: #609177).
   * Move configuration files to a common package: Fix bug
     "non-versioned files in a shared library packages
-    is *wrong*", thanks to Julien Cristau (Closes: #629945). 
+    is *wrong*", thanks to Julien Cristau (Closes: #629945).
 
   [ Vincent Fourmond ]
   * Do not forget to depend on that package...
@@ -1758,7 +1765,7 @@ imagemagick (8:6.6.9.7-1) experimental; urgency=low
   - Modify rules in order to use git.
   - Add README.Source file.
   * New upstream release (Closes: #612811):
-  - Drop patch for reading config files from current directory, 
+  - Drop patch for reading config files from current directory,
     corrected upstream (Closes: #601824).
   - Upstream updated SONAME (Closes: #587227).
   - Fixes -strip adds additional tags to the image (Closes: #594693).
@@ -1843,7 +1850,7 @@ imagemagick (7:6.5.8.3-1) unstable; urgency=low
     - autotrace, cups-bsd | lpr | lprng, curl, enscript, ffmpeg, gimp, gnuplot,
       grads, groff-base, hp2xx, html2ps, libwmf-bin, mplayer, povray, radiance,
       sane-utils, texlive-base-bin, transfig, ufraw, xdg-utils.
-    
+
  -- Nelson A. de Oliveira <naoliv@debian.org>  Sun, 06 Dec 2009 10:28:52 -0200
 
 imagemagick (7:6.5.7.8-1) unstable; urgency=low
@@ -2288,7 +2295,7 @@ imagemagick (7:6.2.4.5.dfsg1-0.10) unstable; urgency=high
     appropriate version (closes: #360362)
   * Fix XCF and Sun Raster File buffer overflows [CVE-2006-3743/-3744]
     (closes: #385062)
-  
+
  -- Don Armstrong <don@debian.org>  Sun, 10 Sep 2006 20:15:57 -0700
 
 imagemagick (7:6.2.4.5.dfsg1-0.9) unstable; urgency=low
@@ -2314,7 +2321,7 @@ imagemagick (7:6.2.4.5-0.8) unstable; urgency=low
 
 imagemagick (6:6.2.6.7-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 30 Mar 2006 16:59:33 +0900
 
@@ -2440,27 +2447,27 @@ imagemagick (6:6.2.4.4-0.1) experimental; urgency=low
 
 imagemagick (6:6.2.3.6-3) unstable; urgency=low
 
-  * Fix missing "g" in imagema"g"ick in man pages.  closes: #318255 
+  * Fix missing "g" in imagema"g"ick in man pages.  closes: #318255
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon,  8 Aug 2005 10:38:12 +0900
 
 imagemagick (6:6.2.3.6-2) unstable; urgency=low
 
   * Add comment on README for perlmagick. closes: #272545
-  * upstream fix: perlmagick: broken link in manpage.  closes: #305057 
+  * upstream fix: perlmagick: broken link in manpage.  closes: #305057
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu,  4 Aug 2005 17:58:22 +0900
 
 imagemagick (6:6.2.3.6-1) unstable; urgency=low
 
   * New upstream release
-  * upstream fixes: 
+  * upstream fixes:
      - fix typo in mogrify manpage: closes: #317628, #321208
      - update config.sub/config.guess closes: #317299
      - fix " configure.ac takes wrong assumptions" closes: #303765
   * point to the correct URL in manpages. closes: #318255, #315629
   * man pages are rerwrited.    closes: #264033, #316475
-  * closing bugs fixed by NMs. closes: #310690, #310812, #268357, #269085, #278401, #291033, #291118, #297990, #302093, #265540, #296084, #277775, #306424, #266146, #270882, #282173, #277795, 
+  * closing bugs fixed by NMs. closes: #310690, #310812, #268357, #269085, #278401, #291033, #291118, #297990, #302093, #265540, #296084, #277775, #306424, #266146, #270882, #282173, #277795,
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu,  4 Aug 2005 12:39:54 +0900
 
@@ -2474,7 +2481,7 @@ imagemagick (6:6.2.3.4-1) unstable; urgency=low
 
   * New upstream release
   * Add .ico rule to mime/package/imagemagick. closes: #272121
-  * Upstream fixes: 
+  * Upstream fixes:
      - -ping not documented well.
      - cropped PNGs have a wrong offset
      - cine-DICOM does not work due to JPEG processing problem
@@ -2488,11 +2495,11 @@ imagemagick (6:6.2.3.4-1) unstable; urgency=low
 
 imagemagick (6:6.2.3.3-1) unstable; urgency=low
 
-  * New upstream release. 
+  * New upstream release.
     upstream fix: header file exception.h needs to include stdarg.h. closes: #316725
-  * rules scripts does not stop building.  closes: #314758 
+  * rules scripts does not stop building.  closes: #314758
   * libmagick++6 -> libmagick++6c2 (ABI transition).
-  * 
+  *
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed,  6 Jul 2005 17:00:46 +0900
 
@@ -2511,7 +2518,7 @@ imagemagick (6:6.2.3.0-2) unstable; urgency=low
   * Upstream fixes the bugs.
    - PerlMagick's Profile() method produces an assertion error when the
    profile parameter is set to undef. closes:#292094
-   - perlmagick: segmentation fault while converting .tif to .pdf. closes: #299958 
+   - perlmagick: segmentation fault while converting .tif to .pdf. closes: #299958
    - 8bpp images are not supported. closes: #270381
    - convert to postscript is still broken (geometry/resolution) closes: #270215
    - imagemagick produces useless (and wrong!) error output when a tiff has a
@@ -2537,7 +2544,7 @@ imagemagick (6:6.2.3.0-1) unstable; urgency=low
     may cause trouble.  (e.g. not using some packages.)  I feel that some of
     the trouble pacakges are usable by only simply rebuilding on the new
     library, but the others may need more complicated solution.
-  * If you met the trouble about the package that depends on the libmagick, 
+  * If you met the trouble about the package that depends on the libmagick,
     I hope, you try to rebuld the package.
     And let me know the results to me or the package maintainer.
   * Upsteram fixes the bugs.
@@ -2562,7 +2569,7 @@ imagemagick (6:6.0.6.2-2.3) unstable; urgency=high
 
   * NMU
   * coders/pnm.c: check image->colors for overflow to avoid a heap overflow
-    that could be used as a DOS or possibly to execute code. 
+    that could be used as a DOS or possibly to execute code.
     Closes: #306424 (CAN-2005-1275)
 
  -- Joey Hess <joeyh@debian.org>  Tue,  3 May 2005 20:12:33 -0400
@@ -2587,7 +2594,7 @@ imagemagick (6:6.0.6.2-2.1) unstable; urgency=high
 
 imagemagick (6:6.0.6.2-2) unstable; urgency=high
 
-  * Fixes a buffer overflow in the PSD image-decoding.  
+  * Fixes a buffer overflow in the PSD image-decoding.
     Hardcode the upper limit for channels to 24 to fix buffer overflow
     [coders/psd.c, CAN-2005-0005]
 
@@ -2644,13 +2651,13 @@ imagemagick (6:6.0.6.2-1.3) unstable; urgency=high
 imagemagick (5:6.0.7.1-1) unstable; urgency=low
 
   * New upstream release
-    Upstream authors applied the patch,  by Daniel Kobras, 
-    which fixes BMP vulnerabilities assigned CAN-2004-0827 
-    (http://studio.imagemagick.org/pipermail/magick-developers/2004-August/002011.html).  
+    Upstream authors applied the patch,  by Daniel Kobras,
+    which fixes BMP vulnerabilities assigned CAN-2004-0827
+    (http://studio.imagemagick.org/pipermail/magick-developers/2004-August/002011.html).
   * Upstream fix: closes: #269832  (subject: segfault in mogrify -colors)
   * Upstream fix: closes: #248057  (subject: Wand-config.1 is not a manual
     page)
-  * libmagick6 : control : Remove sentenses about LZW compression. This 
+  * libmagick6 : control : Remove sentenses about LZW compression. This
     binary package contains lzw code.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon,  6 Sep 2004 09:57:11 +0900
@@ -2708,7 +2715,7 @@ imagemagick (5:6.0.4.1-1) unstable; urgency=low
 
 imagemagick (5:6.0.3.5-2) unstable; urgency=low
 
-  * libtiff4 transition. 
+  * libtiff4 transition.
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 29 Jul 2004 18:04:54 +0900
 
@@ -2726,7 +2733,7 @@ imagemagick (5:6.0.3.1-3) unstable; urgency=low
 
 imagemagick (5:6.0.3.1-2) unstable; urgency=low
 
-  * JPEG-2000 Support.  closes: #256814 
+  * JPEG-2000 Support.  closes: #256814
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue,  6 Jul 2004 11:51:13 +0900
 
@@ -2800,7 +2807,7 @@ imagemagick (5:6.0.1-1) unstable; urgency=low
 
 imagemagick (5:6.0.0.7-2) unstable; urgency=low
 
-  * Remove ImageMagick logo image from magick.c. 
+  * Remove ImageMagick logo image from magick.c.
   * Remove ImageMagick logo files. closes: #214623
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri, 30 Apr 2004 20:16:26 +0900
@@ -2826,7 +2833,7 @@ imagemagick (5:6.0.0.6-1) unstable; urgency=low
     reproduce.  closes: #245320
   * convert: eps driver munges resolution: I believe this is not a bug.
     please read man page for convert to find suitable options.  closes:#170649
-  * imagemagick: doc says Lanczos is default filter, but it's not.: 
+  * imagemagick: doc says Lanczos is default filter, but it's not.:
     The upstream said "Lanczos is the default filter for reducing an image
     size, otherwise its Mitchell ".closes: #229017
   * closes the bug fixed in NMU. closes: #186611
@@ -2843,9 +2850,9 @@ imagemagick (5:6.0.0.4-1) unstable; urgency=low
 
 imagemagick (5:6.0.0.2-2) unstable; urgency=low
 
-  * Follow standard naming scheme.  closes: #245060  
+  * Follow standard naming scheme.  closes: #245060
   * Fixed by the upstream.  closes: #170976, #212802, #228649
-  * These bugs are closed by the maintainer. closes: #207016, #224363, #224598, #224889, #237663, #224587 
+  * These bugs are closed by the maintainer. closes: #207016, #224363, #224598, #224889, #237663, #224587
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed, 21 Apr 2004 18:48:44 +0900
 
@@ -2865,7 +2872,7 @@ imagemagick (5:6.0.0.2-1) unstable; urgency=low
   * I cannot reproduce this problem. I think they are fixed  in upstream.
   	* segmentation fault after conversion closes: #225330
         * convert: hangs on GIF animations closes: #225322
-  
+
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 15 Apr 2004 18:38:52 +0900
 
@@ -2888,7 +2895,7 @@ imagemagick (5:6.0.0-1) unstable; urgency=low
   * I cannot reploduce this problem. I think they are fixed  in upstream.
   	* segmentation fault after conversion closes: #225330
         * convert: hangs on GIF animations closes: #225322
-  
+
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 12 Apr 2004 11:04:13 +0900
 
@@ -2926,8 +2933,8 @@ imagemagick (4:5.5.7.15-2) unstable; urgency=low
 
 imagemagick (4:5.5.7.15-1) unstable; urgency=low
 
-  * New upstream version. 
-  * libmagick++-dev : conflict with libmagick++5.  
+  * New upstream version.
+  * libmagick++-dev : conflict with libmagick++5.
     (closes: #200986)
 
 
@@ -2935,13 +2942,13 @@ imagemagick (4:5.5.7.15-1) unstable; urgency=low
 
 imagemagick (4:5.5.7.9-2) unstable; urgency=low
 
-  * libmagick++-dev: conflict with libmagck++5. closes: #200986 
+  * libmagick++-dev: conflict with libmagck++5. closes: #200986
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 19 Aug 2003 20:51:22 +0900
 
 imagemagick (4:5.5.7.9-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * fix unlink Changelog.html problem.  closes: #196107
   * Use libpng12-dev instead of libpng3-dev.  closes:# 196746
 
@@ -2949,7 +2956,7 @@ imagemagick (4:5.5.7.9-1) unstable; urgency=low
 
 imagemagick (4:5.5.7.6-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Sat, 31 May 2003 15:33:33 +0900
 
@@ -2961,19 +2968,19 @@ imagemagick (4:5.5.7.5-1) unstable; urgency=low
 
 imagemagick (4:5.5.7.4-2) unstable; urgency=low
 
-  * Remove debhelper from libmagick-dev dependency: closes: #195106 
+  * Remove debhelper from libmagick-dev dependency: closes: #195106
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 29 May 2003 10:15:51 +0900
 
 imagemagick (4:5.5.7.4-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 26 May 2003 09:51:32 +0900
 
 imagemagick (4:5.5.7.3-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * Upstream fix: closes: #194306, #129990, #161422, #186610
   * This is not ImageMagick bug. : closes: #190302
 
@@ -2981,15 +2988,15 @@ imagemagick (4:5.5.7.3-1) unstable; urgency=low
 
 imagemagick (4:5.5.7.2-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 19 May 2003 16:35:31 +0900
 
 imagemagick (4:5.5.7.1-2) unstable; urgency=low
 
-  * change section of libmagick-dev, libmagick++-dev, and perlmagick. 
+  * change section of libmagick-dev, libmagick++-dev, and perlmagick.
   * Upstream fix closes: #161345, #172657
-  * Can save net image files in /tmp of your local: closes: #183469 
+  * Can save net image files in /tmp of your local: closes: #183469
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri, 16 May 2003 15:11:16 +0900
 
@@ -2997,7 +3004,7 @@ imagemagick (4:5.5.7.1-1) unstable; urgency=low
 
   * New upstream version.
   * Upstream fix : closes: #182787
-  * remove dps dependencies. closes: #193230 
+  * remove dps dependencies. closes: #193230
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri, 16 May 2003 09:57:10 +0900
 
@@ -3016,7 +3023,7 @@ imagemagick (4:5.5.7-1) unstable; urgency=low
 
 imagemagick (4:5.5.5.3-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon,  3 Mar 2003 11:40:59 +0900
 
@@ -3028,7 +3035,7 @@ imagemagick (4:5.5.5.1-1) unstable; urgency=low
 
 imagemagick (4:5.5.5-2) unstable; urgency=low
 
-  * Rebuuild to fix dependency problem. 
+  * Rebuuild to fix dependency problem.
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed, 26 Feb 2003 11:55:53 +0900
 
@@ -3048,25 +3055,25 @@ imagemagick (4:5.5.4.4-1) unstable; urgency=low
 
 imagemagick (4:5.5.4.3-4) unstable; urgency=low
 
-  * Sorry for confusing.  I believe this version can be really fixed. 
+  * Sorry for confusing.  I believe this version can be really fixed.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue,  4 Feb 2003 20:46:19 +0900
 
 imagemagick (4:5.5.4.3-3) unstable; urgency=low
 
-  * Really fix magick.mgk location problem. 
+  * Really fix magick.mgk location problem.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue,  4 Feb 2003 15:59:27 +0900
 
 imagemagick (4:5.5.4.3-2) unstable; urgency=low
 
-  * Fix magic.mgk location problem. 
+  * Fix magic.mgk location problem.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue,  4 Feb 2003 11:04:48 +0900
 
 imagemagick (4:5.5.4.3-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * alread fixed: closes: #179257, #171816
   * It's not a bug but a spec. montage use miff format internally. closes: #171100
 
@@ -3077,7 +3084,7 @@ imagemagick (4:5.5.3.2-2) unstable; urgency=low
   * confirm the following bugs are fixed: closes: #175998, #167832, #149730
   * Add comment about non-X11 version. closes: #172785, #167806
   * The upstream authors have their own BTS in sourceforge.  And I have
-    submitted magick-bugs.  closes: #162876 
+    submitted magick-bugs.  closes: #162876
   * Some minor fix.  (fix some minor lintian warning.)
   * libmagick++5.5.3c102 : Remove Provides: libmagick++5.  closes: #174958
 
@@ -3102,7 +3109,7 @@ imagemagick (4:5.5.3-1) unstable; urgency=low
 
 imagemagick (4:5.5.2.5-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 10 Dec 2002 16:15:29 +0900
 
@@ -3114,31 +3121,31 @@ imagemagick (4:5.5.2.2-1) unstable; urgency=low
 
 imagemagick (4:5.5.2.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu,  5 Dec 2002 14:42:19 +0900
 
 imagemagick (4:5.5.2-2) unstable; urgency=low
 
-  * Fix dependence problem. 
+  * Fix dependence problem.
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed,  4 Dec 2002 09:55:29 +0900
 
 imagemagick (4:5.5.2-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon,  2 Dec 2002 09:34:04 +0900
 
 imagemagick (4:5.5.1.6-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed, 13 Nov 2002 10:00:48 +0900
 
 imagemagick (4:5.5.1.4-5) unstable; urgency=low
 
-  * Remove /usr/share/ImageMagick directory.  closes: #167498 
+  * Remove /usr/share/ImageMagick directory.  closes: #167498
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue,  5 Nov 2002 18:01:07 +0900
 
@@ -3158,7 +3165,7 @@ imagemagick (4:5.5.1.4-3) unstable; urgency=low
 
 imagemagick (4:5.5.1.4-2) unstable; urgency=low
 
-  * Build static library.   
+  * Build static library.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 29 Oct 2002 22:04:35 +0900
 
@@ -3172,7 +3179,7 @@ imagemagick (4:5.5.1.4-1) unstable; urgency=low
 
 imagemagick (4:5.5.1.3-2) unstable; urgency=low
 
-  * Fix empty libmagick-dev problem. closes: #166302 
+  * Fix empty libmagick-dev problem. closes: #166302
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri, 25 Oct 2002 19:02:37 +0900
 
@@ -3194,29 +3201,29 @@ imagemagick (4:5.5.1.1-2) unstable; urgency=low
 
 imagemagick (4:5.5.1.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed, 16 Oct 2002 11:04:09 +0900
 
 imagemagick (4:5.5.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 15 Oct 2002 11:03:21 +0900
 
 imagemagick (4:5.4.9.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * closes: #160817, #137894, #149122, #150985
-  * Please read man. I believe it's not a bug.  
+  * Please read man. I believe it's not a bug.
     ( anyway if you feel this is a bug, please send a bug report to the
-    upstream). closes: #158959 
+    upstream). closes: #158959
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 17 Sep 2002 17:49:19 +0900
 
 imagemagick (4:5.4.9-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 10 Sep 2002 10:08:54 +0900
 
@@ -3250,7 +3257,7 @@ imagemagick (4:5.4.8.2-1.3) unstable; urgency=low
 
 imagemagick (4:5.4.8.2-1) unstable; urgency=low
 
-  * New upstream version.       closes: #156234 
+  * New upstream version.       closes: #156234
   * Build against libpng3-dev.  closes: #156838, #156759
   * This is not a bug, I believe.  Read man.  closes: #156135
 
@@ -3258,41 +3265,41 @@ imagemagick (4:5.4.8.2-1) unstable; urgency=low
 
 imagemagick (4:5.4.8-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 19 Aug 2002 12:05:19 +0900
 
 imagemagick (4:5.4.7.4-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 16 Jul 2002 09:26:04 +0900
 
 imagemagick (4:5.4.7.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Sat,  6 Jul 2002 11:37:12 +0900
 
 imagemagick (4:5.4.7-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon,  1 Jul 2002 21:25:34 +0900
 
 imagemagick (4:5.4.6.3-2) unstable; urgency=low
 
-  * Apply a patch for ltmain.sh (bug #98342) 
+  * Apply a patch for ltmain.sh (bug #98342)
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri, 28 Jun 2002 17:55:09 +0900
 
 imagemagick (4:5.4.6.3-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * Because of the bug #149223(libtool problem), this version of imagemagick
-    cannot build if you have not installed libmagick5-dev.    
+    cannot build if you have not installed libmagick5-dev.
     Don't let me know this problem, I have known about that.  If you can find
-    the elegant way to avoid this problem, let me know please. 
+    the elegant way to avoid this problem, let me know please.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 24 Jun 2002 10:31:41 +0900
 
@@ -3301,22 +3308,22 @@ imagemagick (4:5.4.6.2-1) unstable; urgency=low
   * New upstream version.
   * closes: #150445
   * Because of the bug #149223(libtool problem), this version of imagemagick
-    cannot build if you have not installed libmagick5-dev.    
+    cannot build if you have not installed libmagick5-dev.
     Don't let me know this problem, I have known about that.  If you can find
-    the elegant way to avoid this problem, let me know please. 
+    the elegant way to avoid this problem, let me know please.
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri, 21 Jun 2002 12:36:11 +0900
 
 imagemagick (4:5.4.6.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * closes: #149279
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 11 Jun 2002 14:06:02 +0900
 
 imagemagick (4:5.4.6-4) unstable; urgency=low
 
-  * TEST 
+  * TEST
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 10 Jun 2002 23:20:31 +0900
 
@@ -3329,19 +3336,19 @@ imagemagick (4:5.4.6-3) unstable; urgency=low
 
 imagemagick (4:5.4.6-2) unstable; urgency=low
 
-  * Depends on liblcms1. 
+  * Depends on liblcms1.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 10 Jun 2002 10:27:35 +0900
 
 imagemagick (4:5.4.6-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed,  5 Jun 2002 12:27:07 +0900
 
 imagemagick (4:5.4.5.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * Hopefully, this bug is closed. please check because I don't have Hurd.
     closes: #144687
 
@@ -3357,9 +3364,9 @@ imagemagick (4:5.4.4.5-3) unstable; urgency=low
 imagemagick (4:5.4.4.5-2) unstable; urgency=low
 
   * Debian does not have ral-cgm package, ImageMagcik of Debian cannot handle
-    cgm format.  ( I add the comment about that in README.Debian.) 
+    cgm format.  ( I add the comment about that in README.Debian.)
     closes: #143359
-  * I believe this is not package bug. closes: #142277  
+  * I believe this is not package bug. closes: #142277
 
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 23 Apr 2002 17:03:29 +0900
@@ -3372,39 +3379,39 @@ imagemagick (4:5.4.4.5-1) unstable; urgency=low
 
 imagemagick (4:5.4.4.4-1) unstable; urgency=low
 
-  * New upstream (minor) version. 
+  * New upstream (minor) version.
   * closes: #141668
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon,  8 Apr 2002 10:12:41 +0900
 
 imagemagick (4:5.4.4.2-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed,  3 Apr 2002 22:55:56 +0900
 
 imagemagick (4:5.4.4.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed,  3 Apr 2002 14:14:00 +0900
 
 imagemagick (4:5.4.3.11-2) unstable; urgency=low
 
-  * fix doc-base problem. closes: #137508 
+  * fix doc-base problem. closes: #137508
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 11 Mar 2002 11:03:19 +0900
 
 imagemagick (4:5.4.3.11-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * This bug is alread fixed in the previous one. closes: #137036
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu,  7 Mar 2002 11:53:57 +0900
 
 imagemagick (4:5.4.3.10-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * add --with-gs-font-dir in configure. closes: #136327
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon,  4 Mar 2002 19:47:39 +0900
@@ -3441,7 +3448,7 @@ imagemagick (4:5.4.3.4-1) unstable; urgency=low
 
 imagemagick (4:5.4.3.2-1) unstable; urgency=low
 
-  * New upstream version. closes: #97459 
+  * New upstream version. closes: #97459
   * Add comment about 16 bit pixel mode in README.Debian. closes: #123874.
     (Mennucc, If you really serious this problem, you can contact the upstream
     author as I do.  They have own BTS for ImageMagick.)
@@ -3452,7 +3459,7 @@ imagemagick (4:5.4.3.2-1) unstable; urgency=low
 imagemagick (4:5.4.3.1-1) unstable; urgency=low
 
   * New upstream version.
-  * closes: #128891, #132688, #128266, #134510, #132707 
+  * closes: #128891, #132688, #128266, #134510, #132707
   * use x-ternimal-enulator instead of xterm. closes: #132947
   * It is not a bug, and I won't change the location of display in menu
     system.  closes: #120065
@@ -3462,7 +3469,7 @@ imagemagick (4:5.4.3.1-1) unstable; urgency=low
 
 imagemagick (4:5.4.2.3-1) unstable; urgency=low
 
-  * New upstream vesrion. 
+  * New upstream vesrion.
   * imagemagick depends libmagick5 which has the same version number.
   closes: #130268
 
@@ -3470,34 +3477,34 @@ imagemagick (4:5.4.2.3-1) unstable; urgency=low
 
 imagemagick (4:5.4.2.2-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue,  8 Jan 2002 18:08:08 +0900
 
 imagemagick (4:5.4.1.2-3) unstable; urgency=low
 
-  * Fix typo in description.  closes: #125230 
+  * Fix typo in description.  closes: #125230
   * Remove empty directories in imagemagick. closes: #125395
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 18 Dec 2001 10:03:09 +0900
 
 imagemagick (4:5.4.1.2-2) unstable; urgency=low
 
-  * Rebuild with Debian "Official" libwmf. 
+  * Rebuild with Debian "Official" libwmf.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 11 Dec 2001 18:47:11 +0900
 
 imagemagick (4:5.4.1.2-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * Remove the useless /usr/X11R6 directory.  closes: #122045
-  
+
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 10 Dec 2001 15:15:44 +0900
 
 imagemagick (4:5.4.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue,  4 Dec 2001 20:38:17 +0900
 
@@ -3509,13 +3516,13 @@ imagemagick (4:5.4.0.5-2) unstable; urgency=low
 
 imagemagick (4:5.4.0.5-1) unstable; urgency=low
 
-  * New upstrem version. 
+  * New upstrem version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri,  9 Nov 2001 10:53:35 +0900
 
 imagemagick (4:5.4.0.3-1) unstable; urgency=low
 
-  * New upstream version. closes: #117052, #113309 
+  * New upstream version. closes: #117052, #113309
   * The current imagemagick will use libhdf version5 (not 4).  However this
     feature is not stable, in fact the default is off.  closes: #88549
 
@@ -3523,7 +3530,7 @@ imagemagick (4:5.4.0.3-1) unstable; urgency=low
 
 imagemagick (4:5.4.0.2-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * closes: #115364, #114767, #115275, #113600
   * I think this is not a bug. closes: #66807
 
@@ -3531,33 +3538,33 @@ imagemagick (4:5.4.0.2-1) unstable; urgency=low
 
 imagemagick (4:5.4.0-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu,  1 Nov 2001 18:34:13 +0900
 
 imagemagick (4:5.3.9-2) unstable; urgency=low
 
-  * Remove xlib6g-dev and add xlibs-dev in depends line of libmagick5.  
+  * Remove xlib6g-dev and add xlibs-dev in depends line of libmagick5.
   * closes: #114654
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon,  8 Oct 2001 12:18:33 +0900
 
 imagemagick (4:5.3.9-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * closes: #113634, #112799, #113286
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed,  3 Oct 2001 09:21:07 +0900
 
 imagemagick (4:5.3.8.1-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Sat,  8 Sep 2001 16:13:00 +0900
 
 imagemagick (4:5.3.8-2) unstable; urgency=low
 
-  * Applied some patches from the 'really released version' 
+  * Applied some patches from the 'really released version'
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed,  5 Sep 2001 12:36:48 +0900
 
@@ -3570,31 +3577,31 @@ imagemagick (4:5.3.8-1) unstable; urgency=low
 
 imagemagick (3:5.3.8-2) unstable; urgency=low
 
-  * Remove incorrect /usr/include/config.h file. closes: #108292 
+  * Remove incorrect /usr/include/config.h file. closes: #108292
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 30 Aug 2001 19:09:38 +0900
 
 imagemagick (3:5.3.8-1) unstable; urgency=low
 
   * New upstream version.
-  * following bugs are hopefully fixed. closes: #109924, #109924, #103328, #107291, #103774 
+  * following bugs are hopefully fixed. closes: #109924, #109924, #103328, #107291, #103774
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 30 Aug 2001 15:30:16 +0900
 
 imagemagick (3:5.3.7-4) unstable; urgency=low
 
-  * Remove enpty directories.  closes: #108713 
+  * Remove enpty directories.  closes: #108713
   * This report is not a bug. It's a policy of imagemagick. closes: #97082
   * The current imagemagick does not support libwmf0.2. I believe the
     feature imagemagick supports it.  libwmf0.2-0 doesn't depend on netpbm
     which depends on c shell.  Anyway so I believe the bug report #88977 can be
-    closed.  closes: #88977 
+    closed.  closes: #88977
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed, 15 Aug 2001 12:39:19 +0900
 
 imagemagick (3:5.3.7-3) unstable; urgency=low
 
-  * Reupload 
+  * Reupload
   * Fix collect dependency.  closes: #107803
   * (doc-base) Change Section: Apps/graphics -> Apps/Graphics closes: #108009
 
@@ -3609,7 +3616,7 @@ imagemagick (3:5.3.7-2) unstable; urgency=low
 
 imagemagick (3:5.3.7-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
   * closes: #104136, #101944
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 30 Jul 2001 12:08:08 +0900
@@ -3622,7 +3629,7 @@ imagemagick (3:5.3.5-4) unstable; urgency=low
 
 imagemagick (3:5.3.5-3) unstable; urgency=low
 
-  * Applied a patch provided by M. Wilcox. Thanks. closes: #104616, #104767 
+  * Applied a patch provided by M. Wilcox. Thanks. closes: #104616, #104767
 
  -- Ryuichi Arafune <arafune@debian.org>  Sat, 14 Jul 2001 15:00:54 +0900
 
@@ -3643,7 +3650,7 @@ imagemagick (3:5.3.5-1) unstable; urgency=low
 
 imagemagick (1:5.3.3-5) unstable; urgency=low
 
-  * Oops!!!, I have added -enable-lzw in configure in the previous.  
+  * Oops!!!, I have added -enable-lzw in configure in the previous.
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 21 May 2001 21:31:07 +0900
 
@@ -3655,19 +3662,19 @@ imagemagick (1:5.3.3-4) unstable; urgency=low
 
 imagemagick (1:5.3.3-3.1) unstable; urgency=low
 
-  * TEST version. 
+  * TEST version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri, 18 May 2001 21:57:24 +0900
 
 imagemagick (1:5.3.3-3) unstable; urgency=low
 
-  * config.guess and config.sub are updated. closes: #96422 
+  * config.guess and config.sub are updated. closes: #96422
 
  -- Ryuichi Arafune <arafune@debian.org>  Fri, 18 May 2001 21:38:07 +0900
 
 imagemagick (1:5.3.3-2) unstable; urgency=low
 
-  * Fix dependency problem.  closes: #97868, #97807 
+  * Fix dependency problem.  closes: #97868, #97807
   * Add image/pjpeg to /usr/lib/mime/imagemagick. closes: #97102
   * This bug was already fixed.  closes: #69933
 
@@ -3681,7 +3688,7 @@ imagemagick (1:5.3.3-1) unstable; urgency=low
 
 imagemagick (1:5.3.0-4) unstable; urgency=low
 
-  * Fix uncollect symlink. 
+  * Fix uncollect symlink.
 
  -- Ryuichi Arafune <arafune@debian.org>  Wed, 21 Mar 2001 20:30:46 +0900
 
@@ -3702,38 +3709,38 @@ imagemagick (1:5.3.0-2) unstable; urgency=low
 
 imagemagick (1:5.3.0-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Sat,  3 Mar 2001 15:01:47 +0900
 
 imagemagick (1:5.2.9-2) unstable; urgency=low
 
   * Remove freetype6-dev from Build-Depends.  closes: #86859
-  * This is too old bug, and now magick++ does not exist in Debian. closes: #87366 
+  * This is too old bug, and now magick++ does not exist in Debian. closes: #87366
 
  -- Ryuichi Arafune <arafune@debian.org>  Sat,  3 Mar 2001 13:45:43 +0900
 
 imagemagick (1:5.2.9-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 15 Feb 2001 14:09:09 +0900
 
 imagemagick (1:5.2.8-1) unstable; urgency=low
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu,  8 Feb 2001 19:00:41 +0900
 
 imagemagick (1:5.2.7-2) unstable; urgency=medium
 
-  * Add menu hints.  closes: #82333 
+  * Add menu hints.  closes: #82333
 
  -- Ryuichi Arafune <arafune@debian.org>  Mon, 15 Jan 2001 18:45:12 +0900
 
 imagemagick (1:5.2.7-1.1) unstable; urgency=medium
 
-  * test build 
+  * test build
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu,  4 Jan 2001 17:58:54 +0900
 
@@ -3747,7 +3754,7 @@ imagemagick (1:5.2.7-1) unstable; urgency=medium
 imagemagick (1:5.2.6-3) unstable; urgency=medium
 
   *(libmagick5)  Conflicts imagemagick (<=5.2.6-1)
-  closes: #79936 
+  closes: #79936
 
  -- Ryuichi Arafune <arafune@debian.org>  Tue, 19 Dec 2000 10:27:58 +0900
 
@@ -3760,13 +3767,13 @@ imagemagick (1:5.2.6-2) unstable; urgency=medium
 
 imagemagick (1:5.2.6-1) unstable; urgency=medium
 
-  * New upstream version. 
+  * New upstream version.
 
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 14 Dec 2000 18:33:32 +0900
 
 imagemagick (1:5.2.5-3.2) unstable; urgency=medium
 
-  * Test build --with-modules 
+  * Test build --with-modules
 
  -- Ryuichi Arafune <arafune@debian.org>  Sat,  2 Dec 2000 14:05:12 +0900
 
@@ -3809,7 +3816,7 @@ imagemagick (5.2.4-1) unstable; urgency=medium
 imagemagick (5.2.3-1) unstable; urgency=medium
 
   * New upstream version
-  * (debian/rules) : Revised comment to build the LZW version.   
+  * (debian/rules) : Revised comment to build the LZW version.
   * libmagick5-dev: (control): Suggests -dev packages which Magick-config use
   closes: #70106
 
@@ -3892,7 +3899,7 @@ imagemagick (5.2.0-1) unstable; urgency=medium
 
 imagemagick (5.1.1-13) unstable; urgency=medium
 
-  * The bug #62964 is already fixed in current (>5.1.1-1) version. 
+  * The bug #62964 is already fixed in current (>5.1.1-1) version.
   * (imagemagick.mime) bmp -> x-ms-bmp
   closes: #63699, #62964
 
@@ -3908,7 +3915,7 @@ imagemagick (5.1.1-12) unstable; urgency=medium
 imagemagick (5.1.1-11) unstable; urgency=medium
 
   * Add suggests: html2ps closes: #59066
-  * This bug is alread fixed in current version.  
+  * This bug is alread fixed in current version.
     closes: #58406
   * libmagick5:  Remove conflicts of libmagick4g
     closes: #58969
@@ -3925,7 +3932,7 @@ imagemagick (5.1.1-10) unstable; urgency=medium
 imagemagick (5.1.1-9) unstable; urgency=medium
 
   * Fixed #58813 again.
-  
+
  -- Ryuichi Arafune <arafune@debian.org>  Thu, 24 Feb 2000 18:50:45 +0900
 
 imagemagick (5.1.1-8) unstable; urgency=medium
@@ -3984,7 +3991,7 @@ imagemagick (5.1.1-2) unstable; urgency=medium
 
   * change control/description of libmagick5g
   * include scripts/xnap in ./example directory
-  
+
   * Bug#54750 is already fixed in previous version. clsees: #54750
   * Bug#50392 is already fixed in previous version. clsees: #50392
   * In my system, convert eps to other file format (Tiff, jpeg ...)
@@ -3994,7 +4001,7 @@ imagemagick (5.1.1-2) unstable; urgency=medium
   * closes: #29829
   * closes: #45776
   * closes: #53750
-  
+
  -- Ryuichi Arafune <arafune@debian.org>  Fri,  4 Feb 2000 12:45:01 +0900
 
 imagemagick (5.1.1-1) unstable; urgency=medium
@@ -4009,7 +4016,7 @@ imagemagick (5.1.1-1) unstable; urgency=medium
   * Fix mime type bug (Bug#56234)
   * Fix some  imagemagick bugs  (Bug#30465), (Bug#27672)
   * Fix perlmagick bug  (Bug#54349)
-  
+
 
   * !!! To Bug Submitters !!!
     If you find that your reported bug is fixed by upstream upgrade,
@@ -4052,13 +4059,13 @@ imagemagick (4.2.8-2) unstable; urgency=low
 
   * Modified prerm (closes: #42739)
   * Added a dependancy for libmagick4g (closes: #42796)
-  
+
  -- Christian Kurz <shorty@debian.org>  Tue, 10 Aug 1999 21:14:23 +0200
 
 imagemagick (4.2.8-1) unstable; urgency=low
 
   * New upstream, non-maintainer release with permission of Scott.
-  * Modified PerlMagick/Makefile.PL.in to build the package (closes: 
+  * Modified PerlMagick/Makefile.PL.in to build the package (closes:
     #24877, #40173).
   * Modified menu-entry for display. (closes: #26634, #35806)
   * Changed from install-mime to update-mime. (closes: #28209)

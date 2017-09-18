@@ -21,7 +21,7 @@ export DEFAULTIMVERSION ?= 6
 
 # poc arch for test empty means no test
 POC_ARCH ?= any-i386 any-amd64
-VALGRIND_POC_ARCH ?= 
+VALGRIND_POC_ARCH ?=
 
 # for hardening
 # export DEB_BUILD_MAINT_OPTIONS = hardening=+all
@@ -419,7 +419,7 @@ override_dh_auto_test-arch_native_has_fpu_testsuite_quantum.%:
 	touch $@
 
 #only run if FPU
-override_dh_auto_test-arch_native_has_fpu_quantum.%: override_dh_auto_test-arch_native_has_fpu_testsuite_quantum.% override_dh_auto_test-arch_native_has_fpu_poc_quantum.% override_dh_auto_test-arch_native_has_fpu_valgrindpoc_quantum.% 
+override_dh_auto_test-arch_native_has_fpu_quantum.%: override_dh_auto_test-arch_native_has_fpu_testsuite_quantum.% override_dh_auto_test-arch_native_has_fpu_poc_quantum.% override_dh_auto_test-arch_native_has_fpu_valgrindpoc_quantum.%
 	touch $@
 
 # only run if native build
@@ -608,7 +608,7 @@ override_dh_auto_install-indep:
 	dh_auto_install --builddirectory="$(CURDIR)/debian/build-quantum-indep" \
 			--destdir="$(CURDIR)/debian/tmp-indep" \
 			--  install-configlibDATA install-configshareDATA \
-		            install-data-html \
+		      install-data-html \
 			    install-magickincHEADERS  install-wandincHEADERS install-magickppincHEADERS install-magickpptopincHEADERS \
 			    install-man1 \
 			    V=1;\
@@ -634,20 +634,20 @@ override_dh_auto_install-indep:
 
 
 	# remove boostrap copy
-	rm -rf $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/js/*
-	ln -s /usr/share/javascript/bootstrap/js/bootstrap.min.js \
-	     $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/js/magick.js
-	rm -rf $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/css/*
-	ln -s /usr/share/javascript/bootstrap/css/bootstrap.min.css \
-	     $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/css/magick.css
+	#rm -rf $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/js/*
+	#ln -s /usr/share/javascript/bootstrap/js/bootstrap.min.js \
+	#     $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/js/magick.js
+	#rm -rf $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/css/*
+	#ln -s /usr/share/javascript/bootstrap/css/bootstrap.min.css \
+	#     $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/css/magick.css
 
 	# now apply privacy cleanning rules
-	cd "$(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)" && \
-	find  . \
-	     -path './www/api/MagickCore' -prune -o \
-	     -path './www/api/MagickWand' -prune -o \
-	     -type f -and -name '*.html' -and -not -empty -print0 \
-	     | xargs -r -0 -n 1 "$(CURDIR)/debian/scripts/removeprivacybreach" "$(CURDIR)/debian/scripts/removeprivacybreach.xslt"
+	#cd "$(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)" && \
+	#find  . \
+	#     -path './www/api/MagickCore' -prune -o \
+	#     -path './www/api/MagickWand' -prune -o \
+	#     -type f -and -name '*.html' -and -not -empty -print0 \
+	#     | xargs -r -0 -n 1 "$(CURDIR)/debian/scripts/removeprivacybreach" "$(CURDIR)/debian/scripts/removeprivacybreach.xslt"
 
 # install quantum package
 override_dh_install-arch_quantum.%:

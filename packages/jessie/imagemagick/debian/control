@@ -9,7 +9,7 @@ Uploaders: Luciano Bello <luciano@debian.org>,
  Vincent Fourmond <fourmond@debian.org>
 Standards-Version: 3.9.8
 # for dbg-sym
-Build-Depends: debhelper (>= 10),
+Build-Depends: debhelper (>= 9),
 # for improving build
  dh-exec, dh-autoreconf,
 # for linking compiling ...
@@ -40,7 +40,7 @@ Build-Depends: debhelper (>= 10),
 # for test of poc
  libtool-bin
 # for documentation
-Build-Depends-Indep: doxygen, doxygen-latex, graphviz,
+Build-Depends-Indep: libjs-bootstrap, doxygen, doxygen-latex, graphviz,
 		     libxml2-utils,
 		     xsltproc
 Vcs-Browser: https://anonscm.debian.org/git/collab-maint/imagemagick.git
