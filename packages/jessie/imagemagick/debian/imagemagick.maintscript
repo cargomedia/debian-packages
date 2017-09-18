@@ -1,0 +1,1 @@
+dir_to_symlink /usr/share/bug/imagemagick /usr/share/bug/imagemagick-6-common 8:6.9.2.10+dfsg-2~

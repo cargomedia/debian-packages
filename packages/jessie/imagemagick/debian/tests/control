@@ -1,0 +1,12 @@
+Tests: rose-6.q16
+Depends: imagemagick-6.q16, libmagickcore-6.q16-3-extra, ghostscript, netpbm
+
+Tests: perlmagick-6.q16
+Depends: libimage-magick-q16-perl, libmagickcore-6.q16-3-extra, libaliased-perl, gsfonts
+
+Tests: rose-6.q16hdri
+Depends: imagemagick-6.q16hdri, libmagickcore-6.q16hdri-3-extra, ghostscript, netpbm
+
+Tests: perlmagick-6.q16hdri
+Depends: libimage-magick-q16hdri-perl, libmagickcore-6.q16hdri-3-extra, libaliased-perl, gsfonts
+

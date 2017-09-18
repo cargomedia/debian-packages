@@ -1,0 +1,1072 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+
+# quantum depth is channel depth
+export QUANTUMDEPTH ?= q16 q16hdri
+export CORESOVERSION ?= 3
+export WANDSOVERSION ?= 3
+export PPSOVERSION ?= 7
+
+# minimal version ABI compatible of common
+export COMMONMINVERSION ?= 8:6.9.6.2+dfsg-3
+
+# default im version used for adding default file
+export DEFAULTIMVERSION ?= 6
+
+
+# poc arch for test empty means no test
+POC_ARCH ?= any-i386 any-amd64
+VALGRIND_POC_ARCH ?=
+
+# for hardening
+# export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+# arch type extracted from dpkg database
+STATIC_DEB_HOST_GNU_TYPE := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+export DEB_HOST_GNU_TYPE  ?= $(STATIC_DEB_HOST_GNU_TYPE)
+STATIC_DEB_HOST_MULTIARCH := $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+export DEB_HOST_MULTIARCH ?= $(STATIC_DEB_HOST_MULTIARCH)
+STATIC_DEB_BUILD_GNU_TYPE := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+export DEB_BUILD_GNU_TYPE ?= $(STATIC_DEB_BUILD_GNU_TYPE)
+export STATIC_DEB_SOURCE_PACKAGE := $(shell dpkg-parsechangelog -SSource)
+DEB_SOURCE_PACKAGE ?= $(STATIC_DEB_SOURCE_PACKAGE)
+STATIC_DEB_HOST_ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH)
+export DEB_HOST_ARCH ?= $(STATIC_DEB_HOST_ARCH)
+
+# version extracted from changelog
+STATIC_DEB_VERSION := $(shell dpkg-parsechangelog -SVersion)
+export DEB_VERSION ?= $(STATIC_DEB_VERSION)
+STATIC_DEB_NOEPOCH_VERSION := $(shell set -e;echo $(DEB_VERSION) | cut -d: -f2-)
+export DEB_NOEPOCH_VERSION ?= $(STATIC_DEB_NOEPOCH_VERSION)
+STATIC_DEB_UPSTREAM_VERSION := $(shell set -e;echo $(DEB_NOEPOCH_VERSION) | sed 's/-[^-]*$$//')
+export DEB_UPSTREAM_VERSION ?= $(STATIC_DEB_UPSTREAM_VERSION)
+STATIC_DEB_ISNATIVE := $(shell set -e;dpkg-parsechangelog | egrep '^Version:' | perl -ne 'print if not /^Version:\s*.*-/;')
+export DEB_ISNATIVE ?= $(STATIC_DEB_ISNATIVE)
+STATIC_DEB_UPSTREAM_VERSION_DROPREVISION := $(shell set -e;echo $(DEB_UPSTREAM_VERSION) |  sed -r "s/(^.+)\..+$$/\1/g")
+export DEB_UPSTREAM_VERSION_DROPREVISION ?= $(STATIC_DEB_UPSTREAM_VERSION_DROPREVISION)
+STATIC_DEB_UPSTREAM_VERSION_MAJOR := $(shell set -e;echo $(DEB_UPSTREAM_VERSION) | sed -r "s/(^[[:digit:]]+)\..+$$/\1/g")
+export DEB_UPSTREAM_VERSION_MAJOR ?= $(STATIC_DEB_UPSTREAM_VERSION_MAJOR)
+export IMVERSION := $(DEB_UPSTREAM_VERSION_MAJOR)
+
+# where to put documentation (relative)
+export DOC_PKG_PATH := usr/share/doc/imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-common/html
+
+# quantum depth used by default and by quantum independant package (first one of QUANTUMDEPTH)
+export DEFAULTQUANTUMDEPTH := $(shell echo $(QUANTUMDEPTH) | cut -f 1 -d ' ')
+export NOQUANTUMDEPTH := $(shell echo $(QUANTUMDEPTH) | cut -f 1 -d ' ')
+
+# convert used for icons
+export CONVERT ?= ./magick.sh convert
+VALGRIND_CONVERT ?= libtool --mode=execute valgrind $(CONVERT)
+CONVERT_FLAGS ?= -background none -define filter:blur=0.75 -filter Gaussian
+
+# perl path
+export DEB_PERL_ARCHLIB := $(shell perl -MConfig -e 'print $$Config{vendorarch}')
+
+
+# configure cache for acceleration
+STATIC_CONFIGURE_CACHEFILE := config.cache
+CONFIGURE_CACHEFILE ?= $(STATIC_CONFIGURE_CACHEFILE)
+
+STATIC_CONFIGURE_OPTIONS_CACHE := \
+       --cache-file=../../$(CONFIGURE_CACHEFILE)
+CONFIGURE_OPTIONS_CACHE ?= $(STATIC_CONFIGURE_OPTIONS_CACHE)
+
+# disable arch optimization see #757996 and AX_GCC_ARCHFLAG m4 macro
+STATIC_CONFIGURE_ARCH_FLAGS := --without-gcc-arch
+CONFIGURE_ARCH_FLAGS ?= $(STATIC_CONFIGURE_ARCH_FLAGS)
+
+# NOTICE: remove EPL delegate lib gvc (license problem)
+# should be last variable
+STATIC_CONFIGURE_OPTIONS := \
+	--enable-reproducible-build \
+	--prefix=/usr \
+	--libdir=/usr/lib/$(DEB_HOST_MULTIARCH) \
+	--docdir=/$(DOC_PKG_PATH) \
+	--with-extra-doc-dir=' (on debian system you may install the imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-doc package)' \
+	--sysconfdir=/etc \
+	--with-includearch-dir=/usr/include/$(DEB_HOST_MULTIARCH)/ \
+	--mandir=/usr/share/man \
+	--infodir=/usr/share/info \
+	--with-modules \
+	--with-gs-font-dir=/usr/share/fonts/type1/gsfonts \
+	--with-magick-plus-plus \
+	--with-djvu \
+        --with-openjp2 \
+	--with-wmf \
+	--without-gvc \
+	--enable-shared \
+	--without-dps \
+	--without-fpx \
+	--with-perl \
+	--with-perl-options='INSTALLDIRS=vendor' \
+	--x-includes=/usr/include/X11 \
+	--x-libraries=/usr/lib/X11 \
+	--without-rsvg
+CONFIGURE_OPTIONS ?= $(STATIC_CONFIGURE_OPTIONS) \
+			    $(CONFIGURE_OPTIONS_CACHE) \
+			    $(CONFIGURE_ARCH_FLAGS)
+
+# export for alternatives
+export MAGICK_PROGRAMS := compare animate convert composite conjure import identify stream display montage mogrify
+
+MAGICK_ANY_QUANTUM_PACKAGES :=  imagemagick-$(IMVERSION).$$QUANTUM \
+				libmagickcore-${IMVERSION}.$$QUANTUM-${CORESOVERSION} \
+				libmagickcore-${IMVERSION}.$$QUANTUM-${CORESOVERSION}-extra \
+				libmagickwand-${IMVERSION}.$$QUANTUM-${WANDSOVERSION} \
+                                libmagick++-${IMVERSION}.$$QUANTUM-${PPSOVERSION} \
+			        libmagick++-${IMVERSION}.$$QUANTUM-dev \
+                                libmagickcore-${IMVERSION}.$$QUANTUM-dev \
+                                libmagickwand-${IMVERSION}.$$QUANTUM-dev \
+                                libimage-magick-$$QUANTUM-perl
+
+MAGICK_ANY_PACKAGES :=  libmagickcore-$(IMVERSION)-arch-config
+MAGICK_ANY_COMPAT_PACKAGES := imagemagick
+
+MAGICK_ALL_PACKAGES :=  imagemagick-$(IMVERSION)-common \
+                        imagemagick-$(IMVERSION)-doc \
+                        libmagickcore-$(IMVERSION)-headers \
+                        libmagickwand-$(IMVERSION)-headers \
+                        libmagick++-$(IMVERSION)-headers \
+                        libimage-magick-perl
+
+MAGICK_ALL_COMPAT_PACKAGES := imagemagick-common \
+                              imagemagick-doc \
+			      perlmagick \
+                              libmagickcore-dev \
+                              libmagickwand-dev \
+                              libmagick++-dev
+
+# run POC
+TEST_POC_CMD:= \
+	     POCFOUND='no'; \
+	     set -e; for POC in $(POC_ARCH); do \
+	     	if dpkg-architecture -i$$POC; then \
+			POCFOUND='yes'; break;\
+		fi; \
+	     done; \
+	     echo $$POCFOUND
+TEST_POC := $(shell $(TEST_POC_CMD))
+
+VALGRIND_TEST_POC_CMD:= \
+	     POCFOUND='no'; \
+	     set -e; for POC in $(VALGRIND_POC_ARCH); do \
+	     	if dpkg-architecture -i$$POC; then \
+			POCFOUND='yes'; break;\
+		fi; \
+	     done; \
+	     echo $$POCFOUND
+
+VALGRIND_TEST_POC := $(shell $(VALGRIND_TEST_POC_CMD))
+# check if FPU
+HAVE_FPU_CMD := \
+		set -e; \
+		case $(DEB_HOST_MULTIARCH) in \
+		mips*-*) \
+			if grep " FPU" /proc/cpuinfo > /dev/null; then \
+				echo -n "yes"; \
+			else \
+				echo -n "no"; \
+			fi; \
+		;;\
+		*) \
+			echo -n "yes"; \
+		;; \
+	       esac;
+
+STATIC_HAVE_FPU := $(shell $(HAVE_FPU_CMD))
+export HAVE_FPU ?= $(STATIC_HAVE_FPU)
+
+# upper/lower case function
+LC = ${shell set -e; echo '$1' | sed -e 's/\(.*\)/\L\1/'}
+UC = ${shell set -e; echo '$1' | sed -e 's/\(.*\)/\U\1/'}
+REPLACE_QUANTUM = ${shell set -e;echo '$1' |  sed -e 's/$$QUANTUM/$2/g'}
+MAGICK_ANY_Q_PACKAGES = ${shell set -e;echo '$(MAGICK_ANY_QUANTUM_PACKAGES)' |  sed -e 's/$$QUANTUM/$1/g'}
+
+# extract quantum
+QUANTUM_PART = ${shell set -e;echo -n '$1' | sed -r 's/q?([[:digit:]]*)(HDRI)?/\1/gi'}
+HDRI_PART = ${shell set -e;case $$(set -e; echo -n '$1' | sed -e 's/\(.*\)/\L\1/') in *hdri) echo 'yes';; *) echo 'no' ;; esac }
+HDRI_STR_PART = ${shell set -e;case $$(set -e;echo -n '$1' | sed -e 's/\(.*\)/\L\1/') in *hdri) echo ' with high dynamic range';; *) echo '' ;; esac }
+PRIO_COMPUTATION =${shell $(CURDIR)/debian/scripts/quantumpriority.sh '$1'}
+
+# bug #840682
+DH_EXEC_SUBST = /usr/lib/dh-exec/dh-exec-subst
+
+
+
+dummy:
+
+test_fpu:
+	echo $(HAVE_FPU)
+
+# update package files
+update_pkg.%:
+	# control
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	HDRI_STR="$(call HDRI_STR_PART,$*)" \
+	QUANTUMDEPTH=$* \
+	UCQUANTUMDEPTH=$(call UC,$*) \
+	DESC_QUANTUM="$$QUANTUM bits$$HDRI_STR" \
+	$(DH_EXEC_SUBST) $(CURDIR)/debian/control.d/quantum.in > $(CURDIR)/debian/control.d/quantum.$*;
+	if test x$* = x$(DEFAULTQUANTUMDEPTH); then \
+		cat $(CURDIR)/debian/control.d/quantum.$* >> $(CURDIR)/debian/control.d/quantum; \
+	else \
+		cat $(CURDIR)/debian/control.d/quantum.$* | sed '/defaultquantum/d' >> $(CURDIR)/debian/control.d/quantum; \
+	fi;
+	# test
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	UCQUANTUMDEPTH=$(call UC,$*) \
+	$(DH_EXEC_SUBST) $(CURDIR)/debian/tests.d/control.quantum.in >>  $(CURDIR)/debian/tests.d/control.quantum
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	UCQUANTUMDEPTH=$(call UC,$*) \
+	$(DH_EXEC_SUBST) $(CURDIR)/debian/tests.d/rose-IMVERSION.QUANTUMDEPTH.in > $(CURDIR)/debian/tests/rose-$(IMVERSION).$*
+	chmod +x $(CURDIR)/debian/tests/rose-$(IMVERSION).$*
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	UCQUANTUMDEPTH=$(call UC,$*) \
+	$(DH_EXEC_SUBST) $(CURDIR)/debian/tests.d/perlmagick-IMVERSION.QUANTUMDEPTH.in > $(CURDIR)/debian/tests/perlmagick-$(IMVERSION).$*
+	chmod +x $(CURDIR)/debian/tests/perlmagick-$(IMVERSION).$*
+	# clean up
+	rm -f $(CURDIR)/debian/control.d/quantum.$*
+
+update_pkg: $(foreach Q,$(QUANTUMDEPTH),update_pkg.$Q)
+	$(DH_EXEC_SUBST) $(CURDIR)/debian/control.d/noquantum.in >> $(CURDIR)/debian/control.d/noquantum
+	$(DH_EXEC_SUBST) $(CURDIR)/debian/control.d/compat.in > $(CURDIR)/debian/control.d/compat
+	cat $(CURDIR)/debian/control.d/noquantum $(CURDIR)/debian/control.d/quantum $(CURDIR)/debian/control.d/compat > $(CURDIR)/debian/control
+	cat $(CURDIR)/debian/tests.d/control.quantum > $(CURDIR)/debian/tests/control
+	rm -f $(CURDIR)/debian/control.d/compat
+	rm -f $(CURDIR)/debian/control.d/quantum
+	rm -f $(CURDIR)/debian/control.d/noquantum
+	rm -f $(CURDIR)/debian/tests.d/control.quantum
+
+%:
+	if test "BUG#704225" = "SOLVED"; then \
+		dh $@ --parallel --with pkgkde_symbolshelper; \
+	else \
+		dh $@  --no-parallel --with pkgkde_symbolshelper; \
+	fi;
+
+
+override_dh_autoreconf:
+	@echo "CPU has FPU...$(HAVE_FPU)"
+	dh_autoreconf --as-needed
+
+
+
+# make autogenerated file
+override_dh_auto_configure-arch_generatefile_quantum.%:
+	# imagemagick-IMVERSION.QUANTUMDEPTH
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/imagemagick-IMVERSION.QUANTUMDEPTH.manpages.in > $(CURDIR)/debian/imagemagick-$(IMVERSION).$*.manpages
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/imagemagick-IMVERSION.QUANTUMDEPTH.mime.in > $(CURDIR)/debian/imagemagick-$(IMVERSION).$*.mime
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/imagemagick-IMVERSION.QUANTUMDEPTH.desktop.in > $(CURDIR)/debian/imagemagick-$(IMVERSION).$*.desktop
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/imagemagick-IMVERSION.QUANTUMDEPTH.install.in > $(CURDIR)/debian/imagemagick-$(IMVERSION).$*.install
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	QUANTUM_PRIO=$(call PRIO_COMPUTATION,$*) \
+	$(DH_EXEC_SUBST) $(CURDIR)/debian/imagemagick-IMVERSION.QUANTUMDEPTH.postinst.in > $(CURDIR)/debian/imagemagick-$(IMVERSION).$*.postinst
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	$(DH_EXEC_SUBST) $(CURDIR)/debian/imagemagick-IMVERSION.QUANTUMDEPTH.prerm.in > $(CURDIR)/debian/imagemagick-$(IMVERSION).$*.prerm
+
+	# libimage-magick-QUANTUM-perl
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/libimage-magick-QUANTUMDEPTH-perl.install.in > $(CURDIR)/debian/libimage-magick-$*-perl.install
+
+	# libmagick++-IMVERSION.QUANTUMDEPTH-PPSOVERSION.install.in
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/libmagick++-IMVERSION.QUANTUMDEPTH-PPSOVERSION.install.in > $(CURDIR)/debian/libmagick++-$(IMVERSION).$*-$(PPSOVERSION).install
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/libmagick++-IMVERSION.QUANTUMDEPTH-dev.install.in > $(CURDIR)/debian/libmagick++-$(IMVERSION).$*-dev.install
+
+	# libmagickcore
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/libmagickcore-IMVERSION.QUANTUMDEPTH-CORESOVERSION.install.in > $(CURDIR)/debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION).install
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/libmagickcore-IMVERSION.QUANTUMDEPTH-CORESOVERSION-extra.install.in > $(CURDIR)/debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION)-extra.install
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/libmagickcore-IMVERSION.QUANTUMDEPTH-dev.install.in > $(CURDIR)/debian/libmagickcore-$(IMVERSION).$*-dev.install
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	UCQUANTUMDEPTH=$(call UC,$*) \
+	dh-exec $(CURDIR)/debian/libmagickcore-IMVERSION.QUANTUMDEPTH-CORESOVERSION.symbols.in > $(CURDIR)/debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION).symbols
+
+	# wand
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/libmagickwand-IMVERSION.QUANTUMDEPTH-WANDSOVERSION.install.in > $(CURDIR)/debian/libmagickwand-$(IMVERSION).$*-$(WANDSOVERSION).install
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	dh-exec $(CURDIR)/debian/libmagickwand-IMVERSION.QUANTUMDEPTH-dev.install.in > $(CURDIR)/debian/libmagickwand-$(IMVERSION).$*-dev.install
+	QUANTUM=$(call QUANTUM_PART,$*) \
+	HDRI=$(call HDRI_PART,$*) \
+	QUANTUMDEPTH=$* \
+	UCQUANTUMDEPTH=$(call UC,$*) \
+	dh-exec $(CURDIR)/debian/libmagickwand-IMVERSION.QUANTUMDEPTH-WANDSOVERSION.symbols.in > $(CURDIR)/debian/libmagickwand-$(IMVERSION).$*-$(WANDSOVERSION).symbols
+
+	touch $@
+
+# configure in build directory
+override_dh_auto_configure-arch_quantum.%: override_dh_auto_configure-arch_generatefile_quantum.%
+	@echo "configure for $* : quantum=$(call QUANTUM_PART,$*) HDRI=$(call HDRI_PART,$*)"
+	dh_auto_configure --builddirectory="debian/build-quantum-$*" -- \
+		 ${CONFIGURE_OPTIONS} \
+		--disable-silent-rules \
+		--with-quantum-depth=$(call QUANTUM_PART,$*) \
+		--enable-hdri=$(call HDRI_PART,$*)
+	touch $@
+
+override_dh_auto_configure-arch: $(foreach Q,$(QUANTUMDEPTH),override_dh_auto_configure-arch_quantum.$Q)
+
+override_dh_auto_configure-indep:
+	@echo "configure indep for $* : quantum=$(call QUANTUM_PART,$*) HDRI=$(call HDRI_PART,$*)"
+	dh_auto_configure --builddirectory="debian/build-quantum-indep" -- \
+		 ${CONFIGURE_OPTIONS} \
+		--with-quantum-depth=$(call QUANTUM_PART,$(NOQUANTUMDEPTH)) \
+		--enable-hdri=$(call HDRI_PART,$(NOQUANTUMDEPTH))
+	# HACK: create default quantum package Makefile
+	cd debian/build-quantum-indep/PerlMagick/default/ && perl Makefile.PL INSTALLDIRS=vendor
+
+# dh_auto_build in build directory
+# build icons cache build for each arch in order to get more testing
+override_dh_auto_build-arch_quantum.%:
+	dh_auto_build --builddirectory="debian/build-quantum-$*" -- all perl-build
+	touch $@
+
+override_dh_auto_build-arch: $(foreach Q,$(QUANTUMDEPTH),override_dh_auto_build-arch_quantum.$Q)
+
+override_dh_auto_build-indep:
+	# generate html doc
+	dh_auto_build --builddirectory="debian/build-quantum-indep" -- html
+	cd debian/build-quantum-indep/PerlMagick/default/ && make
+
+# valgrind poc
+ifeq ($(VALGRINDTEST_POC),yes)
+override_dh_auto_test-arch_native_has_fpu_valgrindpoc_quantum.%: override_dh_auto_test-arch_native_has_fpu_poc_quantum.%:
+	@echo "*******************************************************************************"
+	@echo " valgrind test of security problems                                            "
+	@echo "*******************************************************************************"
+	set -e; for POC in $(CURDIR)/debian/poc/SEGV/*; do \
+		echo "Test POC $$POC"; \
+		(cd $(CURDIR)/debian/build-quantum-$*; $(VALGRIND_CONVERT) $$POC png:/dev/null) || true; \
+	done;
+else
+override_dh_auto_test-arch_native_has_fpu_valgrindpoc_quantum.%:
+endif
+	touch $@
+
+# poc
+ifeq ($(TEST_POC),yes)
+override_dh_auto_test-arch_native_has_fpu_poc_quantum.%: override_dh_auto_test-arch_native_has_fpu_testsuite_quantum.%
+	@echo "*******************************************************************************" ;
+	@echo " Basic test of security problems                                               " ;
+	@echo "*******************************************************************************" ;
+	set -e; for POC in $(CURDIR)/debian/poc/SEGV/*; do \
+		echo "Test POC $$POC"; \
+		(cd $(CURDIR)/debian/build-quantum-$*; $(CONVERT) $$POC png:/dev/null) || true; \
+	done;
+else
+override_dh_auto_test-arch_native_has_fpu_poc_quantum.%:
+endif
+	touch $@
+
+# test suite
+override_dh_auto_test-arch_native_has_fpu_testsuite_quantum.%:
+	unset DISPLAY; \
+	if ! dh_auto_test --builddirectory="debian/build-quantum-$*"; then \
+		find "debian/build-quantum-$*/tests" -name *.log -exec cat {} ; false ;\
+	fi;
+	touch $@
+
+#only run if FPU
+override_dh_auto_test-arch_native_has_fpu_quantum.%: override_dh_auto_test-arch_native_has_fpu_testsuite_quantum.% override_dh_auto_test-arch_native_has_fpu_poc_quantum.% override_dh_auto_test-arch_native_has_fpu_valgrindpoc_quantum.%
+	touch $@
+
+# only run if native build
+ifeq ($(HAVE_FPU),yes)
+override_dh_auto_test-arch_native_quantum.%: override_dh_auto_test-arch_native_has_fpu_quantum.%
+else
+override_dh_auto_test-arch_native_quantum.%:
+	@echo "*******************************************************************************"
+	@echo " skipped test suite NO FPU. Test suite too slow                                "
+	@echo "*******************************************************************************"
+endif
+	touch $@
+
+# dh_auto_test in build directory
+# display log in case of failure
+ifeq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
+override_dh_auto_test-arch_quantum.%: override_dh_auto_test-arch_native_quantum.%
+else
+override_dh_auto_test-arch_quantum.%:
+	@echo "****************************************************************************************"
+	@echo " skipped test suite cross build host=$(DEB_HOST_GNU_TYPE) != build=$(DEB_BUILD_GNU_TYPE)"
+	@echo "****************************************************************************************"
+endif
+	touch $@
+
+override_dh_auto_test-arch: $(foreach Q,$(QUANTUMDEPTH),override_dh_auto_test-arch_quantum.$Q)
+
+override_dh_auto_test-indep:
+
+
+# build icons cache for quantum
+override_dh_auto_install-arch_iconcache_quantum.%:
+	# build icons cache (build for each arch in order to get more testing)
+	set -e; while read SIZE; do \
+		mkdir -p $(CURDIR)/debian/tmp-$*/usr/share/icons/hicolor/$$SIZE/apps/ ;\
+		cd $(CURDIR)/debian/build-quantum-$*; \
+		echo "Make icons for size $$SIZE..."; \
+		$(CONVERT) $(CURDIR)/debian/display-im$(IMVERSION).svg \
+			   $(CONVERT_FLAGS) -resize $$SIZE \
+			   -gravity center -extent $$SIZE  \
+			   +set date:create +set date:modify -define png:exclude-chunk=time  \
+			   $(CURDIR)/debian/tmp-$*/usr/share/icons/hicolor/$$SIZE/apps/display-im$(IMVERSION).$*.png; \
+		echo "Done"; \
+	done < $(CURDIR)/debian/display-im$(IMVERSION).iconssize
+	# make xpm
+	mkdir -p $(CURDIR)/debian/tmp-$*/usr/share/pixmaps/
+	cd $(CURDIR)/debian/build-quantum-$*; \
+	echo "Make xpm size 32x32..." ; \
+	$(CONVERT) $(CURDIR)/debian/display-im$(IMVERSION).svg $(CONVERT_FLAGS) -resize 32x32 \
+		-gravity center -extent 32x32  \
+		$(CURDIR)/debian/tmp-$*/usr/share/pixmaps/display-im$(IMVERSION).$*.xpm ;\
+	echo "Done"
+	# do not forget svgz
+	mkdir -p $(CURDIR)/debian/tmp-$*/usr/share/icons/hicolor/scalable/apps/
+	gzip -c -n -9 $(CURDIR)/debian/display-im$(IMVERSION).svg \
+		> $(CURDIR)/debian/tmp-$*/usr/share/icons/hicolor/scalable/apps/display-im$(IMVERSION).$*.svgz
+	touch $@
+
+# dh_auto_install in build directory
+override_dh_auto_install-arch_quantum.%: override_dh_auto_install-arch_iconcache_quantum.%
+	dh_auto_install --builddirectory="debian/build-quantum-$*" \
+			--destdir="debian/tmp-$*" \
+			-- install pkgdocdir=/$(DOC_PKG_PATH) V=1
+
+	# empties dependency_libs from .la files
+	# http://lists.debian.org/debian-devel/2009/08/msg00783.html
+	find $(CURDIR)/debian/tmp-$*/usr/lib -name '*.la' -exec \
+		sed -i "s,^dependency_libs=.*,dependency_libs=''," {} \;
+	# Remove RPATH from *.so
+	find $(CURDIR)/debian/tmp-$* -name '*.so*' -exec \
+		chrpath -d {} \;
+
+	# move binaries to /usr/bin/*quantum
+	set -e; for basename in $(MAGICK_PROGRAMS); do \
+		mv "$(CURDIR)/debian/tmp-$*/usr/bin/$$basename" \
+                   "$(CURDIR)/debian/tmp-$*/usr/bin/$$basename-im$(IMVERSION).$*"; \
+		mv "$(CURDIR)/debian/tmp-$*/usr/share/man/man1/$$basename.1" \
+		   "$(CURDIR)/debian/tmp-$*/usr/share/man/man1/$$basename-im$(IMVERSION).$*.1" ;\
+	done
+
+	# move config script to arch directory
+	# TODO: remove after jessie +1
+	mkdir -p "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/ImageMagick-$(DEB_UPSTREAM_VERSION_DROPREVISION)/bin-$*/"; \
+	set -e; for SCRIPT in Magick-config MagickCore-config MagickWand-config Wand-config Magick++-config; do \
+		cp -f "debian/tmp-$*/usr/bin/$$SCRIPT" \
+		      "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/ImageMagick-$(DEB_UPSTREAM_VERSION_DROPREVISION)/bin-$*/"; \
+	done;
+
+	# add desktop for default
+	mkdir -p debian/tmp-$*/usr/share/applications/
+	cp $(CURDIR)/debian/imagemagick-$(IMVERSION).$*.desktop \
+           $(CURDIR)/debian/tmp-$*/usr/share/applications/display-im$(IMVERSION).$*.desktop
+
+	# move pc file to quantum one c++
+	mv "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++.pc" \
+	   "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++-im$(IMVERSION).$*.pc"
+
+	-rm -f "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++-$(IMVERSION).$(call UC,$*).pc"
+	ln -s "ImageMagick++-im$(IMVERSION).$*.pc" \
+	      "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++-$(IMVERSION).$(call UC,$*).pc"
+	-rm -f "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++-$(IMVERSION).$(call UC,$*).pc"
+
+	ln -s "ImageMagick++-im$(IMVERSION).$*.pc" \
+	      "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++-im$(IMVERSION).$(call UC,$*).pc"
+	-rm -f "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++.pc"
+	ln -s "ImageMagick++-im$(IMVERSION).$*.pc" \
+	      "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++-im$(IMVERSION).$*.pc"
+	# move pc file to quantum one core
+	mv "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick.pc" \
+	   "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick-im$(IMVERSION).$*.pc"
+
+	-rm -f "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick-$(IMVERSION).$(call UC,$*).pc"
+	ln -s "ImageMagick-im$(IMVERSION).$*.pc" \
+              "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick-$(IMVERSION).$(call UC,$*).pc"
+
+	-rm -f "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickCore-$(IMVERSION).$(call UC,$*).pc"
+	ln -s "ImageMagick-im$(IMVERSION).$*.pc" \
+              "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickCore-$(IMVERSION).$(call UC,$*).pc"
+	# move pc file to quantum one wand
+	mv "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand.pc" \
+	   "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand-im$(IMVERSION).$*.pc"
+
+	-rm -f "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand-$(IMVERSION).$(call UC,$*).pc"
+	ln -s "MagickWand-im$(IMVERSION).$*.pc" \
+              "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand-$(IMVERSION).$(call UC,$*).pc"
+
+	-rm -f "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Wand-$(IMVERSION).$(call UC,$*).pc"
+	ln -s "MagickWand-im$(IMVERSION).$*.pc" \
+              "debian/tmp-$*/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Wand-$(IMVERSION).$(call UC,$*).pc"
+
+	# Remove empty directories in debian/tmp
+	-find $(CURDIR)/debian/tmp-$* -type d -empty | xargs -r rmdir -p
+	touch $@
+
+override_dh_auto_install-arch: $(foreach Q,$(QUANTUMDEPTH),override_dh_auto_install-arch_quantum.$Q)
+	# default quantum pc file for c++
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++-im$(IMVERSION).pc"
+	ln -s "ImageMagick++-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++-im$(IMVERSION).pc"
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++-im$(IMVERSION).pc"
+	ln -s "ImageMagick++-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++-im$(IMVERSION).pc"
+	# default quantum for core
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick-im$(IMVERSION).pc"
+	ln -s "ImageMagick-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick-im$(IMVERSION).pc"
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickCore-im$(IMVERSION).pc"
+	ln -s "ImageMagick-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickCore-im$(IMVERSION).pc"
+	# wand
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand-im$(IMVERSION).pc"
+	ln -s "MagickWand-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand-im$(IMVERSION).pc"
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Wand-im$(IMVERSION).pc"
+	ln -s "MagickWand-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Wand-im$(IMVERSION).pc"
+	# delete default version
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++.pc"
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++.pc"
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick.pc"
+	-rm -f  "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickCore.pc"
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand.pc"
+	-rm -f "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Wand.pc"
+ifeq ($(DEFAULTIMVERSION),$(IMVERSION))
+	# for c++
+	ln -s "ImageMagick++-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++.pc"
+
+	ln -s "ImageMagick++-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++.pc"
+	# for core
+	ln -s "ImageMagick-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick.pc"
+	ln -s "ImageMagick-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickCore.pc"
+	# for wand
+	ln -s "MagickWand-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand.pc"
+	ln -s "MagickWand-im$(IMVERSION).${DEFAULTQUANTUMDEPTH}.pc" \
+	      "debian/tmp-${DEFAULTQUANTUMDEPTH}/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Wand.pc"
+endif
+
+override_dh_auto_install-indep:
+	# install headers
+	if test "BUG#703261" = "SOLVED"; then \
+	dh_auto_install --builddirectory="$(CURDIR)/debian/build-quantum-indep" \
+			--destdir="$(CURDIR)/debian/tmp-indep" \
+			--  install-configlibDATA install-configshareDATA \
+		      install-data-html \
+			    install-magickincHEADERS  install-wandincHEADERS install-magickppincHEADERS install-magickpptopincHEADERS \
+			    install-man1 \
+			    V=1;\
+	else \
+	cd "$(CURDIR)/debian/build-quantum-indep" && \
+		make  DESTDIR=$(CURDIR)/debian/tmp-indep \
+			    install-configlibDATA install-configshareDATA \
+			    install-data-html \
+			    install-magickincHEADERS  install-wandincHEADERS install-magickppincHEADERS install-magickpptopincHEADERS \
+			    install-man1 \
+			    V=1 ;\
+	fi;
+
+	# Use x-terminal emulator for editing (Bug #132947) TODO: proper patch please
+	sed -i 's/xterm/\/etc\/alternatives\/x-terminal-emulator/' \
+		$(CURDIR)/debian/tmp-indep/etc/ImageMagick-$(DEB_UPSTREAM_VERSION_MAJOR)/delegates.xml
+
+	# install default perl
+	cd debian/build-quantum-indep/PerlMagick/default/ && make install DESTDIR=$(CURDIR)/debian/tmp-indep
+
+	# Remove empty directories in debian/tmp
+	-find $(CURDIR)/debian/tmp-indep -type d -empty | xargs -r rmdir -p
+
+
+	# remove boostrap copy
+	#rm -rf $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/js/*
+	#ln -s /usr/share/javascript/bootstrap/js/bootstrap.min.js \
+	#     $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/js/magick.js
+	#rm -rf $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/css/*
+	#ln -s /usr/share/javascript/bootstrap/css/bootstrap.min.css \
+	#     $(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)/www/css/magick.css
+
+	# now apply privacy cleanning rules
+	#cd "$(CURDIR)/debian/tmp-indep/$(DOC_PKG_PATH)" && \
+	#find  . \
+	#     -path './www/api/MagickCore' -prune -o \
+	#     -path './www/api/MagickWand' -prune -o \
+	#     -type f -and -name '*.html' -and -not -empty -print0 \
+	#     | xargs -r -0 -n 1 "$(CURDIR)/debian/scripts/removeprivacybreach" "$(CURDIR)/debian/scripts/removeprivacybreach.xslt"
+
+# install quantum package
+override_dh_install-arch_quantum.%:
+	set -e; for PKG in $(call REPLACE_QUANTUM, $(MAGICK_ANY_QUANTUM_PACKAGES),$*); do \
+		dh_install --package=$$PKG \
+			--sourcedir=debian/tmp-$* --autodest; \
+	done;
+
+	# Remove extra coders from libmagickcore
+	set -e; while read FILE; do \
+		rm -f debian/libmagickcore-${IMVERSION}.$*-${CORESOVERSION}/$$FILE; \
+	done < debian/libmagickcore-${IMVERSION}.$*-${CORESOVERSION}-extra.install
+
+# install arch package
+override_dh_install-arch: $(foreach Q,$(QUANTUMDEPTH),override_dh_install-arch_quantum.$Q)
+	# take arch include in default quantum
+	set -e; for PKG in $(MAGICK_ANY_PACKAGES); do \
+		dh_install --package=$$PKG \
+			--sourcedir=debian/tmp-${DEFAULTQUANTUMDEPTH} --autodest; \
+	done;
+
+	# install default pc file
+ifeq ($(DEFAULTIMVERSION),$(IMVERSION))
+	# for c++
+	dh_install --package=libmagick++-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev \
+		   --sourcedir=debian/tmp-${DEFAULTQUANTUMDEPTH} --autodest \
+	           "usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Magick++.pc"
+	dh_install --package=libmagick++-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev \
+		   --sourcedir=debian/tmp-${DEFAULTQUANTUMDEPTH} --autodest \
+	           "usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick++.pc"
+	# for core
+	dh_install --package=libmagickcore-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev \
+		   --sourcedir=debian/tmp-${DEFAULTQUANTUMDEPTH} --autodest \
+                   "usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/ImageMagick.pc"
+	dh_install --package=libmagickcore-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev \
+		   --sourcedir=debian/tmp-${DEFAULTQUANTUMDEPTH} --autodest \
+		   "usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickCore.pc"
+	# for wand
+	dh_install --package=libmagickwand-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev \
+		   --sourcedir=debian/tmp-${DEFAULTQUANTUMDEPTH} --autodest \
+                   "usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/MagickWand.pc"
+	dh_install --package=libmagickwand-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev \
+		   --sourcedir=debian/tmp-${DEFAULTQUANTUMDEPTH} --autodest \
+		   "usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig/Wand.pc"
+endif
+
+override_dh_install-indep:
+	# special source imagemagick-*-common
+	dh_install --package=imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-common
+	# remaining package
+	dh_install --indep --remaining-packages --sourcedir=debian/tmp-indep --autodest
+	# fix doxygen problem
+	./debian/scripts/dh_doxygen --indep --package=imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-doc
+
+override_dh_compress:
+	# fix #611125
+	dh_compress -X$(DOC_PKG_PATH)
+
+override_dh_makeshlibs:
+	# avoid plugins' dir
+	FAIL=0; \
+	for PKG in $$(dh_listpackages -a); do \
+	  echo dh_makeshlibs -p$$PKG -v -Xcoders/ -Xfilters/ ; \
+	  dh_makeshlibs -p$$PKG -v -Xcoders/ -Xfilters/; \
+	  FAIL=$$?; \
+	done; \
+	exit $$fail
+
+# remove after jessie+2
+override_dh_strip:
+	dh_strip --ddeb-migration='imagemagick-dbg (<< 8:6.9.2.10-1~)'
+
+# link bug file
+override_dh_bugfiles-arch_quantum.%:
+	set -e; for PKG in ${call REPLACE_QUANTUM, $(MAGICK_ANY_QUANTUM_PACKAGES),$*}; do \
+		mkdir -p $(CURDIR)/debian/$$PKG/usr/share/bug/ ; \
+		ln -s imagemagick-$(IMVERSION)-common \
+		      $(CURDIR)/debian/$$PKG/usr/share/bug/$$PKG ; \
+	done
+	touch $@
+
+override_dh_bugfiles-arch: $(foreach Q,$(QUANTUMDEPTH),override_dh_bugfiles-arch_quantum.$Q)
+	set -e; for PKG in $(MAGICK_ANY_PACKAGES); do \
+                mkdir -p $(CURDIR)/debian/$$PKG/usr/share/bug/ ; \
+		ln -s imagemagick-$(IMVERSION)-common \
+		      $(CURDIR)/debian/$$PKG/usr/share/bug/$$PKG ; \
+	done
+	set -e; for PKG in $(MAGICK_ANY_COMPAT_PACKAGES); do \
+                mkdir -p $(CURDIR)/debian/$$PKG/usr/share/bug/ ; \
+		ln -s imagemagick-$(IMVERSION)-common \
+		      $(CURDIR)/debian/$$PKG/usr/share/bug/$$PKG ; \
+	done
+
+override_dh_bugfiles-indep:
+	dh_bugfiles --package=imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-common
+	# link normal package
+	set -e; for PKG in $(MAGICK_ALL_PACKAGES); do \
+		if test "X$$PKG" != Ximagemagick-$(IMVERSION)-common; then \
+                        mkdir -p $(CURDIR)/debian/$$PKG/usr/share/bug/ ; \
+			ln -s imagemagick-$(IMVERSION)-common \
+                              $(CURDIR)/debian/$$PKG/usr/share/bug/$$PKG ; \
+		fi; \
+	done
+
+	# link compat package
+	set -e; for PKG in $(MAGICK_ALL_COMPAT_PACKAGES); do \
+		mkdir -p $(CURDIR)/debian/$$PKG/usr/share/bug/ ; \
+		ln -s imagemagick-$(IMVERSION)-common \
+                      $(CURDIR)/debian/$$PKG/usr/share/bug/$$PKG ; \
+	done
+
+override_dh_installdocs-indep:
+	dh_installdocs --indep --link-doc=imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-common
+
+override_dh_installdocs-arch:
+	dh_installdocs --arch
+
+# prep rules
+override_dh_prep_quantum.%:
+	[ ! -d debian/tmp-$* ] || rm -rf debian/tmp-$*
+
+override_dh_prep: $(foreach Q,$(QUANTUMDEPTH),override_dh_prep_quantum.$Q) override_dh_prep_quantum.indep
+	dh_prep
+
+
+# clean rules
+override_dh_clean_quantum.%:
+	[ ! -d debian/build-quantum-$* ] || rm -rf debian/build-quantum-$*
+	[ ! -d debian/tmp-$* ] || rm -rf debian/tmp-$*
+	# generated file
+	[ ! -f debian/imagemagick-$(IMVERSION).$*.manpages ] || rm debian/imagemagick-$(IMVERSION).$*.manpages
+	[ ! -f debian/imagemagick-$(IMVERSION).$*.mime ] || rm debian/imagemagick-$(IMVERSION).$*.mime
+	[ ! -f debian/imagemagick-$(IMVERSION).$*.desktop ] || rm debian/imagemagick-$(IMVERSION).$*.desktop
+	[ ! -f debian/imagemagick-$(IMVERSION).$*.postinst ] || rm debian/imagemagick-$(IMVERSION).$*.postinst
+	[ ! -f debian/imagemagick-$(IMVERSION).$*.prerm ] || rm debian/imagemagick-$(IMVERSION).$*.prerm
+	[ ! -f debian/imagemagick-$(IMVERSION).$*.install ] || rm debian/imagemagick-$(IMVERSION).$*.install
+
+	[ ! -f debian/libimage-magick-$*-perl.install ] || rm debian/libimage-magick-$*-perl.install
+
+	[ ! -f debian/libmagick++-$(IMVERSION).$*-$(PPSOVERSION).install ] || rm debian/libmagick++-$(IMVERSION).$*-$(PPSOVERSION).install
+	[ ! -f debian/libmagick++-$(IMVERSION).$*-dev.install ] || rm debian/libmagick++-$(IMVERSION).$*-dev.install
+
+	[ ! -f debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION).install ] || rm -f debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION).install
+	[ ! -f debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION)-extra.install ] || rm -f debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION)-extra.install
+	[ ! -f debian/libmagickcore-$(IMVERSION).$*-dev.install ] || rm -f debian/libmagickcore-$(IMVERSION).$*-dev.install
+	[ ! -f debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION).symbols ] || rm -f debian/libmagickcore-$(IMVERSION).$*-$(CORESOVERSION).symbols
+
+	[ ! -f debian/libmagickwand-$(IMVERSION).$*-$(WANDSOVERSION).install ] || rm -f debian/libmagickwand-$(IMVERSION).$*-$(WANDSOVERSION).install
+	[ ! -f debian/libmagickwand-$(IMVERSION).$*-dev.install ] || rm -f debian/libmagickwand-$(IMVERSION).$*-dev.install
+	[ ! -f debian/libmagickwand-$(IMVERSION).$*-$(WANDSOVERSION).symbols ] || rm -f debian/libmagickwand-$(IMVERSION).$*-$(WANDSOVERSION).symbols
+	# autoreconf
+	[ ! -f override_dh_auto_configure-arch_quantum.$* ] || rm override_dh_auto_configure-arch_quantum.$*
+	[ ! -f override_dh_auto_configure-arch_generatefile_quantum.$* ] || rm override_dh_auto_configure-arch_generatefile_quantum.$*
+	# auto_build
+	[ ! -f override_dh_auto_build-arch_quantum.$* ] || rm override_dh_auto_build-arch_quantum.$*
+	# auto install
+	[ ! -f override_dh_auto_install-arch_quantum.$* ] || rm override_dh_auto_install-arch_quantum.$*
+	[ ! -f override_dh_auto_install-arch_iconcache_quantum.$* ] || rm override_dh_auto_install-arch_iconcache_quantum.$*
+	# dh_bugfile
+	[ ! -f override_dh_bugfiles-arch_quantum.$* ] || rm override_dh_bugfiles-arch_quantum.$*
+	# test suite target
+	[ ! -f override_dh_auto_test-arch_quantum.$* ] || rm override_dh_auto_test-arch_quantum.$*
+	[ ! -f override_dh_auto_test-arch_native_quantum.$* ] || rm override_dh_auto_test-arch_native_quantum.$*
+	[ ! -f override_dh_auto_test-arch_native_has_fpu_quantum.$* ] || rm override_dh_auto_test-arch_native_has_fpu_quantum.$*
+	[ ! -f override_dh_auto_test-arch_native_has_fpu_testsuite_quantum.$* ] || rm override_dh_auto_test-arch_native_has_fpu_testsuite_quantum.$*
+	[ ! -f override_dh_auto_test-arch_native_has_fpu_poc_quantum.$* ] || rm override_dh_auto_test-arch_native_has_fpu_poc_quantum.$*
+	[ ! -f override_dh_auto_test-arch_native_has_fpu_valgrindpoc_quantum.$* ] || rm override_dh_auto_test-arch_native_has_fpu_valgrindpoc_quantum.$*
+
+
+override_dh_clean: $(foreach Q,$(QUANTUMDEPTH),override_dh_clean_quantum.$Q) override_dh_clean_quantum.indep
+	[ ! -f $(CONFIGURE_CACHEFILE) ] || rm -f $(CONFIGURE_CACHEFILE)
+	dh_clean
+
+
+# maint rules
+#########################
+
+export DEB_MAINT_UPSTREAM_BRANCH ?= ImageMagick-${DEB_UPSTREAM_VERSION_MAJOR}
+export DEB_MAINT_CURRENT_DEB_BRANCH ?= debian/${DEB_NOEPOCH_VERSION}
+export DEB_MAINT_CURRENT_DEB_CUSTOM_PATCHES ?= debian-custom-patches/${DEB_NOEPOCH_VERSION}
+
+# get original source
+get-orig-source:
+	uscan
+
+# clone debian repo (do it in another directory)
+maint-clone-debian-tree:
+	@echo "clone debian tree and get in sync with upstream"
+	@echo "Take a few cups of cofeee it take a long time  "
+	@echo "==============================================="
+	git clone git+ssh://login@git.debian.org/git/collab-maint/imagemagick.git
+	git svn init -s --prefix=origin/  https://www.imagemagick.org/subversion/ImageMagick/
+	git config gitpkg.orig-compressor xz
+	git config gitpkg.deb-export-hook /usr/share/gitpkg/hooks/quilt-patches-deb-export-hook
+	git config gitpkg.pre-export-hook /usr/share/gitpkg/hooks/pristine-tar-pre-export-hook
+	git checkout ${DEB_MAINT_CURRENT_DEB_BRANCH}
+
+# switch to upstream branch
+maint-switch-to-upstream:
+	git checkout ${DEB_MAINT_UPSTREAM_BRANCH}
+
+# goto upstream branch and merge new work
+maint-merge-upstream-to-local:
+	@echo "merge new upstream to local"
+	git checkout ${DEB_MAINT_UPSTREAM_BRANCH}
+	git merge origin/${DEB_MAINT_UPSTREAM_BRANCH}
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}
+
+# git svn fetch
+maint-git-svn-fetch:
+	git svn fetch
+
+# git svn + merge upstream
+maint-refresh-git-svn: maint-git-svn-fetch
+	# try to go to merge upstream if fail goto to previous state
+	if !($(MAKE) -f debian/rules maint-merge-upstream-to-local); then \
+		git checkout ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+		exit 1;\
+	else \
+		git checkout ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+	fi;
+
+# mark upstream revision by founding it with svn id from upstream changelog
+maint-mark-upstream-revision-%:
+	git checkout ${DEB_MAINT_UPSTREAM_BRANCH}
+	if test "x${DEB_MAINT_UPSTREAM_SVNREV}" = "x" ; then \
+		DEB_MAINT_UPSTREAM_SVNREV=`grep "New version $*" ChangeLog | sed "s/.*SVN revision \([0-9]*\).*/\1/g"`; \
+		if test "x$$DEB_MAINT_UPSTREAM_SVNREV" = "x"; then exit 1; fi ;\
+		echo -n "Found svn revision $* git sha id: " ;\
+		git rev-list --all --grep "svn-id.*@$$DEB_MAINT_UPSTREAM_SVNREV" ;\
+		git checkout -b upstream/$* \
+				`git rev-list --all --grep "svn-id.*@$$DEB_MAINT_UPSTREAM_SVNREV"`; \
+	else \
+	   git checkout -b upstream/$* ${DEB_MAINT_UPSTREAM_SVNREV}; \
+	fi;
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}
+
+# get upstream revision like in upstream changelog
+maint-get-upstream-rev-doit:
+	@echo "Try to get upstream revision $(DEB_MAINT_NEW_VERSION)."
+	DEB_MAINT_NEW_VERSION_RAW=`echo $(DEB_MAINT_NEW_VERSION) | sed "s/\(.*\)\.\([:digit:]*\)/\1-\2/g"`; \
+	if test "x$$DEB_MAINT_NEW_VERSION_RAW" = "x"; then exit 1; fi;\
+	if !(git show-ref --verify --quiet refs/heads/upstream/$$DEB_MAINT_NEW_VERSION_RAW) ; then \
+		if ! ($(MAKE) -f debian/rules \
+				 maint-mark-upstream-revision-$$DEB_MAINT_NEW_VERSION_RAW \
+				 DEB_MAINT_NEW_VERSION=${DEB_MAINT_NEW_VERSION} \
+				 DEB_MAINT_UPSTREAM_SVNREV=${DEB_MAINT_UPSTREAM_SVNREV}); then \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+			exit 1; \
+		else \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+		fi; \
+	fi;
+
+
+# get upstream version
+maint-get-upstream-rev: #maint-refresh-git-svn
+	$(MAKE) -f debian/rules \
+		   maint-get-upstream-rev-doit \
+		   DEB_MAINT_NEW_VERSION:=$(shell uscan --report --dehs | grep "<upstream-version>" | sed "s/<upstream-version>\(.*\)<\/upstream-version>/\1/g")
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH};
+
+
+# put it in a new make in order to fail gracefully
+maint-get-upstream-rev-from-tar-new-make-%:
+	git checkout -f upstream/`echo $* | sed "s/\(.*\)\.\([:digit:]*\)/\1-\2/g"`
+	git checkout -b upstream/$*
+	find ./*  -path './.git' -prune -o -exec rm -rf '{}' +
+	tar --strip 1 -xaf ../imagemagick_$*.orig.tar.xz
+	git add --all .
+	git commit -a -m "Add upstream tar.xz for version $*"
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH};
+
+# reconstruct upstream for tar
+maint-reconstruct-upstream-doit: maint-get-upstream-rev-doit
+	@echo "get upstream from tar and merge it"
+	if !(git show-ref --verify --quiet refs/heads/upstream/${DEB_MAINT_NEW_VERSION}) ; then \
+		if ! ($(MAKE) -f debian/rules maint-get-upstream-rev-from-tar-new-make-${DEB_MAINT_NEW_VERSION}); then \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+			git branch -D upstream/${DEB_MAINT_NEW_VERSION} || true; \
+			exit 1; \
+		else \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+		fi; \
+	fi;
+
+# reconstruct upstream
+maint-reconstruct-upstream:
+	$(MAKE) -f debian/rules \
+		   maint-reconstruct-upstream-doit \
+		   DEB_MAINT_NEW_VERSION:=`uscan --report --dehs | grep "<upstream-version>" | sed "s/<upstream-version>\(.*\)<\/upstream-version>/\1/g"`
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH};
+
+add-pristine-tar-new-make-%:
+	git checkout -f upstream/$*
+	pristine-tar commit ../imagemagick_$*.orig.tar.xz upstream/$*
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}
+
+# add pristine-tar from a sub make
+maint-add-pristine-tar-doit: maint-reconstruct-upstream-doit
+	@echo "execute pristine-tar"
+	if !(pristine-tar list | grep ${DEB_MAINT_NEW_VERSION}); then \
+		if ! ($(MAKE) -f debian/rules add-pristine-tar-new-make-${DEB_MAINT_NEW_VERSION}) ; then \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+			exit 1; \
+		else \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+		fi; \
+	fi;
+
+# add pristine-tar
+maint-add-pristine-tar:
+	$(MAKE) -f debian/rules \
+		   maint-add-pristine-tar-doit \
+		   DEB_MAINT_NEW_VERSION:=`uscan --report --dehs | grep "<upstream-version>" | sed "s/<upstream-version>\(.*\)<\/upstream-version>/\1/g"`
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}
+
+# manually merge debian branch
+maint-merge-debian-branch-new-make-%:
+	git checkout ${DEB_MAINT_CURRENT_DEB_BRANCH}
+	git checkout -b debian/$*-1
+	if ! (git show-ref --verify --quiet refs/heads/upstream/$*) ; then exit 1; fi;
+	git merge --no-commit upstream/$* || true
+	find ./* -path './debian' -prune -o -path './.git' -prune -o -exec rm -rf '{}' +
+	tar --strip 1 -xaf ../imagemagick_$*.orig.tar.xz
+	git add --all .
+	git commit -a -m 'merge debian branch with upstream $*'
+
+# merge debian branch
+maint-merge-debian-branch-doit: maint-add-pristine-tar-doit
+	if ! (git show-ref --verify --quiet refs/heads/debian/${DEB_MAINT_NEW_VERSION}-1); then \
+		if ! ($(MAKE) -f debian/rules maint-merge-debian-branch-new-make-${DEB_MAINT_NEW_VERSION}); then \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+			git branch -D debian/${DEB_MAINT_NEW_VERSION}-1 || true; \
+			exit 1; \
+		else \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+		fi; \
+	fi;
+
+# merge debian branch
+maint-merge-debian-branch:
+	$(MAKE) -f debian/rules \
+		   maint-merge-debian-branch-doit \
+		   DEB_MAINT_NEW_VERSION:=`uscan --report --dehs | grep "<upstream-version>" | sed "s/<upstream-version>\(.*\)<\/upstream-version>/\1/g"`
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}
+
+
+maint-create-debian-patches-new-make-%:
+	git checkout -f upstream/${DEB_MAINT_NEW_VERSION}
+	git checkout -b debian-patches/${DEB_MAINT_NEW_VERSION}-1
+
+maint-create-debian-patches-doit: maint-merge-debian-branch-doit
+	if ! (git show-ref --verify --quiet refs/heads/debian-patches/${DEB_MAINT_NEW_VERSION}-1); then \
+		if ! ($(MAKE) -f debian/rules maint-create-debian-patches-new-make-${DEB_MAINT_NEW_VERSION}); then \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+			git branch -D debian-patches/${DEB_MAINT_NEW_VERSION}-1 || true; \
+			exit 1; \
+		else \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+		fi; \
+	fi;
+
+
+# create a new debian patches branch
+maint-create-debian-patches:
+	$(MAKE) -f debian/rules \
+		   maint-create-debian-patches-doit \
+		   DEB_MAINT_NEW_VERSION:=`uscan --report --dehs | grep "<upstream-version>" | sed "s/<upstream-version>\(.*\)<\/upstream-version>/\1/g"`
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}
+
+
+maint-create-debian-custom-patches-new-make-%:
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_CUSTOM_PATCHES}
+	if ! (git show-ref --verify --quiet refs/heads/debian-custom-patches/${DEB_MAINT_NEW_VERSION}-1) ; then \
+		git checkout -b debian-custom-patches/${DEB_MAINT_NEW_VERSION}-1; \
+	fi;
+	git rebase upstream/${DEB_UPSTREAM_VERSION} debian-custom-patches/${DEB_MAINT_NEW_VERSION}-1 --onto debian-patches/${DEB_MAINT_NEW_VERSION}-1
+	git checkout debian-patches/${DEB_MAINT_NEW_VERSION}-1
+	git merge --ff debian-custom-patches/${DEB_MAINT_NEW_VERSION}-1
+
+maint-create-debian-custom-patches-doit: maint-create-debian-patches-doit
+	if ! (git show-ref --verify --quiet refs/heads/debian-custom-patches/${DEB_MAINT_NEW_VERSION}-1); then \
+		if ! ($(MAKE) -f debian/rules maint-create-debian-custom-patches-new-make-${DEB_MAINT_NEW_VERSION}); then \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+			git branch -D debian-custom-patches/${DEB_MAINT_NEW_VERSION}-1 || true; \
+			exit 1; \
+		else \
+			git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+		fi; \
+	fi;
+
+
+# create not forwarded debian patches (debian-custom-patches)
+maint-create-debian-custom-patches:
+	$(MAKE) -f debian/rules \
+		   maint-create-debian-custom-patches-doit \
+		   DEB_MAINT_NEW_VERSION:=`uscan --report --dehs | grep "<upstream-version>" | sed "s/<upstream-version>\(.*\)<\/upstream-version>/\1/g"`
+	git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}
+
+
+# create a new version
+maint-do-new-version:
+	DEB_MAINT_NEW_VERSION=`uscan --report --dehs | grep "<upstream-version>" | sed "s/<upstream-version>\(.*\)<\/upstream-version>/\1/g"`;\
+	if test "x$$DEB_MAINT_NEW_VERSION" = "x" ; then exit 1; fi; \
+	if !($(MAKE) -f debian/rules maint-create-debian-custom-patches-doit \
+			 DEB_MAINT_NEW_VERSION:=$$DEB_MAINT_NEW_VERSION ); then \
+	    git checkout -f ${DEB_MAINT_CURRENT_DEB_BRANCH}; \
+	else \
+	    git checkout -f debian/$$DEB_MAINT_NEW_VERSION-1; \
+	fi;
+
+	# check if upstream is sane
+	# check if html doc is well formed in order to run xslt rule
+	-find $(CURDIR)/www \
+		-maxdepth 2 -type f -and -name '*.html' -and -not -empty -print0 \
+		| xargs -r -0 -t xmllint --noout --nonet || true
+
+maint-html-is-sane:
+	find $(CURDIR)/www \
+		-maxdepth 2 -type f -and -name '*.html' -and -not -empty -print0 \
+		| xargs -r -0 -t xmllint --noout --nonet

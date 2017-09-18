@@ -1,0 +1,3 @@
+${DEB_PERL_ARCHLIB}/auto
+${DEB_PERL_ARCHLIB}/Image/Magick/
+usr/share/man/man3/Image::Magick::*.3pm
