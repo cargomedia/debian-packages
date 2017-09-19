@@ -1,0 +1,25 @@
+From 5f51b4d13dbb95eaf205b0b4a92296a52c33dfa4 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sun, 23 Jul 2017 10:45:14 -0400
+Subject: [PATCH] memory exhaustion in ReadPSDImage
+
+bug-debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=870530
+bug: https://github.com/ImageMagick/ImageMagick/issues/599
+origin: https://github.com/ImageMagick/ImageMagick/commit/7d3af83d8b946f952bfd028451e6dfb1f7ace07a
+---
+ coders/psd.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/coders/psd.c b/coders/psd.c
+index 2f4a02f11..b6fdbf687 100644
+--- a/coders/psd.c
++++ b/coders/psd.c
+@@ -2052,6 +2052,8 @@ static Image *ReadPSDImage(const ImageInfo *image_info,ExceptionInfo *exception)
+         (void) LogMagickEvent(CoderEvent,GetMagickModule(),
+           "  reading image resource blocks - %.20g bytes",(double)
+           ((MagickOffsetType) length));
++      if (length > GetBlobSize(image))
++        ThrowReaderException(CorruptImageError,"InsufficientImageDataInFile");
+       blocks=(unsigned char *) AcquireQuantumMemory((size_t) length,
+         sizeof(*blocks));
+       if (blocks == (unsigned char *) NULL)

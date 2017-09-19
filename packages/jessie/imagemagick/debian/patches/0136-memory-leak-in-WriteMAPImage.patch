@@ -1,0 +1,52 @@
+From 620c79385c894fc4e45c608c7cf2311a6000da93 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Mon, 17 Jul 2017 13:32:44 -0400
+Subject: [PATCH] memory leak in WriteMAPImage
+
+bug-debian: https://bugs.debian.org/870483
+bug: https://github.com/ImageMagick/ImageMagick/issues/573
+origin: https://github.com/ImageMagick/ImageMagick/commit/6233ef75bb973745ab1092b59aea8fe316f09074
+
+(cherry picked from commit 6233ef75bb973745ab1092b59aea8fe316f09074)
+---
+ coders/map.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/coders/map.c b/coders/map.c
+index 29573cc85..04096d93e 100644
+--- a/coders/map.c
++++ b/coders/map.c
+@@ -396,12 +396,17 @@ static MagickBooleanType WriteMAPImage(const ImageInfo *image_info,Image *image)
+     sizeof(*colormap));
+   if ((pixels == (unsigned char *) NULL) ||
+       (colormap == (unsigned char *) NULL))
+-    ThrowWriterException(ResourceLimitError,"MemoryAllocationFailed");
++    {
++      if (colormap != (unsigned char *) NULL)
++        colormap=(unsigned char *) RelinquishMagickMemory(colormap);
++      if (pixels != (unsigned char *) NULL)
++        pixels=(unsigned char *) RelinquishMagickMemory(pixels);
++      ThrowWriterException(ResourceLimitError,"MemoryAllocationFailed");
++    }
+   /*
+     Write colormap to file.
+   */
+   q=colormap;
+-  q=colormap;
+   if (image->colors <= 256)
+     for (i=0; i < (ssize_t) image->colors; i++)
+     {
+@@ -415,9 +420,11 @@ static MagickBooleanType WriteMAPImage(const ImageInfo *image_info,Image *image)
+       *q++=(unsigned char) (ScaleQuantumToShort(image->colormap[i].red) >> 8);
+       *q++=(unsigned char) (ScaleQuantumToShort(image->colormap[i].red) & 0xff);
+       *q++=(unsigned char) (ScaleQuantumToShort(image->colormap[i].green) >> 8);
+-      *q++=(unsigned char) (ScaleQuantumToShort(image->colormap[i].green) & 0xff);;
++      *q++=(unsigned char) (ScaleQuantumToShort(image->colormap[i].green) &
++        0xff);
+       *q++=(unsigned char) (ScaleQuantumToShort(image->colormap[i].blue) >> 8);
+-      *q++=(unsigned char) (ScaleQuantumToShort(image->colormap[i].blue) & 0xff);
++      *q++=(unsigned char) (ScaleQuantumToShort(image->colormap[i].blue) &
++        0xff);
+     }
+   (void) WriteBlob(image,packet_size*image->colors,colormap);
+   colormap=(unsigned char *) RelinquishMagickMemory(colormap);

@@ -1,0 +1,34 @@
+From a201ee8de5c22f57be9c72bd807cf805b4896dd9 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sun, 4 Jun 2017 07:23:56 -0400
+Subject: [PATCH] assertion failed in WriteBlob
+
+On version: ImageMagick 7.0.5-10 , a crafted file revealed an
+assertion failure in blob.c.
+
+bug: https://github.com/ImageMagick/ImageMagick/issues/506
+bug-debian: https://bugs.debian.org/867798
+origin: https://github.com/ImageMagick/ImageMagick/commit/c6a9837c00f73a77a58aeb22acdd08e0cd7f2684
+
+(cherry picked from commit c6a9837c00f73a77a58aeb22acdd08e0cd7f2684)
+---
+ magick/blob.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/magick/blob.c b/magick/blob.c
+index bb490b421..3b9bce0ab 100644
+--- a/magick/blob.c
++++ b/magick/blob.c
+@@ -4436,11 +4436,11 @@ MagickExport ssize_t WriteBlob(Image *image,const size_t length,
+ 
+   assert(image != (Image *) NULL);
+   assert(image->signature == MagickSignature);
+-  assert(data != (const unsigned char *) NULL);
+   assert(image->blob != (BlobInfo *) NULL);
+   assert(image->blob->type != UndefinedStream);
+   if (length == 0)
+     return(0);
++  assert(data != (const unsigned char *) NULL);
+   count=0;
+   p=data;
+   switch (image->blob->type)

@@ -1,0 +1,40 @@
+From 02b9c006ca932ba7a1884b3e8043f98363856e16 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Wed, 5 Jul 2017 16:41:58 -0400
+Subject: [PATCH] memory exhaustion in ReadSUNImage
+
+bug-debian:  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=870504
+bug: https://github.com/ImageMagick/ImageMagick/issues/543
+origin: https://github.com/ImageMagick/ImageMagick/commit/44cb8dfd4cbe6fc475c863a5946cff64e34c2088
+---
+ coders/sun.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/coders/sun.c b/coders/sun.c
+index eaf627532..2a9cc99d0 100644
+--- a/coders/sun.c
++++ b/coders/sun.c
+@@ -339,6 +339,8 @@ static Image *ReadSUNImage(const ImageInfo *image_info,ExceptionInfo *exception)
+         size_t
+           one;
+ 
++        if (sun_info.maplength > GetBlobSize(image))
++          ThrowReaderException(CorruptImageError,"InsufficientImageDataInFile");
+         image->colors=sun_info.maplength;
+         one=1;
+         if (sun_info.maptype == RMT_NONE)
+@@ -678,12 +680,14 @@ ModuleExport size_t RegisterSUNImage(void)
+   entry->encoder=(EncodeImageHandler *) WriteSUNImage;
+   entry->magick=(IsImageFormatHandler *) IsSUN;
+   entry->description=ConstantString("SUN Rasterfile");
++  entry->seekable_stream=MagickTrue;
+   entry->module=ConstantString("SUN");
+   (void) RegisterMagickInfo(entry);
+   entry=SetMagickInfo("SUN");
+   entry->decoder=(DecodeImageHandler *) ReadSUNImage;
+   entry->encoder=(EncodeImageHandler *) WriteSUNImage;
+   entry->description=ConstantString("SUN Rasterfile");
++  entry->seekable_stream=MagickTrue;
+   entry->module=ConstantString("SUN");
+   (void) RegisterMagickInfo(entry);
+   return(MagickImageCoderSignature);

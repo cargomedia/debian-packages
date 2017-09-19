@@ -1,0 +1,51 @@
+From b313b5c5154db51af422395e66fc8ca922764eee Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Tue, 21 Feb 2017 12:29:03 -0500
+Subject: [PATCH] Avoid a crash in mpc coder
+
+bug: https://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=31438
+bug-debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=869728
+origin: https://github.com/ImageMagick/ImageMagick/commit/9b580ad0564aefd9beeccbcbb8d62ccd05795a84
+
+(cherry picked from commit 9b580ad0564aefd9beeccbcbb8d62ccd05795a84)
+---
+ coders/mpc.c      | 4 +---
+ magick/colormap.c | 3 ++-
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/coders/mpc.c b/coders/mpc.c
+index 3c8f7d6f7..72fb69a08 100644
+--- a/coders/mpc.c
++++ b/coders/mpc.c
+@@ -842,9 +842,7 @@ static Image *ReadMPCImage(const ImageInfo *image_info,ExceptionInfo *exception)
+         /*
+           Create image colormap.
+         */
+-        image->colormap=(PixelPacket *) AcquireQuantumMemory(image->colors+1,
+-          sizeof(*image->colormap));
+-        if (image->colormap == (PixelPacket *) NULL)
++        if (AcquireImageColormap(image,image->colors) == MagickFalse)
+           ThrowReaderException(ResourceLimitError,"MemoryAllocationFailed");
+         if (image->colors != 0)
+           {
+diff --git a/magick/colormap.c b/magick/colormap.c
+index eae384749..5dfa6f330 100644
+--- a/magick/colormap.c
++++ b/magick/colormap.c
+@@ -126,6 +126,7 @@ MagickExport MagickBooleanType AcquireImageColormap(Image *image,
+       ThrowBinaryException(ResourceLimitError,"MemoryAllocationFailed",
+         image->filename);
+     }
++  image->storage_class=PseudoClass;
+   for (i=0; i < (ssize_t) image->colors; i++)
+   {
+     size_t
+@@ -137,7 +138,7 @@ MagickExport MagickBooleanType AcquireImageColormap(Image *image,
+     image->colormap[i].blue=(Quantum) pixel;
+     image->colormap[i].opacity=OpaqueOpacity;
+   }
+-  return(SetImageStorageClass(image,PseudoClass));
++  return(MagickTrue);
+ }
+ 
+ /*

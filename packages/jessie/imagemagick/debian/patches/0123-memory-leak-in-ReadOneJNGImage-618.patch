@@ -1,0 +1,33 @@
+From d066a53bb19ba10a45f42219d1c91b31e5ae87e7 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Tue, 25 Jul 2017 08:11:09 -0400
+Subject: [PATCH] memory leak in ReadOneJNGImage #618
+
+Triggered by a corrupted file
+
+bug-debian: https://bugs.debian.org/870118
+bug: https://github.com/ImageMagick/ImageMagick/issues/618
+origin: https://github.com/ImageMagick/ImageMagick/commit/7287f50888c26b133ee173816332fcaec4e8cb62 ,
+ https://github.com/ImageMagick/ImageMagick/commit/3cba1bb43acf5b3cba7388f67bf87b6f192138f0
+(cherry picked from commit 7287f50888c26b133ee173816332fcaec4e8cb62 and  3cba1bb43acf5b3cba7388f67bf87b6f192138f0)
+---
+ coders/png.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/coders/png.c b/coders/png.c
+index deee821e6..94e50eae3 100644
+--- a/coders/png.c
++++ b/coders/png.c
+@@ -4214,7 +4214,11 @@ static Image *ReadOneJNGImage(MngInfo *mng_info,
+     if (length != 0)
+       {
+         if (length > GetBlobSize(image))
+-          ThrowReaderException(CorruptImageError,"InsufficientImageDataInFile");
++          {
++            DestroyJNG(NULL,&color_image,&color_image_info,NULL,NULL);
++            ThrowReaderException(CorruptImageError,
++              "InsufficientImageDataInFile");
++          }
+         chunk=(unsigned char *) AcquireQuantumMemory(length,sizeof(*chunk));
+ 
+         if (chunk == (unsigned char *) NULL)

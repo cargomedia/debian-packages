@@ -1,0 +1,38 @@
+From 7fbea25ada626edc182c639d31beaf273073c997 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sat, 24 Jun 2017 10:43:12 -0400
+Subject: [PATCH] memory leak in ReadMATImage in mat.c
+
+The ReadMATImage function in mat.c allows attackers to cause a
+denial of service (memory leak) via a small crafted mat file.
+
+bug-debian: https://bugs.debian.org/867823
+bug: https://github.com/ImageMagick/ImageMagick/issues/525
+origin: https://github.com/ImageMagick/ImageMagick/commit/bd428b8c3217643c8c3a185c5e4b83b4ddc6b275
+
+(cherry picked from commit bd428b8c3217643c8c3a185c5e4b83b4ddc6b275)
+---
+ coders/mat.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/coders/mat.c b/coders/mat.c
+index 1c5affe1b..cf09bec39 100644
+--- a/coders/mat.c
++++ b/coders/mat.c
+@@ -894,7 +894,7 @@ static Image *ReadMATImage(const ImageInfo *image_info,ExceptionInfo *exception)
+   /*
+      Read MATLAB image.
+    */
+-  clone_info=CloneImageInfo(image_info);
++  clone_info=(ImageInfo *) NULL;
+   if(ReadBlob(image,124,(unsigned char *) &MATLAB_HDR.identific) != 124)
+     ThrowReaderException(CorruptImageError,"ImproperImageHeader");
+   if (strncmp(MATLAB_HDR.identific,"MATLAB",6) != 0)
+@@ -946,6 +946,7 @@ MATLAB_KO: ThrowReaderException(CorruptImageError,"ImproperImageHeader");
+     if(EOFBlob(image)) break;
+     filepos += MATLAB_HDR.ObjectSize + 4 + 4;
+ 
++    clone_info=CloneImageInfo(image_info);
+     image2 = image;
+ #if defined(MAGICKCORE_ZLIB_DELEGATE)
+     if(MATLAB_HDR.DataType == miCOMPRESSED)

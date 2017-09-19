@@ -1,0 +1,28 @@
+From d0c195f504de1892d2f14171d61c32243db1e131 Mon Sep 17 00:00:00 2001
+From: Dirk Lemstra <dirk@git.imagemagick.org>
+Date: Mon, 17 Apr 2017 18:07:48 +0200
+Subject: [PATCH] Fixed leak reported in SVG file
+
+Fix CVE-2017-7943
+bug: https://github.com/ImageMagick/ImageMagick/issues/427
+bug-debian: https://bugs.debian.org/860736
+origin: https://github.com/ImageMagick/ImageMagick/commit/b0e61972ff94e844fbb3ca927e476fc156c240a3
+
+(cherry picked from commit b0e61972ff94e844fbb3ca927e476fc156c240a3)
+---
+ coders/svg.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/coders/svg.c b/coders/svg.c
+index c63682c44..c63a12769 100644
+--- a/coders/svg.c
++++ b/coders/svg.c
+@@ -3262,6 +3262,8 @@ static Image *ReadSVGImage(const ImageInfo *image_info,ExceptionInfo *exception)
+   image->rows=svg_info->height;
+   if (exception->severity >= ErrorException)
+     {
++      svg_info=DestroySVGInfo(svg_info);
++      (void) RelinquishUniqueFileResource(filename);
+       image=DestroyImage(image);
+       return((Image *) NULL);
+     }

@@ -1,0 +1,52 @@
+From 80612b0390488fad375d3f3deddf86a6d7bf645b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <roucaries.bastien@gmail.com>
+Date: Tue, 22 Nov 2016 12:59:01 +0100
+Subject: [PATCH] Improve policy in order to be safer
+
+Limit memory and disk to safe value.
+
+Disable http delegate. You should really use curl
+
+Forwarded: No
+---
+ config/policy.xml | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/config/policy.xml b/config/policy.xml
+index d535e3e0b..e3dd4d741 100644
+--- a/config/policy.xml
++++ b/config/policy.xml
+@@ -50,19 +50,24 @@
+ -->
+ <policymap>
+   <!-- <policy domain="resource" name="temporary-path" value="/tmp"/> -->
+-  <!-- <policy domain="resource" name="memory" value="2GiB"/> -->
+-  <!-- <policy domain="resource" name="map" value="4GiB"/> -->
+-  <!-- <policy domain="resource" name="width" value="10MP"/> -->
+-  <!-- <policy domain="resource" name="height" value="10MP"/> -->
+-  <!-- <policy domain="resource" name="area" value="1GB"/> -->
+-  <!-- <policy domain="resource" name="disk" value="16EB"/> -->
++  <policy domain="resource" name="memory" value="256MiB"/>
++  <policy domain="resource" name="map" value="512MiB"/>
++  <policy domain="resource" name="width" value="16KP"/>
++  <policy domain="resource" name="height" value="16KP"/>
++  <policy domain="resource" name="area" value="128MB"/>
++  <policy domain="resource" name="disk" value="1GiB"/>
+   <!-- <policy domain="resource" name="file" value="768"/> -->
+   <!-- <policy domain="resource" name="thread" value="4"/> -->
+   <!-- <policy domain="resource" name="throttle" value="0"/> -->
+   <!-- <policy domain="resource" name="time" value="3600"/> -->
+   <!-- <policy domain="system" name="precision" value="6"/> -->
+-  <!-- <policy domain="coder" rights="none" pattern="MVG" /> -->
+-  <!-- <policy domain="delegate" rights="none" pattern="HTTPS" /> -->
+-  <!-- <policy domain="path" rights="none" pattern="@*"/>  -->
++  <!-- not needed due to the need to use explicitly by mvg: -->
++  <!-- <policy domain="delegate" rights="none" pattern="MVG" /> -->
++  <!-- use curl -->
++  <policy domain="delegate" rights="none" pattern="URL" />
++  <policy domain="delegate" rights="none" pattern="HTTPS" />
++  <policy domain="delegate" rights="none" pattern="HTTP" />
++  <!-- in order to avoid to get image with password text -->
++  <policy domain="path" rights="none" pattern="@*"/>
+   <policy domain="cache" name="shared-secret" value="passphrase" stealth="true"/>
+ </policymap>

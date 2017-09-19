@@ -1,0 +1,28 @@
+From 5885a0a129d5315364d9bd2629ce86885da741fe Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Mon, 17 Jul 2017 07:36:56 -0400
+Subject: [PATCH] memory leak in WriteINLINEImage
+
+bug-debian: https://bugs.debian.org/870482
+bug: https://github.com/ImageMagick/ImageMagick/issues/572
+origin: https://github.com/ImageMagick/ImageMagick/commit/45aeda5da9eb328689afc221fa3b7dfa5cdea54d
+---
+ coders/inline.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/coders/inline.c b/coders/inline.c
+index 5817240d3..c7a4ead2e 100644
+--- a/coders/inline.c
++++ b/coders/inline.c
+@@ -322,7 +322,10 @@ static MagickBooleanType WriteINLINEImage(const ImageInfo *image_info,
+   magick_info=GetMagickInfo(write_info->magick,exception);
+   if ((magick_info == (const MagickInfo *) NULL) ||
+       (GetMagickMimeType(magick_info) == (const char *) NULL))
+-    ThrowWriterException(CorruptImageError,"ImageTypeNotSupported");
++    {
++      write_info=DestroyImageInfo(write_info);
++      ThrowWriterException(CorruptImageError,"ImageTypeNotSupported");
++    }
+   (void) CopyMagickString(image->filename,write_info->filename,MaxTextExtent);
+   blob_length=2048;
+   write_image=CloneImage(image,0,0,MagickTrue,exception);

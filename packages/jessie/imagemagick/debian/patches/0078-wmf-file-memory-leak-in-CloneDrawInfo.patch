@@ -1,0 +1,33 @@
+From 68ec95456c0bf6335579285341493c47f07b32f8 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Thu, 6 Jul 2017 06:13:54 -0400
+Subject: [PATCH] wmf file memory leak in CloneDrawInfo
+
+The function CloneDrawInfo in draw.c allows attackers to cause a
+denial of service (memory leak) via a crafted file.
+
+bug: https://github.com/ImageMagick/ImageMagick/issues/544
+bug-debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=869713.
+origin: https://github.com/ImageMagick/ImageMagick/commit/f37d26336bf13737db45e556c25fc098f8a8b277
+
+(cherry picked from commit f37d26336bf13737db45e556c25fc098f8a8b277)
+---
+ coders/wmf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/coders/wmf.c b/coders/wmf.c
+index ace34c7f6..56af4fea8 100644
+--- a/coders/wmf.c
++++ b/coders/wmf.c
+@@ -2673,6 +2673,11 @@ static Image *ReadWMFImage(const ImageInfo *image_info,ExceptionInfo *exception)
+   if (wmf_error != wmf_E_None)
+     {
+       wmf_api_destroy(API);
++      if (ddata->draw_info != (DrawInfo *) NULL)
++        {
++          DestroyDrawInfo(ddata->draw_info);
++          ddata->draw_info=(DrawInfo *)NULL;
++        }
+       if (image->debug != MagickFalse)
+         {
+           (void) LogMagickEvent(CoderEvent,GetMagickModule(),

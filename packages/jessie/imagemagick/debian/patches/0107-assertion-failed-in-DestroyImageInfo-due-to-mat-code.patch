@@ -1,0 +1,26 @@
+From 18d31a9554539e999f4906710a40f83476091c2f Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sun, 23 Jul 2017 10:39:31 -0400
+Subject: [PATCH] assertion failed in DestroyImageInfo due to mat coder
+
+bug-debian: https://bugs.debian.org/870019
+bug: https://github.com/ImageMagick/ImageMagick/issues/598
+origin: https://github.com/ImageMagick/ImageMagick/commit/e5c063a1007506ba69e97a35effcdef944421c89
+---
+ coders/mat.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/coders/mat.c b/coders/mat.c
+index a06e30779..cca314144 100644
+--- a/coders/mat.c
++++ b/coders/mat.c
+@@ -934,7 +934,8 @@ static Image *ReadMATImage(const ImageInfo *image_info,ExceptionInfo *exception)
+   if (strncmp(MATLAB_HDR.identific, "MATLAB", 6))
+     {
+ MATLAB_KO:
+-      clone_info=DestroyImageInfo(clone_info);
++      if (clone_info != (ImageInfo *) NULL)
++        clone_info=DestroyImageInfo(clone_info);
+       ThrowReaderException(CorruptImageError,"ImproperImageHeader");
+     }
+ 

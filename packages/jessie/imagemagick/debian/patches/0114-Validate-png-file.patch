@@ -1,0 +1,139 @@
+From 7c1b157b290b66790462cf094d6a2046ab8f56fe Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sun, 25 Jun 2017 09:23:22 -0400
+Subject: [PATCH] Validate png file
+
+Detected corrupted png early and avoid a crash
+
+This is the merge of two upstream patch
+    aa84944b405acebbeefe871d0f64969b9e9f31ac and
+    46e3aabbf8d59a1bdebdbb65acb9b9e0484577d3
+
+bug-debian: https://bugs.debian.org/870105
+origin: https://github.com/ImageMagick/ImageMagick/commit/aa84944b405acebbeefe871d0f64969b9e9f31ac,
+  https://github.com/ImageMagick/ImageMagick/commit/46e3aabbf8d59a1bdebdbb65acb9b9e0484577d3
+---
+ coders/png.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/coders/png.c b/coders/png.c
+index 593c468fe..321dd35ae 100644
+--- a/coders/png.c
++++ b/coders/png.c
+@@ -3927,6 +3927,12 @@ static Image *ReadPNGImage(const ImageInfo *image_info,ExceptionInfo *exception)
+     ThrowReaderException(CorruptImageError,"ImproperImageHeader");
+ 
+   /*
++     Verify that file size large enough to contain a PNG datastream.
++  */
++  if (GetBlobSize(image) < 61)
++    ThrowReaderException(CorruptImageError,"InsufficientImageDataInFile");
++
++  /*
+     Allocate a MngInfo structure.
+   */
+   mng_info=(MngInfo *) AcquireMagickMemory(sizeof(MngInfo));
+@@ -4178,6 +4184,8 @@ static Image *ReadOneJNGImage(MngInfo *mng_info,
+             c;
+ 
+           c=ReadBlobByte(image);
++          if (c == EOF)
++            break;
+           chunk[i]=(unsigned char) c;
+         }
+ 
+@@ -4804,6 +4812,12 @@ static Image *ReadJNGImage(const ImageInfo *image_info,ExceptionInfo *exception)
+   if (count < 8 || memcmp(magic_number,"\213JNG\r\n\032\n",8) != 0)
+     ThrowReaderException(CorruptImageError,"ImproperImageHeader");
+ 
++  /*
++     Verify that file size large enough to contain a JNG datastream.
++  */
++  if (GetBlobSize(image) < 147)
++    ThrowReaderException(CorruptImageError,"InsufficientImageDataInFile");
++
+   /* Allocate a MngInfo structure.  */
+ 
+   mng_info=(MngInfo *) AcquireMagickMemory(sizeof(*mng_info));
+@@ -5037,6 +5051,8 @@ static Image *ReadOneMNGImage(MngInfo* mng_info, const ImageInfo *image_info,
+                 c;
+ 
+               c=ReadBlobByte(image);
++              if (c == EOF)
++                break;
+               chunk[i]=(unsigned char) c;
+             }
+ 
+@@ -7350,7 +7366,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry=SetMagickInfo("MNG");
+-  entry->seekable_stream=MagickTrue;  /* To do: eliminate this. */
++  entry->seekable_stream=MagickTrue;
+ 
+ #if defined(MAGICKCORE_PNG_DELEGATE)
+   entry->decoder=(DecodeImageHandler *) ReadMNGImage;
+@@ -7375,6 +7391,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry->magick=(IsImageFormatHandler *) IsPNG;
++  entry->seekable_stream=MagickTrue;
+   entry->adjoin=MagickFalse;
+   entry->description=ConstantString("Portable Network Graphics");
+   entry->mime_type=ConstantString("image/png");
+@@ -7394,6 +7411,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry->magick=(IsImageFormatHandler *) IsPNG;
++  entry->seekable_stream=MagickTrue;
+   entry->adjoin=MagickFalse;
+   entry->description=ConstantString(
+             "8-bit indexed with optional binary transparency");
+@@ -7424,6 +7442,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry->magick=(IsImageFormatHandler *) IsPNG;
++  entry->seekable_stream=MagickTrue;
+   entry->adjoin=MagickFalse;
+   entry->description=ConstantString("opaque or binary transparent 24-bit RGB");
+   entry->mime_type=ConstantString("image/png");
+@@ -7438,6 +7457,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry->magick=(IsImageFormatHandler *) IsPNG;
++  entry->seekable_stream=MagickTrue;
+   entry->adjoin=MagickFalse;
+   entry->description=ConstantString("opaque or transparent 32-bit RGBA");
+   entry->mime_type=ConstantString("image/png");
+@@ -7452,6 +7472,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry->magick=(IsImageFormatHandler *) IsPNG;
++  entry->seekable_stream=MagickTrue;
+   entry->adjoin=MagickFalse;
+   entry->description=ConstantString("opaque or binary transparent 48-bit RGB");
+   entry->mime_type=ConstantString("image/png");
+@@ -7466,6 +7487,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry->magick=(IsImageFormatHandler *) IsPNG;
++  entry->seekable_stream=MagickTrue;
+   entry->adjoin=MagickFalse;
+   entry->description=ConstantString("opaque or transparent 64-bit RGBA");
+   entry->mime_type=ConstantString("image/png");
+@@ -7480,6 +7502,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry->magick=(IsImageFormatHandler *) IsPNG;
++  entry->seekable_stream=MagickTrue;
+   entry->adjoin=MagickFalse;
+   entry->description=ConstantString(
+      "PNG inheriting bit-depth, color-type from original if possible");
+@@ -7497,6 +7520,7 @@ ModuleExport size_t RegisterPNGImage(void)
+ #endif
+ 
+   entry->magick=(IsImageFormatHandler *) IsJNG;
++  entry->seekable_stream=MagickTrue;
+   entry->adjoin=MagickFalse;
+   entry->description=ConstantString("JPEG Network Graphics");
+   entry->mime_type=ConstantString("image/x-jng");

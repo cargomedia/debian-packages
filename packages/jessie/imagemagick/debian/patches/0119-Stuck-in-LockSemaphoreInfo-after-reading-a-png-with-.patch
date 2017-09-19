@@ -1,0 +1,33 @@
+From 8845b2d690ce57b549dbae8a62ae3f4fa4e326b1 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Fri, 21 Jul 2017 19:56:50 -0400
+Subject: [PATCH] Stuck in LockSemaphoreInfo after reading a png with
+ width==MAGICK_WIDTH_LIMIT
+
+Some version of libpng need serialization for error recovery of hard lock
+
+Could be triggered by a corrupted file
+
+bug: https://github.com/ImageMagick/ImageMagick/issues/596
+bug-debian: https://bugs.debian.org/870111
+origin: https://github.com/ImageMagick/ImageMagick/commit/75f7e994e4e990627a5a37385bcc9a0205013645,
+  https://github.com/ImageMagick/ImageMagick/commit/9206aa4cb88f838ae7b426d94c75bc2b584116b9
+---
+ coders/png.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/coders/png.c b/coders/png.c
+index f30ae9c2b..1f7e4fcc8 100644
+--- a/coders/png.c
++++ b/coders/png.c
+@@ -3066,6 +3066,10 @@ static Image *ReadOnePNGImage(MngInfo *mng_info,
+   status=SetImageExtent(image,image->columns,image->rows);
+   if (status == MagickFalse)
+     {
++      png_destroy_read_struct(&ping,&ping_info,&end_info);
++#ifdef IMPNG_SETJMP_NOT_THREAD_SAFE
++      UnlockSemaphoreInfo(ping_semaphore);
++#endif
+       InheritException(exception,&image->exception);
+       return(DestroyImageList(image));
+     }

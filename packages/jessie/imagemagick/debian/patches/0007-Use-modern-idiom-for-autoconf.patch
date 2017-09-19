@@ -1,0 +1,45 @@
+From 05c9d5f10a642095a0904f1610f3f390954199ec Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <roucaries.bastien@gmail.com>
+Date: Tue, 15 Sep 2015 22:01:13 +0200
+Subject: [PATCH] Use modern idiom for autoconf
+
+Forwarded: yes, https://github.com/ImageMagick/ImageMagick/issues/305
+---
+ configure.ac | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 172fa396d..11d176331 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -31,7 +31,8 @@ m4_define([magick_patchlevel_version], [4])
+ m4_define([magick_version],
+           [magick_major_version.magick_minor_version.magick_micro_version-magick_patchlevel_version])
+ m4_define([magick_git_revision], esyscmd([sh -c "(gitversion .) | awk '{ print \$1 }' | tr -d '\n'"]))
+-m4_define([magick_tar_name],[ImageMagick])
++m4_define([magick_tar_name],[ImageMagick.magick_major_version])
++
+ 
+ # ==============================================================================
+ # Initalize Automake
+@@ -220,7 +221,7 @@ eval "eval LIBEXEC_DIR=$libexecdir"
+ AC_SUBST(LIBEXEC_DIR)
+ eval "eval DATA_DIR=$datadir"
+ AC_SUBST(DATA_DIR)
+-eval "eval DOC_DIR=$datadir/doc"
++eval "eval DOC_DIR=$docdir"
+ AC_SUBST(DOC_DIR)
+ eval "eval SYSCONF_DIR=$sysconfdir"
+ AC_SUBST(SYSCONF_DIR)
+@@ -2961,9 +2962,8 @@ AC_SUBST(FILTER_PATH)
+ 
+ #
+ # Path to ImageMagick documentation files
+-DOCUMENTATION_RELATIVE_PATH="${PACKAGE_NAME}-${MAGICK_MAJOR_VERSION}"
+-DOCUMENTATION_PATH="${DOC_DIR}/${DOCUMENTATION_RELATIVE_PATH}"
+-DEFINE_DOCUMENTATION_PATH="${DOC_DIR}/${DOCUMENTATION_RELATIVE_PATH}/"
++DOCUMENTATION_PATH="${DOC_DIR}"
++DEFINE_DOCUMENTATION_PATH="${DOC_DIR}"
+ case "${build_os}" in
+   mingw* )
+     DEFINE_DOCUMENTATION_PATH=`$WinPathScript "$DEFINE_DOCUMENTATION_PATH" 1`

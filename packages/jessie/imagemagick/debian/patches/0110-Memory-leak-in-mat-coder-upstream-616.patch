@@ -1,0 +1,32 @@
+From f85e894203efd4cd71ea18b0a56350f20639e3b3 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Tue, 25 Jul 2017 08:35:10 -0400
+Subject: [PATCH] Memory leak in mat coder (upstream 616)
+
+bug-debian: https://bugs.debian.org/870022
+bug: https://github.com/ImageMagick/ImageMagick/issues/616
+origin: https://github.com/ImageMagick/ImageMagick/commit/e33a39a6a168cdd800fd160e8f93f0059432bdf7
+
+(cherry picked from commit e33a39a6a168cdd800fd160e8f93f0059432bdf7)
+---
+ coders/mat.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/coders/mat.c b/coders/mat.c
+index 909a84206..c7de554f2 100644
+--- a/coders/mat.c
++++ b/coders/mat.c
+@@ -998,7 +998,12 @@ MATLAB_KO:
+          if (Frames == 0)
+            ThrowReaderException(CorruptImageError,"ImproperImageHeader");
+          break;
+-      default: ThrowReaderException(CoderError, "MultidimensionalMatricesAreNotSupported");
++      default:
++        if (clone_info != (ImageInfo *) NULL)
++          clone_info=DestroyImageInfo(clone_info);
++        if ((image != image2) && (image2 != (Image *) NULL))
++          image2=DestroyImage(image2);
++        ThrowReaderException(CoderError, "MultidimensionalMatricesAreNotSupported");
+     }
+ 
+     MATLAB_HDR.Flag1 = ReadBlobXXXShort(image2);

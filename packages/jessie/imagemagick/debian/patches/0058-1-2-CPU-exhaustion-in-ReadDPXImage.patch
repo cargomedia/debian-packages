@@ -1,0 +1,39 @@
+From 05c47cad17514d3fd125275a859bd84fad9bf941 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Thu, 8 Jun 2017 09:04:32 -0400
+Subject: [PATCH] [1/2] CPU exhaustion in ReadDPXImage
+
+Because dpx.file.image_offset is a unsigned int, it can be controlled
+as large as 4294967295.
+This will cause ImageMagick spend a lot of time to process a crafted
+DPX imagefile, even if the imagefile is very small.
+
+origin: https://github.com/ImageMagick/ImageMagick/commit/42ceb8ee940a4c0bddeaf22e5a9c20cea2e85a8f
+bug: https://github.com/ImageMagick/ImageMagick/issues/509
+bug-debian: https://bugs.debian.org/867806
+
+(cherry picked from commit 42ceb8ee940a4c0bddeaf22e5a9c20cea2e85a8f)
+---
+ coders/dpx.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/coders/dpx.c b/coders/dpx.c
+index a050f5e5a..c1a4c7757 100644
+--- a/coders/dpx.c
++++ b/coders/dpx.c
+@@ -1126,10 +1126,11 @@ static Image *ReadDPXImage(const ImageInfo *image_info,ExceptionInfo *exception)
+         }
+     }
+   for ( ; offset < (MagickOffsetType) dpx.file.image_offset; offset++)
+-    (void) ReadBlobByte(image);
+-  /*
+-    Read DPX image header.
+-  */
++    if (ReadBlobByte(image) == EOF)
++      break;
++  if (EOFBlob(image) != MagickFalse)
++    ThrowFileException(exception,CorruptImageError,"UnexpectedEndOfFile",
++      image->filename);
+   if (image_info->ping != MagickFalse)
+     {
+       (void) CloseBlob(image);

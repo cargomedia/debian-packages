@@ -1,0 +1,31 @@
+From 4fa6bffa1b815534825b2b200ecef4616201f8ad Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sun, 23 Jul 2017 10:36:58 -0400
+Subject: [PATCH] Memory leak in mat coder
+
+In case of corrupted file, cloned image (temporarly image) should be freed
+
+bug-debian: https://bugs.debian.org/870017
+bug: https://github.com/ImageMagick/ImageMagick/issues/601
+origin: https://github.com/ImageMagick/ImageMagick/commit/a4779cfbee2e4235fa9f9f8f2e58dca17f7ccc6b
+
+(cherry picked from commit a4779cfbee2e4235fa9f9f8f2e58dca17f7ccc6b)
+---
+ coders/mat.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/coders/mat.c b/coders/mat.c
+index 5de6ee1ed..a06e30779 100644
+--- a/coders/mat.c
++++ b/coders/mat.c
+@@ -1093,6 +1093,10 @@ RestoreMSCWarning
+         ldblk = (ssize_t) (8 * MATLAB_HDR.SizeX);
+         break;
+       default:
++        if ((image != image2) && (image2 != (Image *) NULL))
++          image2=DestroyImage(image2);
++        if (clone_info)
++          clone_info=DestroyImageInfo(clone_info);
+         ThrowReaderException(CoderError, "UnsupportedCellTypeInTheMatrix");
+     }
+     (void) sample_size;

@@ -1,0 +1,34 @@
+From 7293e0e38704dd638c66f7aa9b3fb6c0ffac6e54 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Mon, 17 Jul 2017 19:21:32 -0400
+Subject: [PATCH] memory leak in WritePICTImage
+
+bug-debian: https://bugs.debian.org/870501
+bug: https://github.com/ImageMagick/ImageMagick/issues/577
+origin: https://github.com/ImageMagick/ImageMagick/commit/859084b4fd966ac007965c3d85caabccd8aee9b4
+---
+ coders/pict.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/coders/pict.c b/coders/pict.c
+index 4452d2504..221ed5057 100644
+--- a/coders/pict.c
++++ b/coders/pict.c
+@@ -1758,7 +1758,16 @@ static MagickBooleanType WritePICTImage(const ImageInfo *image_info,
+   if ((buffer == (unsigned char *) NULL) ||
+       (packed_scanline == (unsigned char *) NULL) ||
+       (scanline == (unsigned char *) NULL))
+-    ThrowWriterException(ResourceLimitError,"MemoryAllocationFailed");
++    {
++      if (scanline != (unsigned char *) NULL)
++        scanline=(unsigned char *) RelinquishMagickMemory(scanline);
++      if (packed_scanline != (unsigned char *) NULL)
++        packed_scanline=(unsigned char *) RelinquishMagickMemory(
++          packed_scanline);
++      if (buffer != (unsigned char *) NULL)
++        buffer=(unsigned char *) RelinquishMagickMemory(buffer);
++      ThrowWriterException(ResourceLimitError,"MemoryAllocationFailed");
++    }
+   (void) ResetMagickMemory(scanline,0,row_bytes);
+   (void) ResetMagickMemory(packed_scanline,0,(size_t) (row_bytes+MaxCount));
+   /*

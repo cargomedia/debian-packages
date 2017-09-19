@@ -1,0 +1,22 @@
+From ef3efb3e44c6aae131dde6661e7d0235e4e21576 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <roucaries.bastien@gmail.com>
+Date: Wed, 14 Dec 2016 15:24:12 +0100
+Subject: [PATCH] Fix www/search.html
+
+Forwarded: Yes, https://github.com/ImageMagick/ImageMagick/issues/304
+---
+ www/search.html | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/www/search.html b/www/search.html
+index 951843630..9c15588bf 100644
+--- a/www/search.html
++++ b/www/search.html
+@@ -91,7 +91,6 @@
+     s.parentNode.insertBefore(gcse, s);
+   })();
+ </script>
+-<gcse:search></gcse:search>
+ </div>
+   <footer class="magick-footer">
+     <p><a href="support.html">Donate</a> •

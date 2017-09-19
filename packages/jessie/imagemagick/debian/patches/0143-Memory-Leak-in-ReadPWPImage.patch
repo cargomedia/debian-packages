@@ -1,0 +1,32 @@
+From 0009f78545545b0f930846ed53db35c58a749277 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Tue, 18 Jul 2017 12:48:22 -0400
+Subject: [PATCH] Memory-Leak in ReadPWPImage()
+
+bug-debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=870527
+bug: https://github.com/ImageMagick/ImageMagick/issues/568
+origin: https://github.com/ImageMagick/ImageMagick/commit/1833d36ceb002c044d5723b7b4dce5b58eed5189
+---
+ coders/pwp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/coders/pwp.c b/coders/pwp.c
+index 31abb1a31..e11e20267 100644
+--- a/coders/pwp.c
++++ b/coders/pwp.c
+@@ -83,7 +83,6 @@
+ %
+ %    o length: Specifies the length of the magick string.
+ %
+-%
+ */
+ static MagickBooleanType IsPWP(const unsigned char *magick,const size_t length)
+ {
+@@ -171,6 +170,7 @@ static Image *ReadPWPImage(const ImageInfo *image_info,ExceptionInfo *exception)
+   status=OpenBlob(image_info,pwp_image,ReadBinaryBlobMode,exception);
+   if (status == MagickFalse)
+     return((Image *) NULL);
++  ResetMagickMemory(magick,0,sizeof(magick));
+   count=ReadBlob(pwp_image,5,magick);
+   if ((count != 5) || (LocaleNCompare((char *) magick,"SFW95",5) != 0))
+     ThrowReaderException(CorruptImageError,"ImproperImageHeader");

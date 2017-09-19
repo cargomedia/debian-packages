@@ -1,0 +1,50 @@
+From 735d20c7bb0256f2fffc70887a31e67a20f6e253 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sun, 9 Jul 2017 08:18:40 -0400
+Subject: [PATCH] Fix a leak in mpc file due to corrupted profiles
+
+bug: https://github.com/ImageMagick/ImageMagick/issues/552
+bug-debian: https://bugs.debian.org/869796
+origin: https://github.com/ImageMagick/ImageMagick/commit/562d584a31fe5883cd0a93741026263fd0e8a232
+---
+ coders/mpc.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/coders/mpc.c b/coders/mpc.c
+index a588d67e7..b32fa7d89 100644
+--- a/coders/mpc.c
++++ b/coders/mpc.c
+@@ -775,9 +775,17 @@ static Image *ReadMPCImage(const ImageInfo *image_info,ExceptionInfo *exception)
+         (image->storage_class == UndefinedClass) ||
+         (image->compression == UndefinedCompression) || (image->columns == 0) ||
+         (image->rows == 0))
+-      ThrowReaderException(CorruptImageError,"ImproperImageHeader");
++      {
++        if (profiles != (LinkedListInfo *) NULL)
++          profiles=DestroyLinkedList(profiles,RelinquishMagickMemory);
++        ThrowReaderException(CorruptImageError,"ImproperImageHeader");
++      }
+     if (signature != GetMagickSignature((const StringInfo *) NULL))
+-      ThrowReaderException(CacheError,"IncompatibleAPI");
++      {
++        if (profiles != (LinkedListInfo *) NULL)
++          profiles=DestroyLinkedList(profiles,RelinquishMagickMemory);
++        ThrowReaderException(CacheError,"IncompatibleAPI");
++      }
+     if (image->montage != (char *) NULL)
+       {
+         register char
+@@ -801,7 +809,12 @@ static Image *ReadMPCImage(const ImageInfo *image_info,ExceptionInfo *exception)
+               image->directory=(char *) ResizeQuantumMemory(image->directory,
+                 length+MaxTextExtent,sizeof(*image->directory));
+               if (image->directory == (char *) NULL)
+-                ThrowReaderException(CorruptImageError,"UnableToReadImageData");
++                {
++                  if (profiles != (LinkedListInfo *) NULL)
++                    profiles=DestroyLinkedList(profiles,RelinquishMagickMemory);
++                  ThrowReaderException(CorruptImageError,
++                    "UnableToReadImageData");
++                }
+               p=image->directory+strlen(image->directory);
+             }
+           c=ReadBlobByte(image);

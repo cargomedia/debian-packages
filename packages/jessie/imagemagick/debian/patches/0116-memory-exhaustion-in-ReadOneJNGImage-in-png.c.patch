@@ -1,0 +1,106 @@
+From ea8c3671f549c862772a6b8d3de81d5e1c3360f9 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Thu, 6 Jul 2017 12:20:03 -0400
+Subject: [PATCH] memory exhaustion in ReadOneJNGImage in png.c
+
+When identify JNG file that contains chunk data, imagemagick will
+allocate memory to store the chunk data in function ReadOneJNGImage
+
+Here is the critical code:
+
+    if (length != 0)
+      {
+        chunk=(unsigned char *)
+AcquireQuantumMemory(length,sizeof(*chunk));   //length can be
+controlled
+
+        if (chunk == (unsigned char *) NULL)
+          ThrowReaderException(ResourceLimitError,"MemoryAllocationFailed");
+
+        for (i=0; i < (ssize_t) length; i++)
+        {
+          int
+            c;
+
+          c=ReadBlobByte(image);
+          if (c == EOF)
+            break;
+          chunk[i]=(unsigned char) c;
+        }
+
+        p=chunk;
+      }
+
+length can be controlled as follow:
+
+    length=ReadBlobMSBLong(image);   //length is from file data
+    count=(unsigned int) ReadBlob(image,4,(unsigned char *) type);
+
+    if (logging != MagickFalse)
+      (void) LogMagickEvent(CoderEvent,GetMagickModule(),
+        "  Reading JNG chunk type %c%c%c%c, length: %.20g",
+        type[0],type[1],type[2],type[3],(double) length);
+
+    if (length > PNG_UINT_31_MAX || count == 0)
+      ThrowReaderException(CorruptImageError,"CorruptImage");
+
+So the only limitation is it must smaller than PNG_UINT_31_MAX, it is
+still very large.
+
+Also when chunk type is JDAT, it will write chunk data to file as follow:
+
+    if (memcmp(type,mng_JDAT,4) == 0)
+      {
+        /* Copy chunk to color_image->blob */
+
+        if (logging != MagickFalse)
+          (void) LogMagickEvent(CoderEvent,GetMagickModule(),
+            "    Copying JDAT chunk data to color_blob.");
+
+        if (length != 0)
+          {
+            (void) WriteBlob(color_image,length,chunk);
+//write very large chunk data to file
+            chunk=(unsigned char *) RelinquishMagickMemory(chunk);
+          }
+
+        continue;
+      }
+
+So a crafted jng file can cause memory exhausted and large I/O.
+
+testcase:
+https://github.com/jgj212/poc/blob/master/mem-jng
+
+Credit: ADLab of Venustech
+
+bug-debian: https;//bugs.debian.org/870107
+bug: https://github.com/ImageMagick/ImageMagick/issues/549
+origin: https://github.com/ImageMagick/ImageMagick/commit/9eedb5660f1704cde8e8cd784c5c2a09dd2fd60f
+---
+ coders/png.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/coders/png.c b/coders/png.c
+index 981e6ffc4..bd740ecc1 100644
+--- a/coders/png.c
++++ b/coders/png.c
+@@ -4173,6 +4173,8 @@ static Image *ReadOneJNGImage(MngInfo *mng_info,
+ 
+     if (length != 0)
+       {
++        if (length > GetBlobSize(image))
++          ThrowReaderException(CorruptImageError,"InsufficientImageDataInFile");
+         chunk=(unsigned char *) AcquireQuantumMemory(length,sizeof(*chunk));
+ 
+         if (chunk == (unsigned char *) NULL)
+@@ -5040,6 +5042,9 @@ static Image *ReadOneMNGImage(MngInfo* mng_info, const ImageInfo *image_info,
+ 
+         if (length != 0)
+           {
++            if (length > GetBlobSize(image))
++              ThrowReaderException(CorruptImageError,
++                "InsufficientImageDataInFile");
+             chunk=(unsigned char *) AcquireQuantumMemory(length,sizeof(*chunk));
+ 
+             if (chunk == (unsigned char *) NULL)

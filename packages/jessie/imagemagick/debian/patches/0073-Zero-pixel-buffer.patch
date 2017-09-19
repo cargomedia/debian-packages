@@ -1,0 +1,29 @@
+From bd5c9464ac7d8306ebc0b81c3323fefb55409020 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sun, 9 Jul 2017 09:06:26 -0400
+Subject: [PATCH] Zero pixel buffer
+
+Avoid a data leak in case of incorrect file by clearing a buffer
+
+bug:  https://github.com/ImageMagick/ImageMagick/issues/556
+bug-debian: https://bugs.debian.org/867893
+origin: https://github.com/ImageMagick/ImageMagick/commit/1737ac82b335e53376382c07b9a500d73dd2aa11
+
+(cherry picked from commit 1737ac82b335e53376382c07b9a500d73dd2aa11)
+---
+ coders/jpeg.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/coders/jpeg.c b/coders/jpeg.c
+index 29fcf812a..377866ab0 100644
+--- a/coders/jpeg.c
++++ b/coders/jpeg.c
+@@ -1283,6 +1283,8 @@ static Image *ReadJPEGImage(const ImageInfo *image_info,
+       ThrowReaderException(ResourceLimitError,"MemoryAllocationFailed");
+     }
+   jpeg_pixels=(JSAMPLE *) GetVirtualMemoryBlob(memory_info);
++  (void) ResetMagickMemory(jpeg_pixels,0,image->columns* 
++    jpeg_info.output_components*sizeof(*jpeg_pixels));
+   /*
+     Convert JPEG pixels to pixel packets.
+   */

@@ -1,0 +1,904 @@
+From 1b068ca646d049d946df05f681a89bbc214fd75d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <roucaries.bastien@gmail.com>
+Date: Wed, 14 Dec 2016 15:12:19 +0100
+Subject: [PATCH] Fix br tag
+
+find . -path './.git' -prune -o -type 'f' -name '*.html' -exec sed -i 's,<br>,<br />,g' {} \;
+
+Forwarded: Yes, https://github.com/ImageMagick/ImageMagick/issues/304
+---
+ www/api/Image++.html | 262 +++++++++++++++++++++++++--------------------------
+ 1 file changed, 131 insertions(+), 131 deletions(-)
+
+diff --git a/www/api/Image++.html b/www/api/Image++.html
+index a6a98283a..d25866d38 100644
+--- a/www/api/Image++.html
++++ b/www/api/Image++.html
+@@ -206,7 +206,7 @@ has been placed within a Blob, it may be read into a Magick++ Image via
+ a <a href="Image++.html#constructor_blob">constructor</a> or <a href="Image++.html#read">read()</a>
+ . Likewise, a Magick++ image may be written to a Blob via <a
+  href="Image++.html#write"> write()</a> .
+-<p>An example of using Image to write to a Blob follows: <br>
++<p>An example of using Image to write to a Blob follows: <br />
+   </p>
+ <pre class="code">
+ #include <Magick++.h> 
+@@ -228,7 +228,7 @@ int main(int argc,char **argv)
+   return 0; 
+ }
+ </pre>
+-<p><br>
++<p><br />
+ likewise, to read an image from a Blob, you could use one of the
+ following examples: </p>
+ <p>[ <font color="#000000">Entry condition for the following examples
+@@ -258,8 +258,8 @@ image.read( blob);
+ Image may be constructed in a number of ways. It may be constructed
+ from a file, a URL, or an encoded image (e.g. JPEG) contained in an
+ in-memory <a href="http://www.imagemagick.org/Magick++/Blob.html"> BLOB</a> . The available Image
+-constructors are shown in the following table: <br>
+-  <br>
++constructors are shown in the following table: <br />
++  <br />
+  
+ <ul><table bgcolor="#ffffff" border="1" width="100%">
+   <caption><b>Image Constructors</b></caption> <tbody>
+@@ -320,11 +320,11 @@ const
+ string &amp;magick_</font></td>
+     </tr>
+     <tr>
+-      <td><font size="-1">const size_t width_, </font> <br>
+-      <font size="-1">const size_t height_,</font> <br>
+-      <font size="-1">std::string map_,</font> <br>
++      <td><font size="-1">const size_t width_, </font> <br />
++      <font size="-1">const size_t height_,</font> <br />
++      <font size="-1">std::string map_,</font> <br />
+       <font size="-1">const <a href="http://www.imagemagick.org/Magick++/Enumerations.html#StorageType">
+-StorageType</a> type_,</font> <br>
++StorageType</a> type_,</font> <br />
+       <font size="-1">const void *pixels_</font></td>
+       <td><font size="-1">Construct a new Image based on an array of
+ image pixels. The pixel data must be in scanline order top-to-bottom.
+@@ -334,7 +334,7 @@ are [0..MaxRGB].  For example, to create a 640x480 image from
+ unsigned red-green-blue character data, use</font>
+       <p><font size="-1">   Image image( 640, 480, "RGB",
+ 0, pixels );</font> </p>
+-      <p><font size="-1">The parameters are as follows:</font> <br>
++      <p><font size="-1">The parameters are as follows:</font> <br />
+  
+       <table border="0" width="100%">
+         <tbody>
+@@ -390,7 +390,7 @@ image.addNoise(GaussianNoise);
+ image.write("myImage.tiff");
+ </pre>
+ adds gaussian noise to the image file "myImage.tiff".
+-<p>The operations supported by Image are shown in the following table: <br>
++<p>The operations supported by Image are shown in the following table: <br />
+  
+ <ul><table nosave="" border="1">
+   <caption><b>Image Image Manipulation Methods</b></caption> <tbody>
+@@ -402,11 +402,11 @@ adds gaussian noise to the image file "myImage.tiff".
+     <tr>
+       <td style="text-align: center;" valign="middle">
+       <div align="center"><a name="adaptiveThreshold"></a> <font
+- size="-1">adaptiveThreshold<br>
++ size="-1">adaptiveThreshold<br />
+       </font></div>
+       </td>
+       <td valign="middle"><font size="-1">size_t width, size_t
+-height, size_t offset = 0<br>
++height, size_t offset = 0<br />
+       </font></td>
+       <td valign="top"><font size="-1">Apply adaptive thresholding to
+ the image. Adaptive thresholding is useful if the ideal threshold level
+@@ -417,7 +417,7 @@ across the image. Adaptive thresholding works by evaluating the mean
+ and using the mean as the thresholding value. In order to remove
+ residual noise from the background, the threshold may be adjusted by
+ subtracting a constant <i>offset</i> (default zero) from the mean to
+-compute the threshold.</font><br>
++compute the threshold.</font><br />
+       </td>
+     </tr>
+     <tr>
+@@ -430,27 +430,27 @@ noiseType_</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="addNoiseChannel"></a>addNoiseChannel<br>
++ name="addNoiseChannel"></a>addNoiseChannel<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const ChannelType
+-channel_, const NoiseType noiseType_<br>
++channel_, const NoiseType noiseType_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Add noise to an image
+ channel with the specified noise type.</small><font size="-1"> The <span
+  style="font-style: italic;">channel_</span> parameter specifies the
+ channel to add noise to.  The </font><small>noiseType_ parameter
+-specifies the type of noise.<br>
++specifies the type of noise.<br />
+       </small></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="affineTransform"></a>affineTransform<br>
++ name="affineTransform"></a>affineTransform<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const DrawableAffine
+-&amp;affine<br>
++&amp;affine<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Transform image by
+-specified affine (or free transform) matrix.<br>
++specified affine (or free transform) matrix.<br />
+       </small></td>
+     </tr>
+     <tr>
+@@ -499,10 +499,10 @@ deviation of the Laplacian, in pixels.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="blurChannel"></a>blurChannel<br>
++ name="blurChannel"></a>blurChannel<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const ChannelType
+-channel_, const double radius_ = 0.0, const double sigma_ = 1.0<br>
++channel_, const double radius_ = 0.0, const double sigma_ = 1.0<br />
+       </small></td>
+       <td style="vertical-align: middle;"><font size="-1">Blur an image
+ channel. The <span style="font-style: italic;">channel_</span>
+@@ -590,9 +590,9 @@ width, height, or other  image  attributes by embedding <a
+     </tr>
+     <tr>
+       <td style="text-align: center;" valign="middle"><font size="-1"><a
+- name="compare"></a> compare<br>
++ name="compare"></a> compare<br />
+       </font></td>
+-      <td valign="middle"><font size="-1">const Image &amp;reference_<br>
++      <td valign="middle"><font size="-1">const Image &amp;reference_<br />
+       </font></td>
+       <td valign="top"><font size="-1">Compare current image with
+ another image. Sets <a href="Image++.html#meanErrorPerPixel">meanErrorPerPixel</a>
+@@ -601,7 +601,7 @@ another image. Sets <a href="Image++.html#meanErrorPerPixel">meanErrorPerPixel</
+ image. False is returned if the images are identical. An ErrorOption
+ exception is thrown if the reference image columns, rows, colorspace,
+ or
+-matte differ from the current image.</font><br>
++matte differ from the current image.</font><br />
+       </td>
+     </tr>
+     <tr>
+@@ -681,7 +681,7 @@ kernel to apply.</font></td>
+       <center><a name="display"></a> <font size="-1">display</font></center>
+       </td>
+       <td><font size="-1">void</font></td>
+-      <td><font size="-1">Display image on screen.</font> <br>
++      <td><font size="-1">Display image on screen.</font> <br />
+       <font size="-1"><b><font color="#ff0000">Caution: </font></b> if
+ an image format is is not compatible with the display visual (e.g.
+ JPEG on a colormapped display) then the original image will be
+@@ -784,7 +784,7 @@ vertical direction)</font></td>
+     <tr>
+       <td style="text-align: center;" rowspan="4">
+       <center><a name="floodFillColor"></a> <font size="-1">floodFill-</font>
+-      <br>
++      <br />
+       <font size="-1">Color</font></center>
+       </td>
+       <td><font size="-1">ssize_t x_, ssize_t y_, const <a
+@@ -823,7 +823,7 @@ method.</font></td>
+     <tr>
+       <td style="text-align: center;" rowspan="4">
+       <center><a name="floodFillTexture"></a> <font size="-1">floodFill-</font>
+-      <br>
++      <br />
+       <font size="-1">Texture</font></center>
+       </td>
+       <td><font size="-1">ssize_t x_, ssize_t y_,  const
+@@ -904,10 +904,10 @@ specified by 'sigma_'.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="gaussianBlurChannel"></a>gaussianBlurChannel<br>
++ name="gaussianBlurChannel"></a>gaussianBlurChannel<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const ChannelType
+-channel_, const double radius_ = 0.0, const double sigma_ = 1.0<br>
++channel_, const double radius_ = 0.0, const double sigma_ = 1.0<br />
+       </small></td>
+       <td style="vertical-align: middle;"><font size="-1">Gaussian blur
+ an image channel. </font><font size="-1">The <span
+@@ -920,11 +920,11 @@ specified by 'sigma_'.</font></td>
+     </tr>
+     <tr>
+       <td style="text-align: center;" valign="middle"><font size="-1"><a
+- name="haldClut"></a> haldClut<br>
++ name="haldClut"></a> haldClut<br />
+       </font></td>
+-      <td valign="middle"><font size="-1">const Image &amp;reference_<br>
++      <td valign="middle"><font size="-1">const Image &amp;reference_<br />
+       </font></td>
+-      <td valign="top"><font size="-1">apply a Hald color lookup table to the image.</font><br>
++      <td valign="top"><font size="-1">apply a Hald color lookup table to the image.</font><br />
+       </td>
+     </tr>
+     <tr>
+@@ -958,10 +958,10 @@ specify a header string to print above the image.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: top; text-align: center;"><small><a
+- name="level"></a>level<br>
++ name="level"></a>level<br />
+       </small></td>
+       <td style="vertical-align: top;"><small>const double black_point,
+-const double white_point, const double mid_point=1.0<br>
++const double white_point, const double mid_point=1.0<br />
+       </small></td>
+       <td style="vertical-align: top;"><small>Level image. Adjust the
+ levels of the image by scaling the colors falling between specified
+@@ -973,16 +973,16 @@ specifies a gamma correction to apply to the image. White point
+ specifies the lightest color in the image.  Colors brighter than
+ the white point are set to the maximum quantum value. The black and
+ white point have the valid range 0 to MaxRGB while mid (gamma) has a
+-useful range of 0 to ten.<br>
++useful range of 0 to ten.<br />
+       </small></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="levelChannel"></a>levelChannel<br>
++ name="levelChannel"></a>levelChannel<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const ChannelType
+ channel, const double black_point, const double white_point, const
+-double mid_point=1.0<br>
++double mid_point=1.0<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Level image channel.
+ Adjust the levels of the image channel by scaling the values falling
+@@ -994,7 +994,7 @@ specifies a gamma correction to apply to the image. White point
+ specifies the lightest color in the image. Colors brighter than the
+ white point are set to the maximum quantum value. The black and white
+ point have the valid range 0 to MaxRGB while mid (gamma) has a useful
+-range of 0 to ten.<br>
++range of 0 to ten.<br />
+       </small></td>
+     </tr>
+     <tr>
+@@ -1076,17 +1076,17 @@ change).</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="motionBlur"></a>motionBlur<br>
++ name="motionBlur"></a>motionBlur<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const double radius_,
+-const double sigma_, const double angle_<br>
++const double sigma_, const double angle_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Motion blur image with
+ specified blur factor. The radius_ parameter specifies the radius of
+ the Gaussian, in pixels, not counting the center pixel.  The
+ sigma_ parameter specifies the standard deviation of the Laplacian, in
+ pixels. The angle_ parameter specifies the angle the object appears to
+-be coming from (zero degrees is from the right).<br>
++be coming from (zero degrees is from the right).<br />
+       </small></td>
+     </tr>
+     <tr>
+@@ -1156,10 +1156,10 @@ valid after calling ping.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="process"></a>process<br>
++ name="process"></a>process<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>std::string name_,
+-const ssize_t argc_, char **argv_<br>
++const ssize_t argc_, char **argv_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Execute the named
+ process module, passing any arguments via an argument vector, with
+@@ -1167,7 +1167,7 @@ argc_
+ specifying the number of arguments in the vector, and argv_ passing the
+ address of an array of null-terminated C strings which constitute the
+ argument vector. An exception is thrown if the requested process module
+-does not exist, fails to load, or fails during execution.</small><br>
++does not exist, fails to load, or fails during execution.</small><br />
+       </td>
+     </tr>
+     <tr>
+@@ -1248,7 +1248,7 @@ require the pixels to be normalized [0..1]. The other types are
+ unsigned red-green-blue character data, use</font>
+       <p><font size="-1">  image.read( 640, 480, "RGB", CharPixel,
+ pixels );</font> </p>
+-      <p><font size="-1">The parameters are as follows:</font> <br>
++      <p><font size="-1">The parameters are as follows:</font> <br />
+  
+       <table border="0" width="100%">
+         <tbody>
+@@ -1293,10 +1293,10 @@ values and type_ parameters.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="randomThreshold"></a>randomThreshold<br>
++ name="randomThreshold"></a>randomThreshold<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const Geometry
+-&amp;thresholds_<br>
++&amp;thresholds_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Random threshold the
+ image. Changes the value of individual pixels based on the intensity of
+@@ -1305,19 +1305,19 @@ low-contrast, two color image.  The thresholds_ argument is a
+ geometry containing LOWxHIGH thresholds.  If the string contains
+ 2x2, 3x3, or 4x4, then an ordered dither of order 2, 3, or 4 will be
+ performed instead. This is a very fast alternative to 'quantize' based
+-dithering.<br>
++dithering.<br />
+       </small></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="randomThresholdChannel"></a>randomThresholdChannel<br>
++ name="randomThresholdChannel"></a>randomThresholdChannel<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const Geometry
+-&amp;thresholds_, const ChannelType channel_<br>
++&amp;thresholds_, const ChannelType channel_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Random threshold an
+ image channel. Similar to <a href="Image++.html#randomThreshold">randomThreshold</a>()
+-but restricted to the specified channel.<br>
++but restricted to the specified channel.<br />
+       </small></td>
+     </tr>
+     <tr>
+@@ -1356,7 +1356,7 @@ number of degrees.</font></td>
+       <td style="text-align: center;">
+       <center><a name="segment"></a> <font size="-1">segment</font></center>
+       </td>
+-      <td><font size="-1">double clusterThreshold_ = 1.0,</font> <br>
++      <td><font size="-1">double clusterThreshold_ = 1.0,</font> <br />
+       <font size="-1">double smoothingThreshold_ = 1.5</font></td>
+       <td><font size="-1">Segment (coalesce similar image components)
+ by analyzing the histograms of the color components and identifying
+@@ -1376,7 +1376,7 @@ second derivative.  The default is 1.5.</font></td>
+       <center><a name="shade"></a> <font size="-1">shade</font></center>
+       </td>
+       <td><font size="-1">double azimuth_ = 30, double elevation_ = 30,</font>
+-      <br>
++      <br />
+       <font size="-1">bool colorShading_ = false</font></td>
+       <td><font size="-1">Shade image using distant light source.
+ Specify <i> azimuth_</i> and <i>elevation_</i> as the 
+@@ -1406,10 +1406,10 @@ standard deviation of the Laplacian, in pixels.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="sharpenChannel"></a>sharpenChannel<br>
++ name="sharpenChannel"></a>sharpenChannel<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const ChannelType
+-channel_, const double radius_ = 0.0, const double sigma_ = 1.0<br>
++channel_, const double radius_ = 0.0, const double sigma_ = 1.0<br />
+       </small></td>
+       <td style="vertical-align: middle;"><font size="-1">Sharpen pixel
+ quantums in an image channel  The <span
+@@ -1569,11 +1569,11 @@ difference amount.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="unsharpmaskChannel"></a>unsharpmaskChannel<br>
++ name="unsharpmaskChannel"></a>unsharpmaskChannel<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const ChannelType
+ channel_, const double radius_, const double sigma_, const double
+-amount_, const double threshold_<br>
++amount_, const double threshold_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Sharpen an image
+ channel using the unsharp mask algorithm. The <span
+@@ -1601,7 +1601,7 @@ difference amount.</font></td>
+       </td>
+       <td><font size="-1">const string &amp;imageSpec_</font></td>
+       <td><font size="-1">Write image to a file using filename i<i>mageSpec_</i>
+-.</font> <br>
++.</font> <br />
+       <font size="-1"><b><font color="#ff0000">Caution: </font></b> if
+ an image format is selected which is capable of supporting fewer
+ colors than the original image or quantization has been requested, the
+@@ -1614,7 +1614,7 @@ original if this is a problem.</font></td>
+  href="http://www.imagemagick.org/Magick++/Blob.html"> BLOB</a> stored in <i>blob_</i>. The <i>magick</i>_
+ parameter specifies the image format to write (defaults to <a
+  href="Image++.html#magick">magick</a> ). The depth_ parameter species the image
+-depth (defaults to <a href="Image++.html#depth"> depth</a> ).</font> <br>
++depth (defaults to <a href="Image++.html#depth"> depth</a> ).</font> <br />
+       <font size="-1"><b><font color="#ff0000">Caution: </font></b> if
+ an image format is selected which is capable of supporting fewer
+ colors than the original image or quantization has been requested, the
+@@ -1640,7 +1640,7 @@ want to extract scanline 1 of a 640x480 image as character data in
+ red-green-blue order:</font>
+       <p><font size="-1">  image.write(0,0,640,1,"RGB",0,pixels);</font>
+       </p>
+-      <p><font size="-1">The parameters are as follows:</font> <br>
++      <p><font size="-1">The parameters are as follows:</font> <br />
+  
+       <table border="0" width="100%">
+         <tbody>
+@@ -1718,7 +1718,7 @@ image.density(Geometry(150,150));   // could also use image.density("150x150")
+ image.write(filename)
+ </pre>
+ The supported image attributes and the method arguments required to
+-obtain them are shown in the following table: <br>
++obtain them are shown in the following table: <br />
+  
+ <ul><table border="1">
+   <caption>Image Attributes</caption> <tbody>
+@@ -1761,7 +1761,7 @@ and Postscript or TrueType fonts. Enabled by default.</font></td>
+     <tr>
+       <td>
+       <center><a name="animationDelay"></a> <font size="-1">animation-</font>
+-      <br>
++      <br />
+       <font size="-1">Delay</font></center>
+       </td>
+       <td><font size="-1">size_t (0 to 65535)</font></td>
+@@ -1775,7 +1775,7 @@ sequence  of GIF images within Netscape.</font></td>
+     <tr>
+       <td>
+       <center><a name="animationIterations"></a> <font size="-1">animation-</font>
+-      <br>
++      <br />
+       <font size="-1">Iterations</font></center>
+       </td>
+       <td><font size="-1">size_t</font></td>
+@@ -1786,12 +1786,12 @@ sequence  of GIF images within Netscape.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle; text-align: center;"><small><a
+- name="attribute"></a>attribute<br>
++ name="attribute"></a>attribute<br />
+       </small></td>
+-      <td style="vertical-align: middle;"><small>string<br>
++      <td style="vertical-align: middle;"><small>string<br />
+       </small></td>
+       <td style="vertical-align: top;" valign="top"><small>const
+-std::string name_<br>
++std::string name_<br />
+       </small></td>
+       <td style="vertical-align: top;" valign="top"><small>const
+ std::string name_, const std::string value_</small></td>
+@@ -1800,13 +1800,13 @@ image attribute. Any number of named attributes may be attached to the
+ image. For example, the image comment is a named image attribute with
+ the name "comment". EXIF tags are attached to the image as named
+ attributes. Use the syntax "EXIF:&lt;tag&gt;" to request an EXIF tag
+-similar to "EXIF:DateTime".</small><br>
++similar to "EXIF:DateTime".</small><br />
+       </td>
+     </tr>
+     <tr>
+       <td>
+       <center><a name="backgroundColor"></a> <font size="-1">background-</font>
+-      <br>
++      <br />
+       <font size="-1">Color</font></center>
+       </td>
+       <td><font size="-1"><a href="http://www.imagemagick.org/Magick++/Color.html">Color</a> </font></td>
+@@ -1818,7 +1818,7 @@ similar to "EXIF:DateTime".</small><br>
+     <tr>
+       <td>
+       <center><a name="backgroundTexture"></a> <font size="-1">background-</font>
+-      <br>
++      <br />
+       <font size="-1">Texture</font></center>
+       </td>
+       <td><font size="-1">string</font></td>
+@@ -1897,16 +1897,16 @@ shared by all Image objects.</font></td>
+     </tr>
+     <tr>
+       <td style="vertical-align: middle;" valign="middle"><small><a
+- name="channelDepth"></a>channelDepth<br>
++ name="channelDepth"></a>channelDepth<br />
+       </small></td>
+       <td style="vertical-align: middle;" valign="middle"><small>size_t
+-<br>
++<br />
+       </small></td>
+       <td style="vertical-align: middle;" valign="middle"><small>const
+-ChannelType channel_<br>
++ChannelType channel_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const ChannelType
+-channel_, const size_t depth_<br>
++channel_, const size_t depth_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Channel modulus depth.
+ The channel modulus depth represents the minimum number of bits
+@@ -1920,13 +1920,13 @@ not altered. There is no attribute associated with the modulus depth so
+ the current modulus depth is obtained by inspecting the pixels. As a
+ result, the depth returned may be less than the most recently set
+ channel depth. Subsequent image processing may result in increasing the
+-channel depth.<br>
++channel depth.<br />
+       </small></td>
+     </tr>
+     <tr>
+       <td>
+       <center><a name="chromaBluePrimary"></a> <font size="-1">chroma-</font>
+-      <br>
++      <br />
+       <font size="-1">BluePrimary</font></center>
+       </td>
+       <td><font size="-1">double x &amp; y</font></td>
+@@ -1938,7 +1938,7 @@ y=0.06)</font></td>
+     <tr>
+       <td>
+       <center><a name="chromaGreenPrimary"></a> <font size="-1">chroma-</font>
+-      <br>
++      <br />
+       <font size="-1">GreenPrimary</font></center>
+       </td>
+       <td><font size="-1">double x &amp; y</font></td>
+@@ -1950,7 +1950,7 @@ y=0.6)</font></td>
+     <tr>
+       <td>
+       <center><a name="chromaRedPrimary"></a> <font size="-1">chroma-</font>
+-      <br>
++      <br />
+       <font size="-1">RedPrimary</font></center>
+       </td>
+       <td><font size="-1">double x &amp; y</font></td>
+@@ -1962,7 +1962,7 @@ y=0.33)</font></td>
+     <tr>
+       <td>
+       <center><a name="chromaWhitePoint"></a> <font size="-1">chroma-</font>
+-      <br>
++      <br />
+       <font size="-1">WhitePoint</font></center>
+       </td>
+       <td><font size="-1">double x &amp; y</font></td>
+@@ -2022,14 +2022,14 @@ are close to the target color in RGB space.</font></td>
+     </tr>
+     <tr>
+       <td valign="middle">
+-      <div align="center"><a name="colorMapSize"></a> <font size="-1">colorMapSize<br>
++      <div align="center"><a name="colorMapSize"></a> <font size="-1">colorMapSize<br />
+       </font></div>
+       </td>
+-      <td valign="middle"><font size="-1">size_t<br>
++      <td valign="middle"><font size="-1">size_t<br />
+       </font></td>
+-      <td valign="middle"><font size="-1">void<br>
++      <td valign="middle"><font size="-1">void<br />
+       </font></td>
+-      <td valign="middle"><font size="-1">size_t entries_<br>
++      <td valign="middle"><font size="-1">size_t entries_<br />
+       </font></td>
+       <td valign="middle"><font size="-1">Number of entries in the
+ colormap. Setting the colormap size may extend or truncate the
+@@ -2038,7 +2038,7 @@ The maximum number of supported entries is specified by the <i>MaxColormapSize</
+ and is dependent on the value of QuantumDepth when ImageMagick is
+ compiled. An exception is thrown if more entries are requested than may
+ be supported. Care should be taken when truncating the colormap to
+-ensure that the image colormap indexes reference valid colormap entries.</font><br>
++ensure that the image colormap indexes reference valid colormap entries.</font><br />
+       </td>
+     </tr>
+     <tr>
+@@ -2088,7 +2088,7 @@ composition is implicitly used (such as for image flattening).</font></td>
+     <tr>
+       <td>
+       <center><a name="compressType"></a> <font size="-1">compress-</font>
+-      <br>
++      <br />
+       <font size="-1">Type</font></center>
+       </td>
+       <td><font size="-1"><a href="http://www.imagemagick.org/Magick++/Enumerations.html#CompressionType">CompressionType</a>
+@@ -2112,16 +2112,16 @@ from ImageMagick as it executes.</font></td>
+     </tr>
+     <tr>
+       <td style="text-align: center; vertical-align: middle;"><small><a
+- name="defineValue"></a>defineValue<br>
++ name="defineValue"></a>defineValue<br />
+       </small></td>
+-      <td style="vertical-align: middle; text-align: left;"><small>string<br>
++      <td style="vertical-align: middle; text-align: left;"><small>string<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const std::string
+-&amp;magick_, const std::string &amp;key_<br>
++&amp;magick_, const std::string &amp;key_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const std::string
+ &amp;magick_, const std::string &amp;key_,  const std::string
+-&amp;value_<br>
++&amp;value_<br />
+       </small></td>
+       <td style="vertical-align: top;"><small>Set or obtain a
+ definition string to applied when encoding or decoding the specified
+@@ -2130,20 +2130,20 @@ is designated by the <span style="font-style: italic;">magick_</span>
+ argument, the format-specific key is designated by <span
+  style="font-style: italic;">key_</span>, and the associated value is
+ specified by <span style="font-style: italic;">value_</span>. See the
+-defineSet() method if the key must be removed entirely.</small><br>
++defineSet() method if the key must be removed entirely.</small><br />
+       </td>
+     </tr>
+     <tr>
+       <td style="text-align: center; vertical-align: middle;"><small><a
+- name="defineSet"></a>defineSet<br>
++ name="defineSet"></a>defineSet<br />
+       </small></td>
+-      <td style="vertical-align: middle; text-align: left;"><small>bool<br>
++      <td style="vertical-align: middle; text-align: left;"><small>bool<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const std::string
+-&amp;magick_, const std::string &amp;key_<br>
++&amp;magick_, const std::string &amp;key_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>const std::string
+-&amp;magick_, const std::string &amp;key_, bool flag_<br>
++&amp;magick_, const std::string &amp;key_, bool flag_<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small>Set or obtain a
+ definition flag to applied when encoding or decoding the specified
+@@ -2154,7 +2154,7 @@ creates a value-less define with that format and key. Passing the <span
+  style="font-style: italic;">f</span><span style="font-style: italic;">lag_</span>
+ value 'false' removes any existing matching definition. The method
+ returns 'true' if a matching key exists, and 'false' if no matching key
+-exists.<br>
++exists.<br />
+       </small></td>
+     </tr>
+     <tr>
+@@ -2342,14 +2342,14 @@ color  difference.</font></td>
+     <tr>
+       <td>
+       <center><a name="gifDisposeMethod"></a> <font size="-1">gifDispose-</font>
+-      <br>
++      <br />
+       <font size="-1">Method</font></center>
+       </td>
+-      <td><font size="-1">size_t</font> <br>
+-      <font size="-1">{ 0 = Disposal not specified,</font> <br>
+-      <font size="-1">1 = Do not dispose of graphic,</font> <br>
++      <td><font size="-1">size_t</font> <br />
++      <font size="-1">{ 0 = Disposal not specified,</font> <br />
++      <font size="-1">1 = Do not dispose of graphic,</font> <br />
+       <font size="-1">3 = Overwrite graphic with background color,</font>
+-      <br>
++      <br />
+       <font size="-1">4 = Overwrite graphic with previous graphic. }</font></td>
+       <td><font size="-1">void</font></td>
+       <td><font size="-1">size_t disposeMethod_</font></td>
+@@ -2374,7 +2374,7 @@ International Color Consortium</a> for the format of ICC color profiles.</font><
+     <tr>
+       <td>
+       <center><a name="interlaceType"></a> <font size="-1">interlace-</font>
+-      <br>
++      <br />
+       <font size="-1">Type</font></center>
+       </td>
+       <td><font size="-1"><a href="http://www.imagemagick.org/Magick++/Enumerations.html#InterlaceType">InterlaceType</a>
+@@ -2449,7 +2449,7 @@ an opaque one.</font></td>
+     <tr>
+       <td>
+       <center><a name="meanErrorPerPixel"></a> <font size="-1">meanError-</font>
+-      <br>
++      <br />
+       <font size="-1">PerPixel</font></center>
+       </td>
+       <td><font size="-1">double</font></td>
+@@ -2461,16 +2461,16 @@ to true and the image has just been quantized.</font></td>
+     </tr>
+     <tr>
+       <td style="text-align: center; vertical-align: middle;"><font
+- size="-1"><a name="modulusDepth"></a>modulusDepth<br>
++ size="-1"><a name="modulusDepth"></a>modulusDepth<br />
+       </font></td>
+       <td style="text-align: left; vertical-align: middle;"><small>size_t
+-<br>
++<br />
+       </small></td>
+       <td style="text-align: left; vertical-align: middle;"><small><font
+- size="-1"><small>void<br>
++ size="-1"><small>void<br />
+       </small></font></small></td>
+       <td style="text-align: left; vertical-align: middle;"><small>size_t
+-depth_<br>
++depth_<br />
+       </small></td>
+       <td style="text-align: left; vertical-align: middle;"><small>Image
+ modulus depth (minimum number of bits required to support
+@@ -2479,7 +2479,7 @@ depth may be decreased by supplying a value which is less than the
+ current value, updating the pixels (reducing accuracy) to the new
+ depth.
+ The pixel modulus depth can not be increased over the current value
+-using this method.<br>
++using this method.<br />
+       </small></td>
+     </tr>
+     <tr>
+@@ -2494,7 +2494,7 @@ using this method.<br>
+     <tr>
+       <td>
+       <center><a name="montageGeometry"></a> <font size="-1">montage-</font>
+-      <br>
++      <br />
+       <font size="-1">Geometry</font></center>
+       </td>
+       <td><font size="-1"><a href="http://www.imagemagick.org/Magick++/Geometry.html">Geometry</a> </font></td>
+@@ -2506,7 +2506,7 @@ Only valid for montage images.</font></td>
+     <tr>
+       <td>
+       <center><a name="normalizedMaxError"></a> <font size="-1">normalized-</font>
+-      <br>
++      <br />
+       <font size="-1">MaxError</font></center>
+       </td>
+       <td><font size="-1">double</font></td>
+@@ -2519,7 +2519,7 @@ is set to true and the image has just been quantized.</font></td>
+     <tr>
+       <td>
+       <center><a name="normalizedMeanError"></a> <font size="-1">normalized-</font>
+-      <br>
++      <br />
+       <font size="-1">MeanError</font></center>
+       </td>
+       <td><font size="-1">double</font></td>
+@@ -2531,18 +2531,18 @@ is set to true and the image has just been quantized.</font></td>
+     </tr>
+     <tr>
+       <td style="text-align: center; vertical-align: middle;"><small><a
+- name="orientation"></a>orientation<br>
++ name="orientation"></a>orientation<br />
+       </small></td>
+       <td style="vertical-align: middle;"><small><a
+  href="http://www.imagemagick.org/Magick++/Enumerations.html#OrientationType">OrientationType</a></small></td>
+-      <td style="vertical-align: top;"><small>void</small><br>
++      <td style="vertical-align: top;"><small>void</small><br />
+       </td>
+       <td style="vertical-align: middle;"><small><a
+  href="http://www.imagemagick.org/Magick++/Enumerations.html#OrientationType">OrientationType</a>
+ orientation_</small></td>
+       <td style="vertical-align: top;"><small>Image orientation.
+  Supported by some file formats such as DPX and TIFF. Useful for
+-turning the right way up.<br>
++turning the right way up.<br />
+       </small></td>
+     </tr>
+     <tr>
+@@ -2553,7 +2553,7 @@ turning the right way up.<br>
+       <td><font size="-1">void</font></td>
+       <td bgcolor="#666666"><font size="-1"> </font></td>
+       <td><font size="-1">The number of runlength-encoded packets in</font>
+-      <br>
++      <br />
+       <font size="-1">the image</font></td>
+     </tr>
+     <tr>
+@@ -2596,19 +2596,19 @@ image (such as for a scene in an animation)</font></p>
+     </tr>
+     <tr>
+       <td valign="top">
+-      <div align="center"><a name="profile"></a> <small>profile</small><br>
++      <div align="center"><a name="profile"></a> <small>profile</small><br />
+       </div>
+       </td>
+-      <td valign="top"><a href="http://www.imagemagick.org/Magick++/Blob.html"><small> Blob</small><small><br>
++      <td valign="top"><a href="http://www.imagemagick.org/Magick++/Blob.html"><small> Blob</small><small><br />
+       </small></a> </td>
+-      <td valign="top"><small>const std::string name_</small><small><br>
++      <td valign="top"><small>const std::string name_</small><small><br />
+       </small></td>
+       <td valign="top"><small>const std::string name_, const Blob
+-&amp;colorProfile_</small><small><br>
++&amp;colorProfile_</small><small><br />
+       </small></td>
+       <td valign="top"><small>Get/set/remove </small><small> a named
+ profile</small><small>. Valid names include </small><small>"*",
+-"8BIM", "ICM", "IPTC", or a user/format-defined profile name. </small><br>
++"8BIM", "ICM", "IPTC", or a user/format-defined profile name. </small><br />
+       </td>
+     </tr>
+     <tr>
+@@ -2623,7 +2623,7 @@ profile</small><small>. Valid names include </small><small>"*",
+     <tr>
+       <td>
+       <center><a name="quantizeColors"></a> <font size="-1">quantize-</font>
+-      <br>
++      <br />
+       <font size="-1">Colors</font></center>
+       </td>
+       <td><font size="-1">size_t</font></td>
+@@ -2637,7 +2637,7 @@ option will have any duplicate or unused colors removed.</font></td>
+     <tr>
+       <td>
+       <center><a name="quantizeColorSpace"></a> <font size="-1">quantize-</font>
+-      <br>
++      <br />
+       <font size="-1">ColorSpace</font></center>
+       </td>
+       <td><font size="-1"><a href="http://www.imagemagick.org/Magick++/Enumerations.html#ColorspaceType">ColorspaceType</a>
+@@ -2654,7 +2654,7 @@ results when color reducing an image.</font></td>
+     <tr>
+       <td>
+       <center><a name="quantizeDither"></a> <font size="-1">quantize-</font>
+-      <br>
++      <br />
+       <font size="-1">Dither</font></center>
+       </td>
+       <td><font size="-1">bool</font></td>
+@@ -2673,7 +2673,7 @@ be set for this option to take effect.</font></td>
+     <tr>
+       <td>
+       <center><a name="quantizeTreeDepth"></a> <font size="-1">quantize-</font>
+-      <br>
++      <br />
+       <font size="-1">TreeDepth</font></center>
+       </td>
+       <td><font size="-1">size_t </font></td>
+@@ -2687,7 +2687,7 @@ may be used to manually adjust the tree depth.</font></td>
+     <tr>
+       <td>
+       <center><a name="renderingIntent"></a> <font size="-1">rendering-</font>
+-      <br>
++      <br />
+       <font size="-1">Intent</font></center>
+       </td>
+       <td><font size="-1"><a href="http://www.imagemagick.org/Magick++/Enumerations.html#RenderingIntent">RenderingIntent</a>
+@@ -2700,7 +2700,7 @@ render_</font></td>
+     <tr>
+       <td>
+       <center><a name="resolutionUnits"></a> <font size="-1">resolution-</font>
+-      <br>
++      <br />
+       <font size="-1">Units</font></center>
+       </td>
+       <td><font size="-1"><a href="http://www.imagemagick.org/Magick++/Enumerations.html#ResolutionType">ResolutionType</a>
+@@ -2879,14 +2879,14 @@ stroke (outlines).</font></td>
+     </tr>
+     <tr>
+       <td valign="middle">
+-      <div align="center"><a name="textEncoding"></a> <small>textEncoding</small><br>
++      <div align="center"><a name="textEncoding"></a> <small>textEncoding</small><br />
+       </div>
+       </td>
+-      <td valign="middle"><small>string</small><small><br>
++      <td valign="middle"><small>string</small><small><br />
+       </small></td>
+-      <td valign="middle"><small>void</small><small><br>
++      <td valign="middle"><small>void</small><small><br />
+       </small></td>
+-      <td valign="middle"><small>const std::string &amp;encoding_</small><small><br>
++      <td valign="middle"><small>const std::string &amp;encoding_</small><small><br />
+       </small></td>
+       <td valign="top"><small>Specify the code set to use for text
+ annotations. The only character encoding which may be specified at
+@@ -2894,7 +2894,7 @@ this time is "UTF-8" for representing </small><small><a
+  href="http://www.unicode.org/"> Unicode </a> </small><small>as a
+ sequence of bytes. Specify an empty string to use the default ASCII
+ encoding. Successful text annotation using Unicode may require fonts
+-designed to support Unicode.</small><br>
++designed to support Unicode.</small><br />
+       </td>
+     </tr>
+     <tr>
+@@ -3011,7 +3011,7 @@ modified, the Image's <a href="Image++.html#modifyImage">modifyImage()</a> metho
+ should be invoked to reduce the reference count on the underlying image
+ to one. If this is not done, then it is possible for a previous
+ generation of the image to be modified due to the use of reference
+-counting when copying or constructing an Image.<br>
++counting when copying or constructing an Image.<br />
+ </p>
+ <p>Depending on the capabilities of the operating system, and the
+ relationship of the window to the image, the pixel cache may be a copy
+@@ -3047,7 +3047,7 @@ image.syncPixels();
+ image.write("horse.png");
+ </pre>
+ </p>
+-<p>The image cache supports the following methods: <br>
++<p>The image cache supports the following methods: <br />
+  
+ <ul><table border="1" width="100%">
+   <caption>Image Cache Methods</caption> <tbody>

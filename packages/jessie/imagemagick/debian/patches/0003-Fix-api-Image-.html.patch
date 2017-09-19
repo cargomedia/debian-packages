@@ -1,0 +1,85 @@
+From 1f650cd8663105d6552577178fde7075dbe73523 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <roucaries.bastien@gmail.com>
+Date: Wed, 14 Dec 2016 15:18:12 +0100
+Subject: [PATCH] Fix api/Image++.html
+
+Forwarded: Yes, https://github.com/ImageMagick/ImageMagick/issues/304
+---
+ www/api/Image++.html | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/www/api/Image++.html b/www/api/Image++.html
+index d25866d38..03886f9df 100644
+--- a/www/api/Image++.html
++++ b/www/api/Image++.html
+@@ -118,7 +118,7 @@ int main(int argc,char **argv)
+     // Write the image to a file 
+     image.write( "x.gif" ); 
+   } 
+-  catch( Exception &error_ ) 
++  catch( Exception &amp;error_ ) 
+     { 
+       cout &lt;&lt; "Caught exception: " &lt;&lt; error_.what() &lt;&lt; endl; 
+       return 1; 
+@@ -142,8 +142,8 @@ following:
+   <li> Write the third image to a file.</li>
+ </ol>
+ <pre class="code">
+-#include <Magick++.h> 
+-#include <iostream> 
++#include &lt;Magick++.h> 
++#include &lt;iostream> 
+ using namespace std; 
+ using namespace Magick; 
+ int main(int argc,char **argv) 
+@@ -166,7 +166,7 @@ and the image data is never copied.
+ a 100 by 100 pixel white image with a red pixel in the center and
+ writes it to a file: </p>
+ <pre class="code">
+-#include <Magick++.h> 
++#include &lt;Magick++.h> 
+ using namespace std; 
+ using namespace Magick; 
+ int main(int argc,char **argv) 
+@@ -185,7 +185,6 @@ image.quantizeColorSpace( GRAYColorspace );
+ image.quantizeColors( 256 ); 
+ image.quantize( );
+ </pre>
+-</p>
+ <p>or, more simply: </p>
+ <pre class="code">
+  image.type( GrayscaleType );
+@@ -209,7 +208,7 @@ a <a href="Image++.html#constructor_blob">constructor</a> or <a href="Image++.ht
+ <p>An example of using Image to write to a Blob follows: <br />
+   </p>
+ <pre class="code">
+-#include <Magick++.h> 
++#include &lt;Magick++.h> 
+ using namespace std; 
+ using namespace Magick; 
+ int main(int argc,char **argv) 
+@@ -221,7 +220,7 @@ int main(int argc,char **argv)
+   // Write to BLOB in JPEG format 
+   Blob blob; 
+   image.magick( "JPEG" ) // Set JPEG output format 
+-  image.write( &blob );
++  image.write( &amp;blob );
+ 
+   [ Use BLOB data (in JPEG format) here ]
+ 
+@@ -755,7 +754,7 @@ background color.</font></td>
+     </tr>
+     <tr>
+       <td style="text-align: center;" rowspan="4">
+-      <center><a name="extent"></a> <font size="-1">extent</font></td>
++      <center><a name="extent"></a> <font size="-1">extent</font></center></td>
+       <td><font size="-1">const <a href="http://www.imagemagick.org/Magick++/Geometry.html"> Geometry</a> &amp;geometry_</font></td>
+       <td rowspan="2"><font size="-1">extends the image as defined by the geometry, gravity, and image background color.</font></td>
+     </tr>
+@@ -3202,6 +3201,5 @@ the region set by a preceding getPixels or getConstPixels call.</font></td>
+ 
+   <script src="https://localhost/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <script src="../js/magick.html"></script>
+-</div>
+ </body>
+ </html>

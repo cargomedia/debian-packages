@@ -1,0 +1,9 @@
+#!/bin/sh
+
+CONVERT=convert-im6.q16hdri
+
+set -e
+$CONVERT rose: pdf:/dev/null
+$CONVERT rose: png:/dev/null
+$CONVERT rose: jpeg:/dev/null
+$CONVERT rose: bmp:/dev/null

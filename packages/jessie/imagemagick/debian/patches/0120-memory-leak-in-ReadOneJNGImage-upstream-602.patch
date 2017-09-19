@@ -1,0 +1,95 @@
+From 75ca6182e00e351dcd699cc49fe639800a821da9 Mon Sep 17 00:00:00 2001
+From: Glenn Randers-Pehrson <glennrp@gmail.com>
+Date: Sun, 23 Jul 2017 10:46:48 -0400
+Subject: [PATCH] memory leak in ReadOneJNGImage (upstream 602)
+
+Fix a leak triggered by a corrupted file
+
+bug-debian: https://bugs.debian.org/870115
+bug: https://github.com/ImageMagick/ImageMagick/issues/602
+origin:  https://github.com/ImageMagick/ImageMagick/commit/4d0ac66c9778faebd2d1fac7140462b043626458
+---
+ coders/png.c | 49 ++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 44 insertions(+), 5 deletions(-)
+
+diff --git a/coders/png.c b/coders/png.c
+index 1f7e4fcc8..082bdb849 100644
+--- a/coders/png.c
++++ b/coders/png.c
+@@ -4006,7 +4006,6 @@ static Image *ReadPNGImage(const ImageInfo *image_info,ExceptionInfo *exception)
+ }
+ 
+ 
+-
+ #if defined(JNG_SUPPORTED)
+ /*
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@@ -4040,6 +4039,36 @@ static Image *ReadPNGImage(const ImageInfo *image_info,ExceptionInfo *exception)
+ %    o exception: return any errors or warnings in this structure.
+ %
+ */
++
++void
++DestroyJNG(unsigned char *chunk,Image **color_image,
++   ImageInfo **color_image_info,
++   Image **alpha_image,ImageInfo **alpha_image_info)
++
++{
++  if (chunk)
++    (void) RelinquishMagickMemory(chunk);
++  if (*color_image_info)
++  {
++    DestroyImageInfo(*color_image_info);
++    *color_image_info = (ImageInfo *)NULL;
++  }
++  if (*alpha_image_info)
++  {
++    DestroyImageInfo(*alpha_image_info);
++    *alpha_image_info = (ImageInfo *)NULL;
++  }
++  if (*color_image)
++  {
++    DestroyImage(*color_image);
++    *color_image = (Image *)NULL;
++  }
++  if (*alpha_image)
++  {
++    DestroyImage(*alpha_image);
++    *alpha_image = (Image *)NULL;
++  }
++}
+ static Image *ReadOneJNGImage(MngInfo *mng_info,
+     const ImageInfo *image_info, ExceptionInfo *exception)
+ {
+@@ -4171,10 +4200,8 @@ static Image *ReadOneJNGImage(MngInfo *mng_info,
+ 
+     if (length > PNG_UINT_31_MAX || count == 0)
+       {
+-        if (color_image != (Image *) NULL)
+-          color_image=DestroyImage(color_image);
+-        if (color_image_info != (ImageInfo *) NULL)
+-          color_image_info=DestroyImageInfo(color_image_info);
++        DestroyJNG(NULL,&color_image,&color_image_info,
++          &alpha_image,&alpha_image_info);
+         ThrowReaderException(CorruptImageError,"CorruptImage");
+       }
+ 
+@@ -4258,6 +4285,18 @@ static Image *ReadOneJNGImage(MngInfo *mng_info,
+         if (length != 0)
+           chunk=(unsigned char *) RelinquishMagickMemory(chunk);
+ 
++        if (jng_width > 65535 || jng_height > 65535 ||
++             (long) jng_width > GetMagickResourceLimit(WidthResource) ||
++             (long) jng_height > GetMagickResourceLimit(HeightResource))
++          {
++            (void) LogMagickEvent(CoderEvent,GetMagickModule(),
++               "    JNG width or height too large: (%lu x %lu)",
++                (long) jng_width, (long) jng_height);
++            DestroyJNG(chunk,&color_image,&color_image_info,
++              &alpha_image,&alpha_image_info);
++            ThrowReaderException(CorruptImageError,"ImproperImageHeader");
++          }
++
+         continue;
+       }
+ 

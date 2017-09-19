@@ -1,0 +1,57 @@
+From 9086f0c675bfc5054df47527f948c75ab0d94b84 Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Sun, 23 Jul 2017 10:28:48 -0400
+Subject: [PATCH] memory leak in ReadSVGImage
+
+bug-debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=870503
+bug: https://github.com/ImageMagick/ImageMagick/issues/603
+origin: https://github.com/ImageMagick/ImageMagick/commit/27b3b9ca5cfb7b8935852cf315abc005ea7c1e16
+
+(cherry picked from commit 27b3b9ca5cfb7b8935852cf315abc005ea7c1e16)
+---
+ coders/map.c | 6 +++---
+ coders/mvg.c | 2 ++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/coders/map.c b/coders/map.c
+index 04096d93e..488257f63 100644
+--- a/coders/map.c
++++ b/coders/map.c
+@@ -10,7 +10,7 @@
+ %                            M   M  A   A  P                                  %
+ %                                                                             %
+ %                                                                             %
+-%                  Read/Write Image Colormaps As An Image File.               %
++%                  Read/Write Image Colormaps as an Image File.               %
+ %                                                                             %
+ %                              Software Design                                %
+ %                                   Cristy                                    %
+@@ -385,8 +385,8 @@ static MagickBooleanType WriteMAPImage(const ImageInfo *image_info,Image *image)
+   /*
+     Allocate colormap.
+   */
+-  if (IsPaletteImage(image,&image->exception) == MagickFalse)
+-    (void) SetImageType(image,PaletteType);
++  if (SetImageType(image,PaletteType) == MagickFalse)
++    ThrowWriterException(ResourceLimitError,"MemoryAllocationFailed");
+   depth=GetImageQuantumDepth(image,MagickTrue);
+   packet_size=(size_t) (depth/8);
+   pixels=(unsigned char *) AcquireQuantumMemory(image->columns,packet_size*
+diff --git a/coders/mvg.c b/coders/mvg.c
+index 16630eee3..c8a1f4f96 100644
+--- a/coders/mvg.c
++++ b/coders/mvg.c
+@@ -193,11 +193,13 @@ static Image *ReadMVGImage(const ImageInfo *image_info,ExceptionInfo *exception)
+   status=SetImageExtent(image,image->columns,image->rows);
+   if (status == MagickFalse)
+     {
++      draw_info=DestroyDrawInfo(draw_info);
+       InheritException(exception,&image->exception);
+       return(DestroyImageList(image));
+     }
+   if (SetImageBackgroundColor(image) == MagickFalse)
+     {
++      draw_info=DestroyDrawInfo(draw_info);
+       InheritException(exception,&image->exception);
+       image=DestroyImageList(image);
+       return((Image *) NULL);

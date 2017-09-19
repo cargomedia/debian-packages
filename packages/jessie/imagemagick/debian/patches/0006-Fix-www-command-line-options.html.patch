@@ -1,0 +1,22 @@
+From 5c3c0fed15d051d5526ef23914fef2f66644fd08 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <roucaries.bastien@gmail.com>
+Date: Wed, 14 Dec 2016 15:26:15 +0100
+Subject: [PATCH] Fix www/command-line-options.html
+
+Forwarded: Yes, https://github.com/ImageMagick/ImageMagick/issues/304
+---
+ www/command-line-options.html | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/www/command-line-options.html b/www/command-line-options.html
+index bb7c9071d..bccc87bab 100644
+--- a/www/command-line-options.html
++++ b/www/command-line-options.html
+@@ -2184,6 +2184,7 @@ available:</p>
+ 
+   <tr>
+     <td>png:exclude-chunk=<var>value</var></td>
++  </tr>
+ 
+   <tr>
+     <td>png:include-chunk=<var>value</var></td>

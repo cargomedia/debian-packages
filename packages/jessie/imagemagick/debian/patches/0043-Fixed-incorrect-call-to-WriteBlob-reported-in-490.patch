@@ -1,0 +1,35 @@
+From 466e8dc815943b73d4aa6a64c96f05f04321bcb5 Mon Sep 17 00:00:00 2001
+From: Dirk Lemstra <dirk@git.imagemagick.org>
+Date: Mon, 15 May 2017 21:17:59 +0200
+Subject: [PATCH] Fixed incorrect call to WriteBlob reported in #490.
+
+A crafted file revealed an assertion failure in blob.c.
+
+This fix CVE-2017-9142
+
+origin: https://github.com/ImageMagick/ImageMagick/commit/72f5c8632bff2daf3c95005f9b4cf2982786b52a
+bug: https://github.com/ImageMagick/ImageMagick/issues/490
+bug-debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863125
+---
+ coders/png.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/coders/png.c b/coders/png.c
+index 2da4be6a3..a1150e357 100644
+--- a/coders/png.c
++++ b/coders/png.c
+@@ -4337,10 +4337,11 @@ static Image *ReadOneJNGImage(MngInfo *mng_info,
+           (void) LogMagickEvent(CoderEvent,GetMagickModule(),
+             "    Copying JDAT chunk data to color_blob.");
+ 
+-        (void) WriteBlob(color_image,length,chunk);
+-
+         if (length != 0)
+-          chunk=(unsigned char *) RelinquishMagickMemory(chunk);
++          {
++            (void) WriteBlob(color_image,length,chunk);
++            chunk=(unsigned char *) RelinquishMagickMemory(chunk);
++          }
+ 
+         continue;
+       }

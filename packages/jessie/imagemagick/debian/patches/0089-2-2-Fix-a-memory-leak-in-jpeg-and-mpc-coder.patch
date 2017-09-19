@@ -1,0 +1,32 @@
+From 376e3070c67ba69e91866e515303057bcf32c22e Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Tue, 21 Feb 2017 18:58:39 -0500
+Subject: [PATCH] [2/2] Fix a memory leak in jpeg and mpc coder
+
+A leak due to exception handling exist in MPC and JPEG coder.
+This could be triggerd by a crafted file.
+
+bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=869791
+origin: https://github.com/ImageMagick/ImageMagick/commit/f5d04fc678f67984a1f8c1008dc8eac8ee7e3629
+
+(cherry picked from commit f5d04fc678f67984a1f8c1008dc8eac8ee7e3629)
+---
+ coders/mpc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/coders/mpc.c b/coders/mpc.c
+index 64e92ed31..3c8f7d6f7 100644
+--- a/coders/mpc.c
++++ b/coders/mpc.c
+@@ -842,9 +842,9 @@ static Image *ReadMPCImage(const ImageInfo *image_info,ExceptionInfo *exception)
+         /*
+           Create image colormap.
+         */
+-        image->colormap=(PixelInfo *) AcquireQuantumMemory(image->colors+1,
++        image->colormap=(PixelPacket *) AcquireQuantumMemory(image->colors+1,
+           sizeof(*image->colormap));
+-        if (image->colormap == (PixelInfo *) NULL)
++        if (image->colormap == (PixelPacket *) NULL)
+           ThrowReaderException(ResourceLimitError,"MemoryAllocationFailed");
+         if (image->colors != 0)
+           {
