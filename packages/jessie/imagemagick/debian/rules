@@ -698,9 +698,9 @@ override_dh_install-indep:
 	# special source imagemagick-*-common
 	dh_install --package=imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-common
 	# remaining package
-	dh_install --indep --remaining-packages --sourcedir=debian/tmp-indep --autodest
+  #	dh_install --indep --remaining-packages --sourcedir=debian/tmp-indep --autodest
 	# fix doxygen problem
-	./debian/scripts/dh_doxygen --indep --package=imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-doc
+	# ./debian/scripts/dh_doxygen --indep --package=imagemagick-$(DEB_UPSTREAM_VERSION_MAJOR)-doc
 
 override_dh_compress:
 	# fix #611125
