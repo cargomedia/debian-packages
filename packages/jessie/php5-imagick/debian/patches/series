@@ -1,0 +1,3 @@
+imagick_count_php_5.6.patch
+Hardcode-path-to-usrsharefontstruetypettf-dejavuDejaVuSans.ttf-in-captcha.php.patch
+imagemagick_pkgconfig_detection.patch

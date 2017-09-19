@@ -1,0 +1,11 @@
+php-imagick (3.2.0~rc1-1) unstable; urgency=medium
+
+  Test imagick-3.2.0RC1/tests/bug20636.sh fails with the following error:
+  $ ./bug20636.sh
+  php5: unable to acquire cache view `No such file or directory' @ fatal/cache-view.c/AcquireAuthenticCacheView/121.
+
+  This is reported upstream and will be fixed with recent IM versions.
+
+  Source: https://bugs.php.net/bug.php?id=66382
+
+ -- Guillaume Delacour <gui@iroqwa.org>  Sun, 17 Aug 2014 16:35:29 +0200

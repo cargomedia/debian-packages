@@ -1,0 +1,22 @@
+Source: php-imagick
+Section: php
+Priority: optional
+Maintainer: Debian PHP PECL Maintainers <pkg-php-pecl@lists.alioth.debian.org>
+Uploaders: Guillaume Delacour <gui@iroqwa.org>, Lior Kaplan <kaplan@debian.org>
+Build-Depends: debhelper (>= 9),
+	       php5-dev (>= 5.5),
+	       dh-php5,
+	       pkg-php-tools (>= 1.6),
+	       libmagickwand-6.q16-dev
+Standards-Version: 3.9.6
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-php/php-imagick.git
+Vcs-Git: git://anonscm.debian.org/pkg-php/php-imagick.git
+Homepage: http://pecl.php.net/package/imagick
+
+Package: php5-imagick
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${phppear:Debian-Depends}
+Recommends: ghostscript, ttf-dejavu-core, ${phppear:Debian-Recommends}
+Breaks: ${phppear:Debian-Breaks}
+Description: ${phppear:summary}
+ ${phppear:description}

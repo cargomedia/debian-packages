@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --buildsystem=phppear --with phppear --with php5
+
+override_dh_auto_install:
+	INSTALL_ROOT=$(CURDIR)/debian/tmp dh_auto_install
+
+# remove failed tests results, if any
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -f imagick-*/tests/*.sh

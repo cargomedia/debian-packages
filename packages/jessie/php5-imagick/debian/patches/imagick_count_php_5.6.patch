@@ -1,0 +1,73 @@
+From: Remi Collet <remi@famillecollet.com>
+Subject: fix Imagick::count() with PHP >= 5.6.0RC2
+Origin: upstream, https://github.com/mkoppanen/imagick/pull/35
+
+Index: php-imagick.git/imagick-3.2.0RC1/imagick.c
+===================================================================
+--- php-imagick.git.orig/imagick-3.2.0RC1/imagick.c
++++ php-imagick.git/imagick-3.2.0RC1/imagick.c
+@@ -1268,6 +1268,11 @@ PHPAPI zend_class_entry *php_imagickpixe
+ 		ZEND_ARG_INFO(0, IMGTYPE)
+ 	ZEND_END_ARG_INFO()
+ 
++#if PHP_VERSION_ID >= 50600
++	ZEND_BEGIN_ARG_INFO_EX(imagick_count_args, 0, 0, 0)
++		ZEND_ARG_INFO(0, mode)
++	ZEND_END_ARG_INFO()
++#endif
+ 
+ /* ImagickDraw */
+ #if MagickLibVersion > 0x649
+@@ -2084,7 +2089,11 @@ static zend_function_entry php_imagick_c
+ #endif
+ 	PHP_ME(imagick, __construct, imagick_construct_args, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+ 	PHP_ME(imagick, __tostring, NULL, ZEND_ACC_PUBLIC)
++#if PHP_VERSION_ID >= 50600
++	PHP_ME(imagick, count, imagick_count_args, ZEND_ACC_PUBLIC)
++#else
+ 	PHP_ME(imagick, count, imagick_zero_args, ZEND_ACC_PUBLIC)
++#endif
+ 	PHP_ME(imagick, getpixeliterator, imagick_zero_args, ZEND_ACC_PUBLIC)
+ 	PHP_ME(imagick, getpixelregioniterator, imagick_getpixelregioniterator_args, ZEND_ACC_PUBLIC)
+ 	PHP_ME(imagick, readimage, imagick_readimage_args, ZEND_ACC_PUBLIC)
+@@ -2583,6 +2592,17 @@ static void php_imagick_init_globals(zen
+ #endif
+ }
+ 
++static int php_imagick_count_elements(zval *object, long *count TSRMLS_DC) /* {{{ */
++	{
++	php_imagick_object *intern= (php_imagick_object *)zend_object_store_get_object(object TSRMLS_CC);
++
++	if (intern->magick_wand) {
++		*count = MagickGetNumberImages(intern->magick_wand);
++		return SUCCESS;
++	}
++	return FAILURE;
++	}
++
+ #if PHP_VERSION_ID < 50399
+ static zval *php_imagick_read_property(zval *object, zval *member, int type TSRMLS_DC)
+ #else
+@@ -2794,6 +2814,7 @@ PHP_MINIT_FUNCTION(imagick)
+ 	ce.create_object = php_imagick_object_new;
+ 	imagick_object_handlers.clone_obj = php_imagick_clone_imagick_object;
+ 	imagick_object_handlers.read_property = php_imagick_read_property;
++	imagick_object_handlers.count_elements = php_imagick_count_elements;
+ 	php_imagick_sc_entry = zend_register_internal_class(&ce TSRMLS_CC);
+ #if defined(HAVE_SPL)
+ 	zend_class_implements(php_imagick_sc_entry TSRMLS_CC, 2, zend_ce_iterator, spl_ce_Countable);
+Index: php-imagick.git/imagick-3.2.0RC1/imagick_class.c
+===================================================================
+--- php-imagick.git.orig/imagick-3.2.0RC1/imagick_class.c
++++ php-imagick.git/imagick-3.2.0RC1/imagick_class.c
+@@ -2982,8 +2982,9 @@ PHP_METHOD(imagick, __tostring)
+ PHP_METHOD(imagick, count)
+ {
+ 	php_imagick_object *intern;
++	long mode = 0;
+ 
+-	if (zend_parse_parameters_none() == FAILURE) {
++	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &mode) == FAILURE) {
+ 		return;
+ 	}
+ 

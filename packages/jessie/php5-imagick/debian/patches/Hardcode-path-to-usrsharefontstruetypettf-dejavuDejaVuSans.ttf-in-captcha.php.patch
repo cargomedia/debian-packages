@@ -1,0 +1,15 @@
+Description: Hardcode path to /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf in examples/captcha.php
+Forwarded: not-needed
+Author: Thomas Goirand <zigo@debian.org>
+
+--- a/imagick-3.2.0RC1/examples/captcha.php
++++ b/imagick-3.2.0RC1/examples/captcha.php
+@@ -17,7 +17,7 @@
+ $ImagickDraw = new ImagickDraw();
+ 
+ /* Set font and font size. You can also specify /path/to/font.ttf */
+-$ImagickDraw->setFont( 'Helvetica Regular' );
++$ImagickDraw->setFont( '/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf' );
+ $ImagickDraw->setFontSize( 20 );
+ 
+ /* Create the text */
