@@ -15,8 +15,6 @@ Homepage: http://pecl.php.net/package/imagick
 
 Package: php5-imagick
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${phppear:Debian-Depends}
-Recommends: ghostscript, ttf-dejavu-core, ${phppear:Debian-Recommends}
-Breaks: ${phppear:Debian-Breaks}
-Description: ${phppear:summary}
- ${phppear:description}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: ghostscript, ttf-dejavu-core
+Description: php5 Extension for ImageMagick

@@ -1,6 +1,7 @@
 php-imagick (3.4.3-jessie1) jessie; urgency=medium
 
   * Non-maintainer upload.
+  * Depends on ImageMagick >= 6.9.9.12
 
  -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Tue, 19 Sep 2017 12:50:48 +0000
 
