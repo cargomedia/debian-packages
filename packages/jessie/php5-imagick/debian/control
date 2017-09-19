@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 9),
 	       php5-dev (>= 5.5),
 	       dh-php5,
 	       pkg-php-tools (>= 1.6),
-	       libmagickwand-6.q16-dev
+	       libmagickwand-6.q16-dev,
 Standards-Version: 3.9.6
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-php/php-imagick.git
 Vcs-Git: git://anonscm.debian.org/pkg-php/php-imagick.git

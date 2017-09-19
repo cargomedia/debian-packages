@@ -1,3 +1,9 @@
+php-imagick (3.4.3-jessie1) jessie; urgency=medium
+
+  * Non-maintainer upload.
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Tue, 19 Sep 2017 12:50:48 +0000
+
 php-imagick (3.2.0~rc1-1) unstable; urgency=medium
 
   * New upstream release, drop 002-use-pkgconfig-for-imagemagick as upstream
@@ -184,7 +190,7 @@ php-imagick (0.9.11+1-4) unstable; urgency=low
   * Bump Standards-Version: 3.7.2
   * Updated Japanese debconf translation, thanks to Kenshi Muto
     <kmuto@debian.org>. (Closes: #379941)
-  * Updated Danish debconf translation, thanks to  Claus Hindsgaul 	
+  * Updated Danish debconf translation, thanks to  Claus Hindsgaul
     <claus.hindsgaul@gmail.com>. (Closes: #382476)
   * Updated Spanish debconf translation, thanks to Carlos Valdivia Yagüe
     <valyag@dat.etsit.upm.es>.
