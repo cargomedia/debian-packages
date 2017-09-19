@@ -1,0 +1,211 @@
+# quantum dependant
+Package: imagemagick-${IMVERSION}.${QUANTUMDEPTH}
+Architecture: any
+Multi-Arch: foreign
+Depends: ${shlibs:Depends}, ${misc:Depends}, hicolor-icon-theme
+Recommends: libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}-extra, ghostscript, netpbm
+Suggests: imagemagick-doc, autotrace, cups-bsd | lpr | lprng, curl, enscript,
+ ffmpeg, gimp, gnuplot, grads, graphviz, groff-base, hp2xx, html2ps,
+ libwmf-bin, mplayer,
+ povray, radiance, sane-utils, texlive-base-bin, transfig,
+ ufraw-batch, xdg-utils
+Replaces: imagemagick (<< 8:6.9.2.10+dfsg-2~)
+Breaks: libmagickcore-dev (<< 8:6.9.2.10+dfsg-2~)
+Provides: imagemagick, imagemagick-${IMVERSION}.defaultquantum
+Description: image manipulation programs -- quantum depth ${UCQUANTUMDEPTH}
+ ImageMagick is a software suite to create, edit, and compose bitmap images.
+ It can read, convert and write images in a variety of formats (over 100)
+ including DPX, EXR, GIF, JPEG, JPEG-2000, PDF, PhotoCD, PNG, Postscript,
+ SVG, and TIFF. Use ImageMagick to translate, flip, mirror, rotate, scale,
+ shear and transform images, adjust image colors, apply various special
+ effects, or draw text, lines, polygons, ellipses and Bézier curves.
+ All manipulations can be achieved through shell commands as well as through
+ an X11 graphical interface (display).
+ .
+ For working with the SVG, WMF, OpenEXR, DjVu and Graphviz formats,
+ you need to install the libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}-extra package.
+ .
+ This version of imagemagick is compiled for a channel
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+
+# predepend on dpkg (>= 1.17.6) for libgomp symbols remove after jeesie +2
+# normally depends on imagemagick-${IMVERSION}-common >= ${source:version} except
+# here when some files were moved between two packages
+Package: libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}
+Architecture: any
+Multi-Arch: same
+Section: libs
+Pre-Depends: ${misc:Pre-Depends}, dpkg (>= 1.17.6)
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ imagemagick-${IMVERSION}-common (>= ${COMMONMINVERSION})
+Recommends: ghostscript, gsfonts
+Suggests: libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}-extra
+Description: low-level image manipulation library -- quantum depth ${UCQUANTUMDEPTH}
+ The MagickCore API is a low-level interface between the C programming language
+ and the ImageMagick image processing libraries and is recommended for
+ wizard-level programmers only. Unlike the MagickWand C API which uses only a
+ few opaque types and accessors, with MagickCore you almost exclusively access
+ the structure members directly.
+ .
+ This package contains the C libraries needed to run executables that make
+ use of MagickCore.
+ .
+ This version of libmagickcore is compiled for a channel
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+
+Package: libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}-extra
+Architecture: any
+Multi-Arch: same
+Section: libs
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Enhances: libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}
+Provides: libmagickcore-extra, libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-1-extra,
+ libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-2-extra,
+Suggests: inkscape, libjxr-tools
+Description: low-level image manipulation library - extra codecs (${UCQUANTUMDEPTH})
+ This package adds support for SVG, WMF, OpenEXR, DjVu and Graphviz to
+ MagickCore.
+ .
+ This version of libmagickcore-extra is compiled for a channel
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+
+Package: libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-dev
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: libmagickcore-${IMVERSION}-headers (= ${source:Version}),
+ libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION} (= ${binary:Version}),
+ libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}-extra (= ${binary:Version}),
+ libbz2-dev, libdjvulibre-dev,
+ libexif-dev, libfreetype6-dev, libgraphviz-dev, libjpeg-dev,
+# libopenjp2-7-dev, Needed for JPEG2000 but not in main see MIR #711061
+ liblcms2-dev, liblqr-1-0-dev, libltdl-dev, libopenexr-dev, libpng-dev,
+ librsvg2-dev, libtiff-dev, libwmf-dev, libx11-dev, libxext-dev, libxml2-dev,
+ libxt-dev, zlib1g-dev,
+ pkg-config,
+ ${misc:Depends}
+# remove breaks/replaces after jessie +2
+Replaces: libmagickcore-dev (<< 8:6.8.3.10-1~)
+Breaks: libmagickcore-dev (<< 8:6.8.3.10-1~)
+Provides: libmagickcore-${IMVERSION}.defaultquantum-dev
+Description: low-level image manipulation library - development files (${UCQUANTUMDEPTH})
+ The MagickCore API is a low-level interface between the C programming language
+ and the ImageMagick image processing libraries and is recommended for
+ wizard-level programmers only. Unlike the MagickWand C API which uses only a
+ few opaque types and accessors, with MagickCore you almost exclusively access
+ the structure members directly.
+ .
+ This package includes header static libraries needed to compile
+ programs using MagickCore.
+ .
+ This version of libmagickcore-dev is compiled for a channel
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+
+# predepend on dpkg (>= 1.17.6)  for libgomp symbols remove after jeesie + 2
+Package: libmagickwand-${IMVERSION}.${QUANTUMDEPTH}-${WANDSOVERSION}
+Architecture: any
+Multi-Arch: same
+Section: libs
+Pre-Depends: ${misc:Pre-Depends}, dpkg (>= 1.17.6)
+Depends: ${shlibs:Depends}, ${misc:Depends},
+	 imagemagick-${IMVERSION}-common (>= ${COMMONMINVERSION})
+Description: image manipulation library -- quantum depth ${UCQUANTUMDEPTH}
+ The MagickWand API is the recommended interface between the C programming
+ language and the ImageMagick image processing libraries. Unlike the
+ MagickCore C API, MagickWand uses only a few opaque types. Accessors are
+ available to set or get important wand properties.
+ .
+ This package contains the C libraries needed to run executables that make
+ use of MagickWand.
+ .
+ This version of libmagickwand is compiled for a channel
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+
+Package: libmagickwand-${IMVERSION}.${QUANTUMDEPTH}-dev
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: libmagickwand-${IMVERSION}-headers (= ${source:Version}),
+ libmagickwand-${IMVERSION}.${QUANTUMDEPTH}-${WANDSOVERSION} (= ${binary:Version}),
+ libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}-extra (= ${binary:Version}),
+ libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-dev (= ${binary:Version}),
+ pkg-config,
+ ${misc:Depends}
+Provides: libmagickwand-${IMVERSION}.defaultquantum-dev
+Replaces: libmagickwand-dev (<< 8:6.8.3.10-1~)
+Breaks: libmagickwand-dev (<< 8:6.8.3.10-1~)
+Description: image manipulation library - development files (${UCQUANTUMDEPTH})
+ The MagickWand API is the recommended interface between the C programming
+ language and the ImageMagick image processing libraries. Unlike the
+ MagickCore C API, MagickWand uses only a few opaque types. Accessors are
+ available to set or get important wand properties.
+ .
+ This package the static libraries needed to compile
+ programs using MagickWand.
+ .
+ This version of libmagickwand-dev is compiled for a channe
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+
+# break and conflict for smooth upgrade for 6 -> 6v6
+Package: libmagick++-${IMVERSION}.${QUANTUMDEPTH}-${PPSOVERSION}
+Architecture: any
+Multi-Arch: same
+Section: libs
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: libmagick++-${IMVERSION}.${QUANTUMDEPTH}-6
+Replaces: libmagick++-${IMVERSION}.${QUANTUMDEPTH}-6
+Description: C++ interface to ImageMagick -- quantum depth ${UCQUANTUMDEPTH}
+ The Magick++ library is a set of C++ wrapper classes that provides access
+ to the ImageMagick package functionality from within a C++ application.
+ .
+ This package contains the C++ libraries needed to run executables that make
+ use of libMagick++.
+ .
+ This version of libmagick++ is compiled for a channel
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+
+Package: libmagick++-${IMVERSION}.${QUANTUMDEPTH}-dev
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: libmagick++-${IMVERSION}-headers (= ${source:Version}),
+ libmagick++-${IMVERSION}.${QUANTUMDEPTH}-${PPSOVERSION} (= ${binary:Version}),
+ libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-dev (= ${binary:Version}),
+ libmagickwand-${IMVERSION}.${QUANTUMDEPTH}-dev (= ${binary:Version}),
+ pkg-config,
+ ${misc:Depends}
+Provides: libmagick++-${IMVERSION}.defaultquantum-dev
+Replaces: libmagick++-dev (<< 8:6.8.3.10-1~)
+Breaks: libmagick++-dev (<< 8:6.8.3.10-1~)
+Description: C++ interface to ImageMagick - development files (${UCQUANTUMDEPTH})
+ The Magick++ library is a set of C++ wrapper classes that provides access
+ to the ImageMagick package functionality from within a C++ application.
+ .
+ This package includes header files and static libraries needed to compile
+ programs using Magick++.
+ .
+ This version of libmagick++-dev is compiled for a channel
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+
+Package: libimage-magick-${QUANTUMDEPTH}-perl
+Architecture: any
+Multi-Arch: allowed
+Section: perl
+Depends: ${perl:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Suggests: imagemagick-doc
+Provides: libimage-magick-defaultquantum-perl
+# remove breaks/replaces after jessie +2
+Replaces: perlmagick (<< 8:6.8.3.10-1~)
+Breaks: perlmagick (<< 8:6.8.3.10-1~)
+Description: Perl interface to the ImageMagick graphics routines -- ${UCQUANTUMDEPTH} version
+ PerlMagick is an objected-oriented Perl interface to ImageMagick.
+ Use the module to read, manipulate, or write an image or image sequence from
+ within a Perl script. This makes it very suitable for Web CGI scripts.
+ .
+ This version of libimage-magick is compiled for a channel
+ depth of ${DESC_QUANTUM} (${UCQUANTUMDEPTH}).
+ .
+ This package provides the perl Image::Magick::${UCQUANTUMDEPTH} class.
+

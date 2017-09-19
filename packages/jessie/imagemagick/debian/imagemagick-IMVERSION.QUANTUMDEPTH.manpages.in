@@ -1,0 +1,11 @@
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/animate-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/compare-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/composite-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/conjure-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/convert-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/display-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/identify-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/import-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/mogrify-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/montage-im${IMVERSION}.${QUANTUMDEPTH}.1
+debian/tmp-${QUANTUMDEPTH}/usr/share/man/man1/stream-im${IMVERSION}.${QUANTUMDEPTH}.1

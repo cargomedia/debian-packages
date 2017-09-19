@@ -1,0 +1,6 @@
+Tests: rose-${IMVERSION}.${QUANTUMDEPTH}
+Depends: imagemagick-${IMVERSION}.${QUANTUMDEPTH}, libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}-extra, ghostscript, netpbm
+
+Tests: perlmagick-${IMVERSION}.${QUANTUMDEPTH}
+Depends: libimage-magick-${QUANTUMDEPTH}-perl, libmagickcore-${IMVERSION}.${QUANTUMDEPTH}-${CORESOVERSION}-extra, libaliased-perl, gsfonts
+

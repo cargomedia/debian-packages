@@ -1,0 +1,139 @@
+# predepend on dpkg (>= 1.17.5) for dir to symlink remove after jeesie +2
+# compatibility package (remove after stretch + 2)
+Package: imagemagick-common
+Architecture: all
+Multi-Arch: foreign
+Section: oldlibs
+Priority: extra
+Pre-Depends: dpkg (>= 1.15.7.2)
+Depends: ${misc:Depends},  imagemagick-${IMVERSION}-common
+Description: image manipulation programs -- infrastructure dummy package
+ imagemagick-common contained the filesystem infrastructure required for
+ further installation of imagemagick in any configuration.
+ .
+ This is a transitional package to help migrate systems to the new
+ imagemagick-${IMVERSION}-common package.
+ .
+ This is a dummy package.  You can safely purge or remove it.
+
+
+# predepend on dpkg (>= 1.17.5) for dir to symlink remove after jeesie +2
+# conflict/replace itself (<< 8:6.9.2.10+dfsg-1~) in order to smooth link issue remove after strech + 2
+# remove after strech+2
+Package: imagemagick-doc
+Architecture: all
+Multi-Arch: foreign
+Section: oldlibs
+Priority: extra
+Depends: ${misc:Depends},
+	 imagemagick-${IMVERSION}-doc (>> 8:6.9.2.10+dfsg-1), imagemagick-${IMVERSION}-common
+Pre-Depends: dpkg (>= 1.17.5)
+Conflicts: imagemagick (<= 7:6.4.0)
+Replaces: imagemagick-doc (<< 8:6.9.2.10+dfsg-1~)
+Description: document files of ImageMagick -- dummy package
+ This package contained the document files shipped with ImageMagick, a software
+ suite to create, edit, and compose bitmap images.
+ .
+ This is a transitional package to help migrate systems to the new
+ imagemagick-${IMVERSION}-doc package.
+ .
+ This is a dummy package.  You can safely purge or remove it.
+
+# compatibility package (remove after jessie+2)
+Package: perlmagick
+Architecture: all
+Multi-Arch: foreign
+Section: oldlibs
+Priority: extra
+Pre-Depends: dpkg (>= 1.15.7.2)
+Depends: ${misc:Depends}, libimage-magick-perl, imagemagick-${IMVERSION}-common
+Description: Perl interface to ImageMagick -- dummy package
+ PerlMagick is an objected-oriented Perl interface to ImageMagick.
+ Use the module to read, manipulate, or write an image or image sequence from
+ within a Perl script. This makes it very suitable for Web CGI scripts.
+ .
+ This is a transitional package to help migrate systems to the new
+ libimage-magick-perl perl library.
+ .
+ This is a dummy package.  You can safely purge or remove it.
+
+# compatibility package (remove after jessie+2)
+Package: libmagickcore-dev
+Architecture: all
+Multi-Arch: foreign
+Section: oldlibs
+Priority: extra
+Pre-Depends: dpkg (>= 1.15.7.2)
+Depends: ${misc:Depends},
+ libmagickcore-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev,
+ imagemagick-${IMVERSION}-common
+Description: low-level image manipulation library -- dummy package
+ This package included header files and static libraries needed to compile
+ programs using MagickCore.
+ .
+ This is a transitional package to help migrate systems to the new
+ ABI of libmagickcore-${IMVERSION} development files for default channel depth.
+ .
+ This is a dummy package.  You can safely purge or remove it.
+
+# compatibility package (remove after jessie+2)
+Package: libmagickwand-dev
+Architecture: all
+Multi-Arch: foreign
+Section: oldlibs
+Priority: extra
+Pre-Depends: dpkg (>= 1.15.7.2)
+Depends: ${misc:Depends},
+ libmagickwand-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev,
+ imagemagick-${IMVERSION}-common
+Description: image manipulation library -- dummy package
+ This package included the static libraries needed to compile
+ programs using MagickWand.
+ .
+ This is a transitional package to help migrate systems to the new
+ ABI of libmagickwand-${IMVERSION} development files for default channel depth.
+ .
+ This is a dummy package.  You can safely purge or remove it.
+
+# compatibility package (remove after jessie+2)
+Package: libmagick++-dev
+Architecture: all
+Multi-Arch: foreign
+Section: oldlibs
+Priority: extra
+Pre-Depends: dpkg (>= 1.15.7.2)
+Depends: ${misc:Depends},
+ libmagick++-${IMVERSION}.${DEFAULTQUANTUMDEPTH}-dev,
+ imagemagick-${IMVERSION}-common
+Description: object-oriented C++ interface to ImageMagick -- dummy package
+ The Magick++ library was a set of C++ wrapper classes that provides access
+ to the ImageMagick package functionality from within a C++ application.
+ .
+ This is a transitional package to help migrate systems to the new
+ ABI of libmagick++-${IMVERSION} development files for default channel depth.
+ .
+ This is a dummy package.  You can safely purge or remove it.
+
+# compatibility package (remove after jessie+2)
+# due to bug #813455 arch:any
+Package: imagemagick
+Architecture: any
+Multi-Arch: foreign
+Section: oldlibs
+Priority: extra
+Depends: ${misc:Depends},
+ imagemagick-${IMVERSION}.${DEFAULTQUANTUMDEPTH} (>= 8:6.9.2.10+dfsg-2~)
+Description: image manipulation programs -- binaries
+ ImageMagick is a software suite to create, edit, and compose bitmap images.
+ It can read, convert and write images in a variety of formats (over 100)
+ including DPX, EXR, GIF, JPEG, JPEG-2000, PDF, PhotoCD, PNG, Postscript,
+ SVG, and TIFF. Use ImageMagick to translate, flip, mirror, rotate, scale,
+ shear and transform images, adjust image colors, apply various special
+ effects, or draw text, lines, polygons, ellipses and Bézier curves.
+ All manipulations can be achieved through shell commands as well as through
+ an X11 graphical interface (display).
+ .
+ This package include links to channel depth specific binaries and manual
+ pages.
+ .
+ This is a dummy package.  You can safely purge or remove it.
