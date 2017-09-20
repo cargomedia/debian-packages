@@ -1,7 +1,6 @@
 imagemagick (8:6.9.9.12-jessie1) jessie; urgency=medium
 
   * Backport to Debian Jessie from Ubuntu Artful
-  * Upgrade from upsource (see https://github.com/ImageMagick/ImageMagick/issues).
 
  -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Mon, 18 Sep 2017 14:47:45 +0000
 
