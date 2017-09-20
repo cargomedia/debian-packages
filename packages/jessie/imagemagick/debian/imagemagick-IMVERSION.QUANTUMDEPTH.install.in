@@ -1,0 +1,14 @@
+usr/share/icons/hicolor/*
+usr/share/pixmaps/*
+usr/share/applications/display-im*.*.desktop
+usr/bin/compare*
+usr/bin/animate*
+usr/bin/convert*
+usr/bin/composite*
+usr/bin/conjure*
+usr/bin/import*
+usr/bin/identify*
+usr/bin/stream*
+usr/bin/display*
+usr/bin/montage*
+usr/bin/mogrify*

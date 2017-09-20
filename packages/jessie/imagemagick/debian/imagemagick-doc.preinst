@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+# remove old dpkg-backup; remove after strech+2
+case "$1" in
+    upgrade|install)
+	version=$2
+	if dpkg --compare-versions -- "$version" le "8:6.9.2.10+dfsg-1~"; then
+	    if test -h /usr/share/doc/imagemagick-doc/images.dpkg-backup; then
+		if test $(readlink /usr/share/doc/imagemagick-doc/images.dpkg-backup) = "../imagemagick/images"; then
+		    rm -f /usr/share/doc/imagemagick-doc/images.dpkg-backup
+		fi
+	    fi
+
+	    if test -h /usr/share/doc/imagemagick-doc/www.dpkg-backup; then
+		if test $(readlink /usr/share/doc/imagemagick-doc/www.dpkg-backup) = "../imagemagick/www"; then
+		    rm -f /usr/share/doc/imagemagick-doc/www.dpkg-backup
+		fi
+	    fi
+	fi
+    ;;
+    abort-upgrade)
+    ;;
+    *)
+        echo "preinst called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac
+
+
+
+
+# remove after strech+2
+dpkg-maintscript-helper \
+	dir_to_symlink /usr/share/doc/imagemagick-doc /usr/share/doc/imagemagick-6-common 8:6.9.2.10+dfsg-1~  -- "$@"
+
+#DEBHELPER#
