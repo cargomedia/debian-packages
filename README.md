@@ -73,6 +73,10 @@ Available packages
  - Version: 0.8.5-jessie1
  - Packages: mysql-proxy
 
+**php5-imagick**
+ - Version: 3.4.3-jessie1
+ - Packages: php5-imagick
+
 **sas2ircu**
  - Version: 20.00.00.00-jessie1
  - Packages: sas2ircu
@@ -141,7 +145,7 @@ Available packages
 
 **janus-gateway-rtpbroadcast**
  - Version: 0.0.29-vivid1
- - Packages: janus-gateway-rtpbroadcast
+ - Packages: janus-gateway-rtpbroadcast_0.0.22-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.23-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.24-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.25-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.26-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.27-vivid1_amd64.deb, janus-gateway-rtpbroadcast_0.0.28-vivid1_amd64.deb, janus-gateway-rtpbroadcast
 
 **libsrtp**
  - Version: 1.5.3-vivid1

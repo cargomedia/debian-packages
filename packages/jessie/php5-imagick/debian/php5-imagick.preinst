@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+dpkg-maintscript-helper mv_conffile /etc/php5/conf.d/imagick.ini \
+    /etc/php5/mods-available/imagick.ini 3.2.0~rc1-1~ -- "$@"
+rm -f /etc/php5/conf.d/imagick.ini
+
+#DEBHELPER#
+
+exit 0
