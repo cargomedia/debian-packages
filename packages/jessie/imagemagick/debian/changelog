@@ -1,3 +1,15 @@
+imagemagick (8:6.9.9.12-jessie3) jessie; urgency=medium
+
+  * Re-enabled openMP due to performance degradation
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Thu, 02 Nov 2017 14:10:03 +0000
+
+imagemagick (8:6.9.9.12-jessie2) jessie; urgency=medium
+
+  * Disable openMP
+
+ -- Philipp Pfaff <philipp.pfaff@cargomedia.ch>  Thu, 02 Nov 2017 11:23:34 +0000
+
 imagemagick (8:6.9.9.12-jessie1) jessie; urgency=medium
 
   * Backport to Debian Jessie from Ubuntu Artful

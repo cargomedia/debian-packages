@@ -716,10 +716,6 @@ override_dh_makeshlibs:
 	done; \
 	exit $$fail
 
-# remove after jessie+2
-override_dh_strip:
-	dh_strip --ddeb-migration='imagemagick-dbg (<< 8:6.9.2.10-1~)'
-
 # link bug file
 override_dh_bugfiles-arch_quantum.%:
 	set -e; for PKG in ${call REPLACE_QUANTUM, $(MAGICK_ANY_QUANTUM_PACKAGES),$*}; do \
