@@ -42,8 +42,8 @@ Available packages
  - Packages: hpssacli
 
 **imagemagick**
- - Version: 8:6.9.9.12-jessie1
- - Packages: imagemagick-6-common, imagemagick-6-doc, imagemagick-6.q16, imagemagick-6.q16hdri, imagemagick-common, imagemagick-doc, imagemagick, libimage-magick-perl, libimage-magick-q16-perl, libimage-magick-q16hdri-perl, libmagick++-6-headers, libmagick++-6.q16-7, libmagick++-6.q16-dev, libmagick++-6.q16hdri-7, libmagick++-6.q16hdri-dev, libmagick++-dev, libmagickcore-6-arch-config, libmagickcore-6-headers, libmagickcore-6.q16-3-extra, libmagickcore-6.q16-3, libmagickcore-6.q16-dev, libmagickcore-6.q16hdri-3-extra, libmagickcore-6.q16hdri-3, libmagickcore-6.q16hdri-dev, libmagickcore-dev, libmagickwand-6-headers, libmagickwand-6.q16-3, libmagickwand-6.q16-dev, libmagickwand-6.q16hdri-3, libmagickwand-6.q16hdri-dev, libmagickwand-dev, perlmagick
+ - Version: 8:6.9.9.12-jessie3
+- Packages: imagemagick-6-common, imagemagick-6-doc, imagemagick-6.q16, imagemagick-6.q16hdri, imagemagick-common, imagemagick-doc, imagemagick, libimage-magick-perl, libimage-magick-q16-perl, libimage-magick-q16hdri-perl, libmagick++-6-headers, libmagick++-6.q16-7, libmagick++-6.q16-dev, libmagick++-6.q16hdri-7, libmagick++-6.q16hdri-dev, libmagick++-dev, libmagickcore-6-arch-config, libmagickcore-6-headers, libmagickcore-6.q16-3-extra, libmagickcore-6.q16-3, libmagickcore-6.q16-dev, libmagickcore-6.q16hdri-3-extra, libmagickcore-6.q16hdri-3, libmagickcore-6.q16hdri-dev, libmagickcore-dev, libmagickwand-6-headers, libmagickwand-6.q16-3, libmagickwand-6.q16-dev, libmagickwand-6.q16hdri-3, libmagickwand-6.q16hdri-dev, libmagickwand-dev, perlmagick
 
 **janus**
  - Version: 0.0.9.git1.088882-jessie1
