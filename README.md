@@ -55,11 +55,11 @@ Available packages
 
 **janus-gateway-rtpbroadcast**
  - Version: 0.0.29-jessie1
- - Packages: janus-gateway-rtpbroadcast_0.0.22-jessie1_amd64.deb, janus-gateway-rtpbroadcast_0.0.23-jessie1_amd64.deb, janus-gateway-rtpbroadcast_0.0.24-jessie1_amd64.deb, janus-gateway-rtpbroadcast_0.0.25-jessie1_amd64.deb, janus-gateway-rtpbroadcast_0.0.26-jessie1_amd64.deb, janus-gateway-rtpbroadcast_0.0.27-jessie1_amd64.deb, janus-gateway-rtpbroadcast_0.0.28-jessie1_amd64.deb, janus-gateway-rtpbroadcast
+ - Packages: janus-gateway-rtpbroadcast
 
 **janus-gateway-rtpbroadcast-experimental**
  - Version: 0.0.29-beta4-jessie1
- - Packages: janus-gateway-rtpbroadcast-experimental_0.0.29-beta1-jessie1_amd64.deb, janus-gateway-rtpbroadcast-experimental_0.0.29-beta2-jessie1_amd64.deb, janus-gateway-rtpbroadcast-experimental_0.0.29-beta3-jessie1_amd64.deb, janus-gateway-rtpbroadcast-experimental
+ - Packages: janus-gateway-rtpbroadcast-experimental
 
 **libsrtp**
  - Version: 1.5.3-jessie1
